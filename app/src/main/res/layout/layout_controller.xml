@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:background="@color/black"
+             android:padding="@dimen/x2dp">
+    <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/controller"
+                                                       android:layout_width="@dimen/x125dp"
+                                                       android:layout_height="@dimen/x140dp"
+                                                       android:background="@drawable/android_bg">
+
+
+        <ImageView
+                android:id="@+id/buttonLeft"
+                android:layout_width="@dimen/x25dp"
+                android:layout_height="@dimen/x25dp"
+                android:layout_marginTop="@dimen/x12dp"
+                android:layout_marginEnd="@dimen/x12dp"
+                android:contentDescription="@string/crosshair"
+                android:scaleType="fitCenter" android:src="@drawable/button_left"
+                app:layout_constraintEnd_toStartOf="@+id/buttonUp" app:layout_constraintTop_toBottomOf="@+id/buttonUp"/>
+        <ImageView
+                android:id="@+id/buttonRight"
+                android:layout_width="@dimen/x25dp"
+                android:layout_height="@dimen/x25dp"
+                android:layout_marginStart="@dimen/x12dp"
+                android:layout_marginTop="@dimen/x12dp"
+                android:contentDescription="@string/crosshair"
+                android:scaleType="fitCenter" android:src="@drawable/button_right"
+                app:layout_constraintStart_toEndOf="@+id/buttonUp" app:layout_constraintTop_toBottomOf="@+id/buttonUp"/>
+        <ImageView
+                android:id="@+id/buttonDown"
+                android:layout_width="@dimen/x25dp"
+                android:layout_height="@dimen/x25dp"
+                android:layout_marginTop="@dimen/x12dp"
+                android:contentDescription="@string/crosshair"
+                android:scaleType="fitCenter"
+                android:src="@drawable/button_down"
+                app:layout_constraintEnd_toStartOf="@+id/buttonRight"
+                app:layout_constraintStart_toEndOf="@+id/buttonLeft"
+                app:layout_constraintTop_toBottomOf="@+id/buttonRight"/>
+        <ImageView
+                android:id="@+id/buttonUp"
+                android:layout_width="@dimen/x25dp"
+                android:layout_height="@dimen/x25dp"
+                android:layout_marginTop="@dimen/x5dp"
+                android:contentDescription="@string/crosshair"
+                android:scaleType="fitCenter"
+                android:src="@drawable/button_up"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        <ImageView
+                android:id="@+id/buttonCancel"
+                android:layout_width="@dimen/x20dp"
+                android:layout_height="@dimen/x20dp"
+                android:layout_marginTop="@dimen/x8dp"
+                android:layout_marginEnd="@dimen/x8dp"
+                android:contentDescription="@string/crosshair"
+                android:src="@drawable/cancel_button" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <SeekBar
+                android:id="@+id/seekBar"
+                style="@style/Widget.AppCompat.SeekBar"
+                android:layout_width="@dimen/x0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/x8dp"
+                android:layout_marginTop="@dimen/x12dp"
+                android:layout_marginEnd="@dimen/x8dp"
+                android:progress="100"
+                android:progressTint="@color/primary"
+                android:thumbTint="@color/dark_red"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonDown"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>

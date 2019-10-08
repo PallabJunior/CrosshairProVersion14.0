@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "379911484292",
+    "firebase_url": "https://pubg-tool-project.firebaseio.com",
+    "project_id": "pubg-tool-project",
+    "storage_bucket": "pubg-tool-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:379911484292:android:00abbc3824433267",
+        "android_client_info": {
+          "package_name": "com.customscopecommunity.crosshairpro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "379911484292-u0le3qd6s74fko4oktibuabhjv97qdct.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.customscopecommunity.crosshairpro",
+            "certificate_hash": "d572c6195610ad18ca3b1b10d65d748caef3e616"
+          }
+        },
+        {
+          "client_id": "379911484292-h83jmfc5svi05oni64dp0jud7atsh8c7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe34Hizm4KCjpy_BaxGVcqSEaD6FQdRfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "379911484292-h83jmfc5svi05oni64dp0jud7atsh8c7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

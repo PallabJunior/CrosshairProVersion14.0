@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/navigation" app:startDestination="@id/mainFragment">
+
+    <fragment android:id="@+id/mainFragment"
+              android:name="com.customscopecommunity.crosshairpro.fragments.MainFragment"
+              android:label="MainFragment"
+              tools:layout="@layout/fragment_main">
+        <action android:id="@+id/action_mainFragment_to_classicFragment" app:destination="@id/classicFragment"/>
+        <action android:id="@+id/action_mainFragment_to_proFragment" app:destination="@id/proFragment"/>
+    </fragment>
+    <fragment android:id="@+id/classicFragment"
+              android:name="com.customscopecommunity.crosshairpro.fragments.ClassicFragment"
+              android:label="ClassicFragment"
+              tools:layout="@layout/fragment_classic"/>
+    <fragment android:id="@+id/proFragment"
+              android:name="com.customscopecommunity.crosshairpro.fragments.ProFragment"
+              android:label="ProFragment"
+              tools:layout="@layout/fragment_pro"/>
+</navigation>

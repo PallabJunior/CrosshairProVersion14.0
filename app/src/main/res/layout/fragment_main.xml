@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:padding="@dimen/x10dp">
+
+        <LinearLayout
+                android:layout_width="@dimen/x0dp"
+                android:layout_height="@dimen/x50dp" android:layout_marginStart="@dimen/x8dp"
+                android:layout_marginTop="@dimen/x24dp" android:layout_marginEnd="@dimen/x8dp"
+                android:background="@color/green"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/x1dp" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                    android:layout_width="@dimen/x0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/black">
+                <TextView
+                        android:id="@+id/classicPackage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/classic"
+                        android:textColor="@color/primary" android:textSize="@dimen/x30sp"
+                        android:textStyle="normal|bold"/>
+
+            </LinearLayout>
+
+            <Space android:layout_width="@dimen/x1dp" android:layout_height="match_parent"/>
+
+            <LinearLayout
+                    android:layout_width="@dimen/x0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/black">
+
+                <TextView
+                        android:id="@+id/proPackage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="@string/pro"
+                        android:textColor="@color/primary" android:textSize="@dimen/x30sp"
+                        android:textStyle="normal|bold"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                     android:layout_marginStart="@dimen/x8dp"
+                     android:layout_marginEnd="@dimen/x8dp"
+                     android:layout_marginBottom="@dimen/x80dp"
+                     app:layout_constraintBottom_toBottomOf="parent"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                    android:id="@+id/buttonStop"
+                    style="@android:style/Widget.Material.Button.Inset"
+                    android:layout_width="@dimen/x80dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/primary"
+                    android:text="@string/stop"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/x16sp"
+                    android:textStyle="bold"/>
+            <Button
+                    android:id="@+id/buttonStart"
+                    style="@android:style/Widget.Material.Button.Inset"
+                    android:layout_width="@dimen/x80dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/green"
+                    android:text="@string/start"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/x16sp"
+                    android:textStyle="bold"/>
+
+
+        </FrameLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
