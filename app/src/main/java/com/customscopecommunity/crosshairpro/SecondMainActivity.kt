@@ -37,6 +37,12 @@ class SecondMainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_second_main)
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
 
+        //setting the app icon in the action bar
+        val actionBar = supportActionBar
+        actionBar?.setDisplayShowHomeEnabled(true)
+        actionBar?.setLogo(R.drawable.actionbar_logo)
+        actionBar?.setDisplayUseLogoEnabled(true)
+
 
         if (!Settings.canDrawOverlays(this)) {
             askPermission()

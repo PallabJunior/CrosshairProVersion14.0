@@ -32,6 +32,7 @@ class ClassicFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
         val binding: FragmentClassicBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_classic, container, false

@@ -23,7 +23,7 @@ import com.customscopecommunity.crosshairpro.fragments.colour
 
 
 private const val notificationId = 1
-private const val ctTitle: String = "Please give permission to run this app."
+private const val ctTitle: String = "Crosshair Pro is running"
 private const val ctText: String = "Tap to open the app"
 
 class MainService : Service(), View.OnClickListener {

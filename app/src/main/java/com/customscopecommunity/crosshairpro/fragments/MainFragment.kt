@@ -24,7 +24,7 @@ import com.customscopecommunity.crosshairpro.crossNum
 import com.customscopecommunity.crosshairpro.databinding.FragmentMainBinding
 
 
-private const val toastMsg: String = "Please give permission to run this app."
+private const val toastMsg: String = "Permission required to run this app."
 
 class MainFragment : Fragment() {
 

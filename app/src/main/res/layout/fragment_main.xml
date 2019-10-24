@@ -2,8 +2,7 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 
-        xmlns:app="http://schemas.android.com/apk/res-auto"
->
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,48 +13,54 @@
 
         <LinearLayout
                 android:layout_width="@dimen/x0dp"
-                android:layout_height="@dimen/x50dp" android:layout_marginStart="@dimen/x8dp"
-                android:layout_marginTop="@dimen/x24dp" android:layout_marginEnd="@dimen/x8dp"
-                android:background="@color/green"
+                android:layout_height="@dimen/x50dp"
+                android:layout_marginStart="@dimen/x8dp"
+                android:layout_marginTop="@dimen/x24dp"
+                android:layout_marginEnd="@dimen/x8dp"
                 android:baselineAligned="false"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/x1dp" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                     android:layout_width="@dimen/x0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/black">
+                    app:cardCornerRadius="@dimen/x5dp"
+            >
                 <TextView
                         android:id="@+id/classicPackage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@color/dark_gray"
                         android:gravity="center"
                         android:text="@string/classic"
                         android:textColor="@color/primary" android:textSize="@dimen/x30sp"
                         android:textStyle="normal|bold"/>
 
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-            <Space android:layout_width="@dimen/x1dp" android:layout_height="match_parent"/>
+            <Space android:layout_width="@dimen/x5dp" android:layout_height="match_parent"/>
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                     android:layout_width="@dimen/x0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/black">
+                    app:cardCornerRadius="@dimen/x5dp"
+            >
 
                 <TextView
                         android:id="@+id/proPackage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@color/dark_gray"
                         android:gravity="center"
                         android:text="@string/pro"
                         android:textColor="@color/primary" android:textSize="@dimen/x30sp"
                         android:textStyle="normal|bold"/>
 
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
 
         </LinearLayout>

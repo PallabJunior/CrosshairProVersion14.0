@@ -17,7 +17,7 @@ import com.customscopecommunity.crosshairpro.*
 import kotlinx.android.synthetic.main.layout_pro_controller.view.*
 
 private const val notificationId = 2
-private const val pctTitle: String = "Please give permission to run this app."
+private const val pctTitle: String = "Crosshair Pro is running"
 private const val pctText: String = "Tap to open the app"
 
 class ProService : Service(), View.OnClickListener {
