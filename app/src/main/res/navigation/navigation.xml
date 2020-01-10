@@ -7,13 +7,13 @@
               android:name="com.customscopecommunity.crosshairpro.fragments.MainFragment"
               android:label="MainFragment"
               tools:layout="@layout/fragment_main">
-        <action android:id="@+id/action_mainFragment_to_classicFragment" app:destination="@id/classicFragment"/>
+        <!--<action android:id="@+id/action_mainFragment_to_classicFragment" app:destination="@id/classicFragment"/>-->
         <action android:id="@+id/action_mainFragment_to_proFragment" app:destination="@id/proFragment"/>
     </fragment>
-    <fragment android:id="@+id/classicFragment"
-              android:name="com.customscopecommunity.crosshairpro.fragments.ClassicFragment"
-              android:label="ClassicFragment"
-              tools:layout="@layout/fragment_classic"/>
+    <!--<fragment android:id="@+id/classicFragment"-->
+              <!--android:name="com.customscopecommunity.crosshairpro.fragments.ClassicActivity"-->
+              <!--android:label="ClassicFragment"-->
+              <!--tools:layout="@layout/fragment_classic"/>-->
     <fragment android:id="@+id/proFragment"
               android:name="com.customscopecommunity.crosshairpro.fragments.ProFragment"
               android:label="ProFragment"

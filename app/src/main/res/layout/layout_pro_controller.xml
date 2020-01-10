@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/proController"
                                                        android:layout_width="@dimen/x125dp"
-                                                       android:layout_height="@dimen/x125dp"
+                                                       android:layout_height="@dimen/x140dp"
                                                        android:background="@drawable/android_bg">
 
 
@@ -16,8 +16,8 @@
                 android:id="@+id/proButtonLeft"
                 android:layout_width="@dimen/x25dp"
                 android:layout_height="@dimen/x25dp"
-                android:layout_marginTop="@dimen/x16dp"
-                android:layout_marginEnd="@dimen/x16dp"
+                android:layout_marginTop="@dimen/x12dp"
+                android:layout_marginEnd="@dimen/x12dp"
                 android:contentDescription="@string/crosshair"
                 android:scaleType="fitCenter"
                 android:src="@drawable/button_left"
@@ -27,8 +27,8 @@
                 android:id="@+id/proButtonRight"
                 android:layout_width="@dimen/x25dp"
                 android:layout_height="@dimen/x25dp"
-                android:layout_marginStart="@dimen/x16dp"
-                android:layout_marginTop="@dimen/x16dp"
+                android:layout_marginStart="@dimen/x12dp"
+                android:layout_marginTop="@dimen/x12dp"
                 android:contentDescription="@string/crosshair"
                 android:scaleType="fitCenter"
                 android:src="@drawable/button_right"
@@ -38,7 +38,7 @@
                 android:id="@+id/proButtonDown"
                 android:layout_width="@dimen/x25dp"
                 android:layout_height="@dimen/x25dp"
-                android:layout_marginTop="@dimen/x16dp"
+                android:layout_marginTop="@dimen/x12dp"
                 android:contentDescription="@string/crosshair"
                 android:scaleType="fitCenter"
                 android:src="@drawable/button_down"
@@ -49,7 +49,7 @@
                 android:id="@+id/proButtonUp"
                 android:layout_width="@dimen/x25dp"
                 android:layout_height="@dimen/x25dp"
-                android:layout_marginTop="@dimen/x8dp"
+                android:layout_marginTop="@dimen/x5dp"
                 android:contentDescription="@string/crosshair"
                 android:scaleType="fitCenter"
                 android:src="@drawable/button_up"
@@ -64,6 +64,20 @@
                 android:contentDescription="@string/crosshair"
                 android:src="@drawable/cancel_button" app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
+        <SeekBar
+                android:id="@+id/proSeekBar"
+                style="@style/Widget.AppCompat.SeekBar"
+                android:layout_width="@dimen/x0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/x8dp"
+                android:layout_marginTop="@dimen/x12dp"
+                android:layout_marginEnd="@dimen/x8dp"
+                android:progress="100"
+                android:progressTint="@color/primary"
+                android:thumbTint="@color/dark_red"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/proButtonDown"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -13,36 +13,34 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import com.customscopecommunity.crosshairpro.databinding.ActivitySecondMainBinding
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_second_main.*
 
 
 const val CHANNEL_ID = "crosshair"
-//To communicate with the services
 var crossNum: Int = 0
 var afterFinishVisibility: Int = 0
 private const val policyUrl: String = "https://sites.google.com/view/crosshairpro"
+private const val rateMeUrl: String =
+    "https://play.google.com/store/apps/details?id=com.customscopecommunity.crosshairpro"
 
+internal lateinit var mInterstitialAd: InterstitialAd
+private const val APP_UNIT_ID = "ca-app-pub-8201262723803857~4410500643"
+//private const val INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-8201262723803857/2113390152"  //real
+private const val INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
 class SecondMainActivity : AppCompatActivity() {
 
-    //dataBinding
     private lateinit var binding: ActivitySecondMainBinding
 
     private var systemAlertWindowPermission = 2084
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_second_main)
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
-
-        //setting the app icon in the action bar
-        val actionBar = supportActionBar
-        actionBar?.setDisplayShowHomeEnabled(true)
-        actionBar?.setLogo(R.drawable.actionbar_logo)
-        actionBar?.setDisplayUseLogoEnabled(true)
-
 
         if (!Settings.canDrawOverlays(this)) {
             askPermission()
@@ -51,10 +49,20 @@ class SecondMainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
         }
-        //initializing google ads
-        MobileAds.initialize(this, "ca-app-pub-8201262723803857~4410500643")
-        //loading banner ad
+
+        MobileAds.initialize(this, APP_UNIT_ID)
+
         bannerAd.loadAd(AdRequest.Builder().build())
+
+        mInterstitialAd = InterstitialAd(this)
+        mInterstitialAd.adUnitId = INTERSTITIAL_AD_UNIT_ID
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
+
+        mInterstitialAd.adListener = object : AdListener() {
+            override fun onAdClosed() {
+                mInterstitialAd.loadAd(AdRequest.Builder().build())
+            }
+        }
 
 
     }
@@ -71,8 +79,6 @@ class SecondMainActivity : AppCompatActivity() {
     private fun createNotificationChannel() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-// Create the NotificationChannel, but only on API 26+ because
-            // the NotificationChannel class is new and not in the support library
             val name = getString(R.string.app_name)
             val descriptionText = getString(R.string.channel_description)
             val importance = NotificationManager.IMPORTANCE_LOW
@@ -82,7 +88,6 @@ class SecondMainActivity : AppCompatActivity() {
             channel.setSound(null, null)
             channel.enableVibration(false)
             channel.enableLights(false)
-            // Register the channel with the system
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
@@ -101,6 +106,7 @@ class SecondMainActivity : AppCompatActivity() {
 
         when (item.itemId) {
             R.id.policy -> policyUrl.openUrl()
+            R.id.rateMe -> rateMeUrl.openRateMeUrl()
         }
 
         return super.onOptionsItemSelected(item)
@@ -112,5 +118,10 @@ class SecondMainActivity : AppCompatActivity() {
         startActivity(launch)
     }
 
+    private fun String.openRateMeUrl() {
+        val uri = Uri.parse(this)
+        val launch = Intent(Intent.ACTION_VIEW, uri)
+        startActivity(launch)
+    }
 
 }

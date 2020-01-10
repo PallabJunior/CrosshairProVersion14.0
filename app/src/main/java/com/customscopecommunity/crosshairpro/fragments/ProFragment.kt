@@ -1,6 +1,5 @@
 package com.customscopecommunity.crosshairpro.fragments
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -27,7 +26,6 @@ class ProFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val binding: FragmentProBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_pro, container, false
         )
@@ -181,13 +179,10 @@ class ProFragment : Fragment() {
 
     private fun toastShow() {
 
-        //visibility
         LocalBroadcastManager.getInstance(activity!!).sendBroadcast(Intent(action))
-        //toast
         val toast = Toast.makeText(activity, pMsg, Toast.LENGTH_SHORT)
         toast.setGravity(Gravity.CENTER, 0, 0)
-//        val view = toast.view
-//        view.setBackgroundColor(Color.GREEN) //any color your want
+
         toast.show()
 
         val handler = Handler()

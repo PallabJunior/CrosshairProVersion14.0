@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
           package="com.customscopecommunity.crosshairpro">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
@@ -20,8 +20,8 @@
                 android:value="ca-app-pub-8201262723803857~4410500643"/>
 
         <activity android:name=".MainActivity"
-                  android:theme="@style/SplashTheme"
-                  android:screenOrientation="portrait">
+                  android:screenOrientation="portrait"
+                  android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -33,6 +33,9 @@
                   android:screenOrientation="portrait">
 
         </activity>
+        <activity android:name=".fragments.ClassicActivity"
+                  android:screenOrientation="portrait"
+                  android:parentActivityName=".SecondMainActivity"/>
 
         <service android:name=".services.MainService"
                  android:enabled="true"

@@ -5,12 +5,16 @@
              android:layout_height="wrap_content">
     <ImageView
             android:id="@+id/mainBg"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
             android:layout_width="@dimen/x60dp"
             android:layout_height="@dimen/x60dp"
             android:contentDescription="@string/crosshair"/>
 
     <ImageView
             android:id="@+id/mainServiceCrosshair"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
             android:layout_width="@dimen/x60dp"
             android:layout_height="@dimen/x60dp"
             android:contentDescription="@string/crosshair"/>

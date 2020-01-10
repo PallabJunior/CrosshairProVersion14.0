@@ -12,212 +12,225 @@
                 android:id="@+id/proText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/x20dp"
                 android:text="@string/pro_description"
                 android:textColor="@color/white" android:textSize="@dimen/x18sp"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-                app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-                app:layout_constraintStart_toStartOf="@+id/linearLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-        <LinearLayout
-                android:id="@+id/linearLayout"
+        <ScrollView
+                android:id="@+id/scrollView2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/x80dp" android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/proText">
-
-
-            <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-
-                <ImageView
-
-                        android:id="@+id/pro1"
-                        android:layout_width="@dimen/x0dp"
-                        android:layout_height="@dimen/x50dp"
-                        android:layout_marginTop="@dimen/x30dp"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/crosshair" android:src="@drawable/pro1"/>
-
-
-                <ImageView android:id="@+id/pro2"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair" android:src="@drawable/pro2"/>
-
-                <ImageView
-                        android:id="@+id/pro3"
-                        android:layout_width="@dimen/x0dp"
-                        android:layout_height="@dimen/x50dp"
-                        android:layout_marginTop="@dimen/x30dp"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/crosshair" android:src="@drawable/pro3"/>
-
-                <ImageView android:id="@+id/pro4"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair" android:src="@drawable/pro4"/>
-
-            </LinearLayout>
+                android:layout_height="@dimen/x0dp"
+                android:layout_marginBottom="@dimen/x70dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/proText">
 
             <LinearLayout
+                    android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+            >
 
-                <ImageView android:id="@+id/pro5"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair"
-                           android:src="@drawable/pro5"/>
 
-                <ImageView android:id="@+id/pro6"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair"
-                           android:src="@drawable/pro6"/>
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:orientation="horizontal">
 
-                <ImageView android:id="@+id/pro7"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair" android:src="@drawable/pro7"/>
+                    <ImageView
 
-                <ImageView android:id="@+id/pro8"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair"
-                           android:src="@drawable/pro8"/>
+                            android:id="@+id/pro1"
+                            android:layout_width="@dimen/x0dp"
+                            android:layout_height="@dimen/x50dp"
+                            android:layout_marginTop="@dimen/x30dp"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/crosshair" android:src="@drawable/pro1n"/>
+
+
+                    <ImageView android:id="@+id/pro2"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair" android:src="@drawable/pro2n"/>
+
+                    <ImageView
+                            android:id="@+id/pro3"
+                            android:layout_width="@dimen/x0dp"
+                            android:layout_height="@dimen/x50dp"
+                            android:layout_marginTop="@dimen/x30dp"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/crosshair" android:src="@drawable/pro3n"/>
+
+                    <ImageView android:id="@+id/pro4"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair" android:src="@drawable/pro4n"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/pro5"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair"
+                               android:src="@drawable/pro5n"/>
+
+                    <ImageView android:id="@+id/pro6"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair"
+                               android:src="@drawable/pro6n"/>
+
+                    <ImageView android:id="@+id/pro7"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair" android:src="@drawable/pro7n"/>
+
+                    <ImageView android:id="@+id/pro8"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair"
+                               android:src="@drawable/pro8n"/>
+
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                              android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/pro9"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair"
+                               android:src="@drawable/pro9n"/>
+
+                    <ImageView android:id="@+id/pro10"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair"
+                               android:src="@drawable/pro10n"/>
+
+                    <ImageView android:id="@+id/pro11"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair"
+                               android:src="@drawable/pro11n"/>
+
+                    <ImageView android:id="@+id/pro12"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair"
+                               android:src="@drawable/pro12n"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                              android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/pro13"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair"
+                               android:src="@drawable/pro13n"/>
+
+                    <ImageView android:id="@+id/pro14"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair"
+                               android:src="@drawable/pro14n"/>
+
+                    <ImageView android:id="@+id/pro15"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair"
+                               android:src="@drawable/pro15n"/>
+
+                    <ImageView android:id="@+id/pro16"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair"
+                               android:src="@drawable/pro16n"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                              android:orientation="horizontal">
+
+                    <ImageView android:id="@+id/pro17"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair"
+                               android:src="@drawable/pro17n"/>
+
+                    <ImageView android:id="@+id/pro18"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair"
+                               android:src="@drawable/pro18n"/>
+
+                    <ImageView android:id="@+id/pro19"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair"
+                               android:src="@drawable/pro19n"/>
+
+                    <ImageView android:id="@+id/pro20"
+                               android:layout_width="@dimen/x0dp"
+                               android:layout_height="@dimen/x50dp"
+                               android:layout_marginTop="@dimen/x30dp"
+                               android:layout_weight="1"
+                               android:contentDescription="@string/crosshair"
+                               android:src="@drawable/pro20n"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-
-                <ImageView android:id="@+id/pro9"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair"
-                           android:src="@drawable/pro9"/>
-
-                <ImageView android:id="@+id/pro10"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair"
-                           android:src="@drawable/pro10"/>
-
-                <ImageView android:id="@+id/pro11"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair"
-                           android:src="@drawable/pro11"/>
-
-                <ImageView android:id="@+id/pro12"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair"
-                           android:src="@drawable/pro12"/>
-
-
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-
-                <ImageView android:id="@+id/pro13"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair"
-                           android:src="@drawable/pro13"/>
-
-                <ImageView android:id="@+id/pro14"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair"
-                           android:src="@drawable/pro14"/>
-
-                <ImageView android:id="@+id/pro15"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair"
-                           android:src="@drawable/pro15"/>
-
-                <ImageView android:id="@+id/pro16"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair"
-                           android:src="@drawable/pro16"/>
-
-            </LinearLayout>
-
-
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-
-                <ImageView android:id="@+id/pro17"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair"
-                           android:src="@drawable/pro17"/>
-
-                <ImageView android:id="@+id/pro18"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair"
-                           android:src="@drawable/pro18"/>
-
-                <ImageView android:id="@+id/pro19"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair"
-                           android:src="@drawable/pro19"/>
-
-                <ImageView android:id="@+id/pro20"
-                           android:layout_width="@dimen/x0dp"
-                           android:layout_height="@dimen/x50dp"
-                           android:layout_marginTop="@dimen/x30dp"
-                           android:layout_weight="1"
-                           android:contentDescription="@string/crosshair"
-                           android:src="@drawable/pro20"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
+        </ScrollView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

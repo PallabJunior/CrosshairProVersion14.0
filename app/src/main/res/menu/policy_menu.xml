@@ -6,4 +6,9 @@
             android:title="@string/privacy_policy"
             app:showAsAction="never"/>
 
+    <item
+            android:id="@+id/rateMe"
+            android:title="@string/rate_me"
+            app:showAsAction="never"/>
+
 </menu>

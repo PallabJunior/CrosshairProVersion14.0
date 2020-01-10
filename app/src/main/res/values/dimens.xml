@@ -25,4 +25,5 @@
     <dimen name="x60dp">60dp</dimen>
     <dimen name="x12dp">12dp</dimen>
     <dimen name="x6dp">6dp</dimen>
+    <dimen name="x110dp">110dp</dimen>
 </resources>

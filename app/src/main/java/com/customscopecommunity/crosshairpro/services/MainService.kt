@@ -54,11 +54,10 @@ class MainService : Service(), View.OnClickListener {
 
 
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.notification_icon)
+            .setSmallIcon(R.drawable.actionbar_logo)
             .setContentTitle(ctTitle)
             .setContentText(ctText)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            // Set the intent that will fire when the user taps the notification
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
 
@@ -66,9 +65,7 @@ class MainService : Service(), View.OnClickListener {
 
         afterFinishVisibility = 1
 
-        //initializing the mFloatingView
         mFloatingView = inflate(this, R.layout.layout_main_crosshair, null)
-        //adding the drawable image to the floating view
         imageView = mFloatingView.findViewById(R.id.mainServiceCrosshair)
 
         if (backgroundLight == 1) {
@@ -88,7 +85,6 @@ class MainService : Service(), View.OnClickListener {
         } else {
 
             when (crossNum) {
-                //classic pack
                 51 -> imageView.setImageResource(R.drawable.crosshair1).also {
                     when (colour) {
                         0 -> DrawableCompat.setTint(
@@ -1019,7 +1015,6 @@ class MainService : Service(), View.OnClickListener {
             WindowManager.LayoutParams.TYPE_PHONE
         }
 
-        //setting the layout parameters
         params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -1029,17 +1024,14 @@ class MainService : Service(), View.OnClickListener {
         )
         params.gravity = Gravity.CENTER
 
-        //initiallizing the controller
         if (!checkFun) {
             controller()
             checkFun = true
         }
 
-        //getting windows services and adding the floating view to it
         mWindowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         mWindowManager.addView(mFloatingView, params)
 
-//        getting the view from the floating widget
         mCrosshairView = mFloatingView.findViewById(R.id.mainServiceCrosshair)
 
         mCrosshairView.setOnClickListener {
@@ -1051,7 +1043,6 @@ class MainService : Service(), View.OnClickListener {
 
     }
 
-    //it is added because the function onClick is mandatory
     override fun onClick(v: View) {
         when (v.id) {
             R.id.mainServiceCrosshair -> {
@@ -1082,13 +1073,10 @@ class MainService : Service(), View.OnClickListener {
         )
         xParams.gravity = Gravity.CENTER_HORIZONTAL or Gravity.END
 
-        //getting windows services and adding the floating widget to it
         xWindowManager.addView(xFloatingView, xParams)
 
-        //getting the collapsed view from the floating view
         xCollapsedView = xFloatingView.findViewById(R.id.controller)
 
-        //buttons
         xCollapsedView.buttonUp.setOnClickListener {
             params.y -= 2
             mWindowManager.updateViewLayout(mFloatingView, params)
@@ -1114,12 +1102,10 @@ class MainService : Service(), View.OnClickListener {
             checkFun = false
         }
 
-        //adding the zooming seekBar
         val seekBar = xCollapsedView.findViewById(R.id.seekBar) as SeekBar
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {
-//                sb.progress = sb.max /2    // setting the seekbar at middle
                 val scale = progress / 100.0f
                 imageView.scaleX = scale
                 imageView.scaleY = scale
@@ -1135,7 +1121,6 @@ class MainService : Service(), View.OnClickListener {
             }
         })
 
-        //adding an touchListener to make drag movement of the controller widget
         xCollapsedView.setOnTouchListener(object : View.OnTouchListener {
             private var initialX: Int = 0
             private var initialY: Int = 0
@@ -1155,13 +1140,11 @@ class MainService : Service(), View.OnClickListener {
 
 
                     MotionEvent.ACTION_UP -> {
-                        //when the drag is ended switching the state of the widget
                         v.performClick()
                         return true
                     }
 
                     MotionEvent.ACTION_MOVE -> {
-                        //this code is helping the widget to move around the screen with fingers
                         xParams.x = initialX - (event.rawX - initialTouchX).toInt()
                         xParams.y = initialY + (event.rawY - initialTouchY).toInt()
                         xWindowManager.updateViewLayout(xFloatingView, xParams)

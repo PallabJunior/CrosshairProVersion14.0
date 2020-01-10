@@ -12,6 +12,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.SeekBar
 import androidx.core.app.NotificationCompat
 import com.customscopecommunity.crosshairpro.*
 import kotlinx.android.synthetic.main.layout_pro_controller.view.*
@@ -48,11 +50,10 @@ class ProService : Service(), View.OnClickListener {
 
 
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.notification_icon)
+            .setSmallIcon(R.drawable.actionbar_logo)
             .setContentTitle(pctTitle)
             .setContentText(pctText)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            // Set the intent that will fire when the user taps the notification
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
 
@@ -60,9 +61,7 @@ class ProService : Service(), View.OnClickListener {
 
         afterFinishVisibility = 2
 
-        //initializing the mFloatingView
         mFloatingView = View.inflate(this, R.layout.layout_pro_crosshair, null)
-        //adding the drawable image to the floating view
         imageView = mFloatingView.findViewById(R.id.proServiceCrosshair)
 
         if (crossNum == 0) {
@@ -71,32 +70,30 @@ class ProService : Service(), View.OnClickListener {
         } else {
 
             when (crossNum) {
-                //Pro pack
-                1 -> imageView.setImageResource(R.drawable.pro1)
-                2 -> imageView.setImageResource(R.drawable.pro2)
-                3 -> imageView.setImageResource(R.drawable.pro3)
-                4 -> imageView.setImageResource(R.drawable.pro4)
-                5 -> imageView.setImageResource(R.drawable.pro5)
-                6 -> imageView.setImageResource(R.drawable.pro6)
-                7 -> imageView.setImageResource(R.drawable.pro7)
-                8 -> imageView.setImageResource(R.drawable.pro8)
-                9 -> imageView.setImageResource(R.drawable.pro9)
-                10 -> imageView.setImageResource(R.drawable.pro10)
-                11 -> imageView.setImageResource(R.drawable.pro11)
-                12 -> imageView.setImageResource(R.drawable.pro12)
-                13 -> imageView.setImageResource(R.drawable.pro13)
-                14 -> imageView.setImageResource(R.drawable.pro14)
-                15 -> imageView.setImageResource(R.drawable.pro15)
-                16 -> imageView.setImageResource(R.drawable.pro16)
-                17 -> imageView.setImageResource(R.drawable.pro17)
-                18 -> imageView.setImageResource(R.drawable.pro18)
-                19 -> imageView.setImageResource(R.drawable.pro19)
-                20 -> imageView.setImageResource(R.drawable.pro20)
+                1 -> imageView.setImageResource(R.drawable.pro1n)
+                2 -> imageView.setImageResource(R.drawable.pro2n)
+                3 -> imageView.setImageResource(R.drawable.pro3n)
+                4 -> imageView.setImageResource(R.drawable.pro4n)
+                5 -> imageView.setImageResource(R.drawable.pro5n)
+                6 -> imageView.setImageResource(R.drawable.pro6n)
+                7 -> imageView.setImageResource(R.drawable.pro7n)
+                8 -> imageView.setImageResource(R.drawable.pro8n)
+                9 -> imageView.setImageResource(R.drawable.pro9n)
+                10 -> imageView.setImageResource(R.drawable.pro10n)
+                11 -> imageView.setImageResource(R.drawable.pro11n)
+                12 -> imageView.setImageResource(R.drawable.pro12n)
+                13 -> imageView.setImageResource(R.drawable.pro13n)
+                14 -> imageView.setImageResource(R.drawable.pro14n)
+                15 -> imageView.setImageResource(R.drawable.pro15n)
+                16 -> imageView.setImageResource(R.drawable.pro16n)
+                17 -> imageView.setImageResource(R.drawable.pro17n)
+                18 -> imageView.setImageResource(R.drawable.pro18n)
+                19 -> imageView.setImageResource(R.drawable.pro19n)
+                20 -> imageView.setImageResource(R.drawable.pro20n)
             }
 
         }
 
-        //setting the layout parameters
 
         val layoutFlag: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -113,16 +110,13 @@ class ProService : Service(), View.OnClickListener {
         )
         params.gravity = Gravity.CENTER
 
-        //initiallizing the controller
         if (!checkFun) {
             controller()
         }
 
-        //getting windows services and adding the floating view to it
         mWindowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         mWindowManager.addView(mFloatingView, params)
 
-        //getting the view from the floating widget
         mCrosshairView = mFloatingView.findViewById(R.id.proServiceCrosshair)
 
 
@@ -135,7 +129,6 @@ class ProService : Service(), View.OnClickListener {
 
     }
 
-    //it is added because the function onClick is mandatory
     override fun onClick(v: View) {
         when (v.id) {
             R.id.proServiceCrosshair -> {
@@ -166,14 +159,10 @@ class ProService : Service(), View.OnClickListener {
         )
         xParams.gravity = Gravity.CENTER_HORIZONTAL or Gravity.END
 
-        //getting windows services and adding the floating widget to it
         xWindowManager.addView(xFloatingView, xParams)
 
-        //getting the collapsed view from the floating view
         xCollapsedView = xFloatingView.findViewById(R.id.proController)
 
-
-        //buttons
         xCollapsedView.proButtonUp.setOnClickListener {
             params.y -= 2
             mWindowManager.updateViewLayout(mFloatingView, params)
@@ -199,7 +188,29 @@ class ProService : Service(), View.OnClickListener {
             checkFun = false
         }
 
-        //adding an touchListener to make drag movement of the expand floating widget
+        val seekBar = xCollapsedView.findViewById(R.id.proSeekBar) as SeekBar
+
+
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {
+
+                val scale = progress + 25
+
+                val newParams = LinearLayout.LayoutParams(scale, scale)
+                imageView.layoutParams = newParams
+
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+
+            }
+        })
+
+
         xCollapsedView.setOnTouchListener(object : View.OnTouchListener {
             private var initialX: Int = 0
             private var initialY: Int = 0
@@ -219,13 +230,11 @@ class ProService : Service(), View.OnClickListener {
 
 
                     MotionEvent.ACTION_UP -> {
-                        //when the drag is ended switching the state of the widget
                         v.performClick()
                         return true
                     }
 
                     MotionEvent.ACTION_MOVE -> {
-                        //this code is helping the widget to move around the screen with fingers
                         xParams.x = initialX - (event.rawX - initialTouchX).toInt()
                         xParams.y = initialY + (event.rawY - initialTouchY).toInt()
                         xWindowManager.updateViewLayout(xFloatingView, xParams)

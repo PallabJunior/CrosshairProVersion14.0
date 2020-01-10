@@ -22,6 +22,7 @@ import com.customscopecommunity.crosshairpro.services.ProService
 import com.customscopecommunity.crosshairpro.afterFinishVisibility
 import com.customscopecommunity.crosshairpro.crossNum
 import com.customscopecommunity.crosshairpro.databinding.FragmentMainBinding
+import com.customscopecommunity.crosshairpro.mInterstitialAd
 
 
 private const val toastMsg: String = "Permission required to run this app."
@@ -34,16 +35,13 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val binding: FragmentMainBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_main, container, false
         )
 
-        //for start button visibility issue
         broadcastReceiver = object : BroadcastReceiver() {
 
             override fun onReceive(context: Context, intent: Intent) {
-                // do your listener event stuff
                 binding.buttonStop.visibility = View.GONE
                 binding.buttonStart.visibility = View.VISIBLE
             }
@@ -56,22 +54,23 @@ class MainFragment : Fragment() {
         val stopButton = binding.buttonStop
 
 
-        //button visibility
+
         when (afterFinishVisibility) {
             1 -> startButton.visibility = View.GONE    //MainService Classic
             2 -> startButton.visibility = View.GONE    //ProService
         }
 
-        //classic and pro package
-        binding.classicPackage.setOnClickListener { view: View ->
-            view.findNavController().navigate(R.id.action_mainFragment_to_classicFragment)
+        binding.classicPackage.setOnClickListener {
+            startActivity(Intent(activity, ClassicActivity::class.java))
+            if (mInterstitialAd.isLoaded) {
+                mInterstitialAd.show()
+            }
         }
 
         binding.proPackage.setOnClickListener { view: View ->
             view.findNavController().navigate(R.id.action_mainFragment_to_proFragment)
         }
 
-        //initializing services
         val serviceIntent = Intent(activity, MainService::class.java)
         val proServiceIntent = Intent(activity, ProService::class.java)
 

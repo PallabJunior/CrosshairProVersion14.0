@@ -5,8 +5,10 @@
 
     <ImageView
             android:id="@+id/proServiceCrosshair"
-            android:layout_width="@dimen/x40dp"
-            android:layout_height="@dimen/x40dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:layout_width="@dimen/x60dp"
+            android:layout_height="@dimen/x60dp"
             android:contentDescription="@string/crosshair"/>
 
 

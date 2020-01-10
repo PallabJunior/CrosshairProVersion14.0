@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -222,7 +223,7 @@
                 android:id="@+id/flareBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/x8dp"
+                android:layout_marginBottom="@dimen/x20dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/buttonsLayout"
                 app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
@@ -299,6 +300,20 @@
 
 
         </LinearLayout>
+
+        <com.google.android.gms.ads.AdView
+                android:id="@+id/classicBannerAd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/x5dp"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+        </com.google.android.gms.ads.AdView>
+
+        <!--ads:adUnitId="ca-app-pub-8201262723803857/9636897238"-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
