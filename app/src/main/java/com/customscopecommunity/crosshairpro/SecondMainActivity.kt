@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Build
 import android.view.Menu
@@ -17,45 +16,31 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
-import kotlinx.android.synthetic.main.activity_second_main.*
 
 
 const val CHANNEL_ID = "crosshair"
-var crossNum: Int = 0
+var crossNum: Int = 200
 var afterFinishVisibility: Int = 0
-private const val policyUrl: String = "https://sites.google.com/view/crosshairpro"
-private const val rateMeUrl: String =
-    "https://play.google.com/store/apps/details?id=com.customscopecommunity.crosshairpro"
-
 internal lateinit var mInterstitialAd: InterstitialAd
-private const val APP_UNIT_ID = "ca-app-pub-8201262723803857~4410500643"
-//private const val INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-8201262723803857/2113390152"  //real
-private const val INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
+const val systemAlertWindowPermission = 2084
+
 class SecondMainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySecondMainBinding
-
-    private var systemAlertWindowPermission = 2084
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_second_main)
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
 
-        if (!Settings.canDrawOverlays(this)) {
-            askPermission()
-        }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
         }
 
-        MobileAds.initialize(this, APP_UNIT_ID)
-
-        bannerAd.loadAd(AdRequest.Builder().build())
+        MobileAds.initialize(this, "ca-app-pub-8201262723803857~4410500643")  // App unit id
 
         mInterstitialAd = InterstitialAd(this)
-        mInterstitialAd.adUnitId = INTERSTITIAL_AD_UNIT_ID
+        mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712" // test ad
         mInterstitialAd.loadAd(AdRequest.Builder().build())
 
         mInterstitialAd.adListener = object : AdListener() {
@@ -64,17 +49,7 @@ class SecondMainActivity : AppCompatActivity() {
             }
         }
 
-
     }
-
-    private fun askPermission() {
-        val intent = Intent(
-            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-            Uri.parse("package:$packageName")
-        )
-        startActivityForResult(intent, systemAlertWindowPermission)
-    }
-
 
     private fun createNotificationChannel() {
 
@@ -105,8 +80,8 @@ class SecondMainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.policy -> policyUrl.openUrl()
-            R.id.rateMe -> rateMeUrl.openRateMeUrl()
+            R.id.policy -> getString(R.string.policy_url).openUrl()
+            R.id.rateMe -> getString(R.string.rate_me_url).openRateMeUrl()
         }
 
         return super.onOptionsItemSelected(item)

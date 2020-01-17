@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.customscopecommunity.crosshairpro">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -19,9 +20,10 @@
                 android:name="com.google.android.gms.ads.APPLICATION_ID"
                 android:value="ca-app-pub-8201262723803857~4410500643"/>
 
-        <activity android:name=".MainActivity"
-                  android:screenOrientation="portrait"
-                  android:theme="@style/SplashTheme">
+        <activity
+                android:name=".MainActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -29,20 +31,43 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SecondMainActivity"
-                  android:screenOrientation="portrait">
+        <activity
+                android:name=".SecondMainActivity"
+                android:screenOrientation="portrait"/>
 
-        </activity>
-        <activity android:name=".fragments.ClassicActivity"
-                  android:screenOrientation="portrait"
-                  android:parentActivityName=".SecondMainActivity"/>
 
-        <service android:name=".services.MainService"
+        <activity
+                android:name=".screens.ClassicActivity"
+                android:parentActivityName=".SecondMainActivity"
+                android:screenOrientation="portrait"/>
+
+
+        <activity
+                android:name=".screens.ProActivity"
+                android:parentActivityName=".SecondMainActivity"
+                android:screenOrientation="portrait"/>
+
+        <activity android:name=".PremiumActivity"
+                  android:parentActivityName=".SecondMainActivity"
+                  android:screenOrientation="portrait"/>
+
+
+        <service
+                android:name=".services.MainService"
+                android:enabled="true"
+                android:exported="false"/>
+
+
+        <service
+                android:name=".services.ProService"
+                android:enabled="true"
+                android:exported="false"/>
+
+
+        <service android:name=".services.PremiumService"
                  android:enabled="true"
                  android:exported="false"/>
-        <service android:name=".services.ProService"
-                 android:enabled="true"
-                 android:exported="false"/>
+
     </application>
 
 </manifest>

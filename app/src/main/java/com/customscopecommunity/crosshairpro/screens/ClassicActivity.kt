@@ -1,4 +1,4 @@
-package com.customscopecommunity.crosshairpro.fragments
+package com.customscopecommunity.crosshairpro.screens
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +13,7 @@ import com.customscopecommunity.crosshairpro.R
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.ProService
 import com.customscopecommunity.crosshairpro.crossNum
+import com.customscopecommunity.crosshairpro.services.PremiumService
 import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.fragment_classic.*
 
@@ -20,16 +21,19 @@ import kotlinx.android.synthetic.main.fragment_classic.*
 var colour: Int = 0
 var backgroundLight: Int = 0
 const val action: String = "activity-2-initialized"
-private const val msg: String = "Tap Start"
 
 class ClassicActivity : AppCompatActivity() {
+
+    private lateinit var cService: Intent
+    private lateinit var pService: Intent
+    private lateinit var premService: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_classic)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setTitle(R.string.classic_collection)
 
         classicBannerAd.loadAd(AdRequest.Builder().build())
 
@@ -59,8 +63,9 @@ class ClassicActivity : AppCompatActivity() {
 
         }
 
-        val cService = Intent(this, MainService::class.java)
-        val pService = Intent(this, ProService::class.java)
+        cService = Intent(this, MainService::class.java)
+        pService = Intent(this, ProService::class.java)
+        premService = Intent(this, PremiumService::class.java)
 
 
         lightSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -865,152 +870,137 @@ class ClassicActivity : AppCompatActivity() {
         }
         classic1.setOnClickListener {
             crossNum = 51
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic2.setOnClickListener {
             crossNum = 52
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic3.setOnClickListener {
             crossNum = 53
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic4.setOnClickListener {
             crossNum = 54
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic5.setOnClickListener {
             crossNum = 55
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic6.setOnClickListener {
             crossNum = 56
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic7.setOnClickListener {
             crossNum = 57
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic8.setOnClickListener {
             crossNum = 58
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic9.setOnClickListener {
             crossNum = 59
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic10.setOnClickListener {
             crossNum = 60
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic11.setOnClickListener {
             crossNum = 61
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic12.setOnClickListener {
             crossNum = 62
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic13.setOnClickListener {
             crossNum = 63
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic14.setOnClickListener {
             crossNum = 64
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic15.setOnClickListener {
             crossNum = 65
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic16.setOnClickListener {
             crossNum = 66
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic17.setOnClickListener {
             crossNum = 67
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic18.setOnClickListener {
             crossNum = 68
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic19.setOnClickListener {
             crossNum = 69
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
         classic20.setOnClickListener {
             crossNum = 70
-            stopService(cService)
-            stopService(pService)
+            stopServices()
             toastShow()
             closeFg()
         }
 
-//        return binding.root
+    }
+
+    private fun stopServices() {
+        stopService(cService)
+        stopService(pService)
+        stopService(premService)
     }
 
     private fun toastShow() {
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(action))
-        val toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT)
+        val toast = Toast.makeText(this, getString(R.string.tap_start), Toast.LENGTH_SHORT)
         toast.setGravity(Gravity.CENTER, 0, 0)
         toast.show()
 

@@ -18,14 +18,11 @@ import android.widget.SeekBar
 import android.view.WindowManager
 import android.os.Build
 import com.customscopecommunity.crosshairpro.*
-import com.customscopecommunity.crosshairpro.fragments.backgroundLight
-import com.customscopecommunity.crosshairpro.fragments.colour
+import com.customscopecommunity.crosshairpro.screens.backgroundLight
+import com.customscopecommunity.crosshairpro.screens.colour
 
 
 private const val notificationId = 1
-private const val ctTitle: String = "Crosshair Pro is running"
-private const val ctText: String = "Tap to open the app"
-
 class MainService : Service(), View.OnClickListener {
 
     private lateinit var mWindowManager: WindowManager
@@ -55,8 +52,8 @@ class MainService : Service(), View.OnClickListener {
 
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.actionbar_logo)
-            .setContentTitle(ctTitle)
-            .setContentText(ctText)
+            .setContentTitle(getString(R.string.running_notification))
+            .setContentText(getString(R.string.tap_to_open))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
@@ -74,7 +71,7 @@ class MainService : Service(), View.OnClickListener {
             imageView.setBackgroundResource(0)
         }
 
-        if (crossNum == 0) {
+        if (crossNum == 100) {
             imageView.setImageResource(R.drawable.crosshair4)
             DrawableCompat.setTint(
                 imageView.drawable, ContextCompat.getColor(

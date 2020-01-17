@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Crosshair Pro</string>
+    <string name="channel_description">Crosshair Pro</string>
+    <string name="crosshair">crosshair</string>
+    <string name="stop">BERHENTI</string>
+    <string name="x">X</string>
+    <string name="start">MULAILAH</string>
+    <string name="privacy_policy">Kebijakan pribadi</string>
+    <string name="pro_collection">Koleksi pro</string>
+    <string name="premium_collection">Premium</string>
+    <string name="classic_collection">Klasik</string>
+    <string name="classic">Klasik</string>
+    <string name="pro">Pro</string>
+    <string name="turn_on_light">Nyalakan lampu</string>
+    <string name="rate_me">Menilai saya</string>
+    <string name="gun">senjata</string>
+    <string name="premium">Premium</string>
+    <string name="tap_start">Ketuk MULAI</string>
+    <string name="package_name">package:com.customscopecommunity.crosshairpro</string>
+    <string name="message">Pesan!!!</string>
+    <string name="running_notification">Crosshair Pro sedang berjalan</string>
+    <string name="tap_to_open">Ketuk untuk membuka aplikasi</string>
+    <string name="policy_url">https://sites.google.com/view/crosshairpro</string>
+    <string name="rate_me_url">https://play.google.com/store/apps/details?id=com.customscopecommunity.crosshairpro
+    </string>
+    <string name="alert_dialog_hint">Aplikasi membutuhkan izin Jendela Terapung untuk menunjukkan garis bidiknya
+    </string>
+    <string name="give_permission">Berikan izin</string>
+</resources>

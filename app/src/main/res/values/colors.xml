@@ -18,5 +18,6 @@
     <color name="teal">#03DA35</color>
     <color name="material_green">#00E676</color>
     <color name="material_red">#F44336</color>
+    <color name="golden_color">#FFD700</color>
     <color name="material_white">#EEEEEE</color>
 </resources>

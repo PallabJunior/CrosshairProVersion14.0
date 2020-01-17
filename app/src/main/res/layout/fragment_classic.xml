@@ -11,16 +11,6 @@
             android:background="@color/black"
             android:orientation="vertical" android:padding="@dimen/x10dp">
 
-        <TextView
-                android:id="@+id/textViews"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/classic_description" android:textColor="@color/white"
-                android:textSize="@dimen/x16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
         <ScrollView
                 android:id="@+id/scrollView"
                 android:layout_width="match_parent"
@@ -30,7 +20,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/flareBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViews">
+                app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                     android:id="@+id/linearLayout2"
@@ -312,9 +302,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
         </com.google.android.gms.ads.AdView>
-
-        <!--ads:adUnitId="ca-app-pub-8201262723803857/9636897238"-->
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

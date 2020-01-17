@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Crosshair Pro</string>
+    <string name="channel_description">Crosshair Pro</string>
+    <string name="crosshair">crosshair</string>
+    <string name="stop">PARE</string>
+    <string name="x">X</string>
+    <string name="start">COMEÇAR</string>
+    <string name="privacy_policy">Política de Privacidade</string>
+    <string name="pro_collection">Pro</string>
+    <string name="premium_collection">Prêmio</string>
+    <string name="classic_collection">Clássica</string>
+    <string name="classic">Clássica</string>
+    <string name="pro">Pro</string>
+    <string name="turn_on_light">Acender a luz</string>
+    <string name="rate_me">Me avalie</string>
+    <string name="gun">arma de fogo</string>
+    <string name="premium">Prêmio</string>
+    <string name="tap_start">Pressione começar</string>
+    <string name="package_name">package:com.customscopecommunity.crosshairpro</string>
+    <string name="message">mensagem!!!</string>
+    <string name="running_notification">O Crosshair Pro está em execução</string>
+    <string name="tap_to_open">Toque para abrir o aplicativo</string>
+    <string name="policy_url">https://sites.google.com/view/crosshairpro</string>
+    <string name="rate_me_url">https://play.google.com/store/apps/details?id=com.customscopecommunity.crosshairpro
+    </string>
+    <string name="alert_dialog_hint">O aplicativo requer permissão da Janela flutuante para mostrar sua mira</string>
+    <string name="give_permission">Dar permissão</string>
+</resources>

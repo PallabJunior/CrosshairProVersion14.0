@@ -18,8 +18,8 @@ import androidx.core.app.NotificationCompat
 import com.customscopecommunity.crosshairpro.*
 import kotlinx.android.synthetic.main.layout_pro_controller.view.*
 
-private const val notificationId = 2
-class ProService : Service(), View.OnClickListener {
+private const val notificationId = 3
+class PremiumService : Service(), View.OnClickListener {
 
     private lateinit var mWindowManager: WindowManager
     private lateinit var mFloatingView: View
@@ -56,33 +56,36 @@ class ProService : Service(), View.OnClickListener {
 
         startForeground(notificationId, builder.build())
 
-        afterFinishVisibility = 2
+        afterFinishVisibility = 3
 
         mFloatingView = View.inflate(this, R.layout.layout_pro_crosshair, null)
         imageView = mFloatingView.findViewById(R.id.proServiceCrosshair)
 
 
         when (crossNum) {
-            0 -> imageView.setImageResource(R.drawable.pro1n)
-            1 -> imageView.setImageResource(R.drawable.pro2n)
-            2 -> imageView.setImageResource(R.drawable.pro3n)
-            3 -> imageView.setImageResource(R.drawable.pro4n)
-            4 -> imageView.setImageResource(R.drawable.pro5n)
-            5 -> imageView.setImageResource(R.drawable.pro6n)
-            6 -> imageView.setImageResource(R.drawable.pro7n)
-            7 -> imageView.setImageResource(R.drawable.pro8n)
-            8 -> imageView.setImageResource(R.drawable.pro9n)
-            9 -> imageView.setImageResource(R.drawable.pro10n)
-            10 -> imageView.setImageResource(R.drawable.pro11n)
-            11 -> imageView.setImageResource(R.drawable.pro12n)
-            12 -> imageView.setImageResource(R.drawable.pro13n)
-            13 -> imageView.setImageResource(R.drawable.pro14n)
-            14 -> imageView.setImageResource(R.drawable.pro15n)
-            15 -> imageView.setImageResource(R.drawable.pro16n)
-            16 -> imageView.setImageResource(R.drawable.pro17n)
-            17 -> imageView.setImageResource(R.drawable.pro18n)
-            18 -> imageView.setImageResource(R.drawable.pro19n)
-            19 -> imageView.setImageResource(R.drawable.pro20n)
+            200 -> imageView.setImageResource(R.drawable.pro1n)
+            80 -> imageView.setImageResource(R.drawable.prem1n)
+            81 -> imageView.setImageResource(R.drawable.prem2)
+            82 -> imageView.setImageResource(R.drawable.prem3)
+            83 -> imageView.setImageResource(R.drawable.prem4)
+            84 -> imageView.setImageResource(R.drawable.prem5n)
+            85 -> imageView.setImageResource(R.drawable.prem6n)
+            86 -> imageView.setImageResource(R.drawable.prem7n)
+            87 -> imageView.setImageResource(R.drawable.prem8n)
+            88 -> imageView.setImageResource(R.drawable.prem9n)
+            89 -> imageView.setImageResource(R.drawable.prem10n)
+            90 -> imageView.setImageResource(R.drawable.prem11n)
+            91 -> imageView.setImageResource(R.drawable.prem12n)
+            92 -> imageView.setImageResource(R.drawable.prem13n)
+            93 -> imageView.setImageResource(R.drawable.prem14n)
+            94 -> imageView.setImageResource(R.drawable.prem15n)
+            95 -> imageView.setImageResource(R.drawable.prem16n)
+            96 -> imageView.setImageResource(R.drawable.prem17n)
+            97 -> imageView.setImageResource(R.drawable.prem18n)
+            98 -> imageView.setImageResource(R.drawable.prem19n)
+            99 -> imageView.setImageResource(R.drawable.prem20n)
+            100 -> imageView.setImageResource(R.drawable.prem21n)
+
         }
 
 
@@ -243,7 +246,7 @@ class ProService : Service(), View.OnClickListener {
 
     override fun onDestroy() {
 
-        afterFinishVisibility = 6
+        afterFinishVisibility = 7
         mWindowManager.removeView(mFloatingView)
 
         if (checkFun) {

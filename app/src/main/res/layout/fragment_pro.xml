@@ -1,238 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:ads="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:orientation="vertical"
+                                                   tools:context=".screens.ProActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/pro_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/black"
-            android:padding="@dimen/x10dp">
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/x10dp"
+            app:layout_constraintBottom_toTopOf="@+id/proBannerAd"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
 
-        <TextView
-                android:id="@+id/proText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/x20dp"
-                android:text="@string/pro_description"
-                android:textColor="@color/white" android:textSize="@dimen/x18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+    >
 
-        <ScrollView
-                android:id="@+id/scrollView2"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/x0dp"
-                android:layout_marginBottom="@dimen/x70dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/proText">
+    </androidx.recyclerview.widget.RecyclerView>
 
-            <LinearLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical"
-            >
+    <com.google.android.gms.ads.AdView
+            android:id="@+id/proBannerAd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/x5dp"
+            ads:adSize="LARGE_BANNER"
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+    </com.google.android.gms.ads.AdView>
 
-
-                <LinearLayout android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:orientation="horizontal">
-
-                    <ImageView
-
-                            android:id="@+id/pro1"
-                            android:layout_width="@dimen/x0dp"
-                            android:layout_height="@dimen/x50dp"
-                            android:layout_marginTop="@dimen/x30dp"
-                            android:layout_weight="1"
-                            android:contentDescription="@string/crosshair" android:src="@drawable/pro1n"/>
-
-
-                    <ImageView android:id="@+id/pro2"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair" android:src="@drawable/pro2n"/>
-
-                    <ImageView
-                            android:id="@+id/pro3"
-                            android:layout_width="@dimen/x0dp"
-                            android:layout_height="@dimen/x50dp"
-                            android:layout_marginTop="@dimen/x30dp"
-                            android:layout_weight="1"
-                            android:contentDescription="@string/crosshair" android:src="@drawable/pro3n"/>
-
-                    <ImageView android:id="@+id/pro4"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair" android:src="@drawable/pro4n"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                    <ImageView android:id="@+id/pro5"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair"
-                               android:src="@drawable/pro5n"/>
-
-                    <ImageView android:id="@+id/pro6"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair"
-                               android:src="@drawable/pro6n"/>
-
-                    <ImageView android:id="@+id/pro7"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair" android:src="@drawable/pro7n"/>
-
-                    <ImageView android:id="@+id/pro8"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair"
-                               android:src="@drawable/pro8n"/>
-
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                              android:orientation="horizontal">
-
-                    <ImageView android:id="@+id/pro9"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair"
-                               android:src="@drawable/pro9n"/>
-
-                    <ImageView android:id="@+id/pro10"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair"
-                               android:src="@drawable/pro10n"/>
-
-                    <ImageView android:id="@+id/pro11"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair"
-                               android:src="@drawable/pro11n"/>
-
-                    <ImageView android:id="@+id/pro12"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair"
-                               android:src="@drawable/pro12n"/>
-
-
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                              android:orientation="horizontal">
-
-                    <ImageView android:id="@+id/pro13"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair"
-                               android:src="@drawable/pro13n"/>
-
-                    <ImageView android:id="@+id/pro14"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair"
-                               android:src="@drawable/pro14n"/>
-
-                    <ImageView android:id="@+id/pro15"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair"
-                               android:src="@drawable/pro15n"/>
-
-                    <ImageView android:id="@+id/pro16"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair"
-                               android:src="@drawable/pro16n"/>
-
-                </LinearLayout>
-
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                              android:orientation="horizontal">
-
-                    <ImageView android:id="@+id/pro17"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair"
-                               android:src="@drawable/pro17n"/>
-
-                    <ImageView android:id="@+id/pro18"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair"
-                               android:src="@drawable/pro18n"/>
-
-                    <ImageView android:id="@+id/pro19"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair"
-                               android:src="@drawable/pro19n"/>
-
-                    <ImageView android:id="@+id/pro20"
-                               android:layout_width="@dimen/x0dp"
-                               android:layout_height="@dimen/x50dp"
-                               android:layout_marginTop="@dimen/x30dp"
-                               android:layout_weight="1"
-                               android:contentDescription="@string/crosshair"
-                               android:src="@drawable/pro20n"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </ScrollView>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>
