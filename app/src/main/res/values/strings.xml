@@ -25,4 +25,9 @@
     </string>
     <string name="alert_dialog_hint">App requires Floating Window permission to show its crosshairs</string>
     <string name="give_permission">Give permission</string>
+    <string name="app_unit_id">ca-app-pub-8201262723803857~4410500643</string>
+    <string name="classic_banner_ad">ca-app-pub-8201262723803857/9636897238</string>
+    <string name="pro_banner_ad">ca-app-pub-8201262723803857/6539466735</string>
+    <string name="rewarded_video_ad">ca-app-pub-8201262723803857/6030402097</string>
+    <string name="interstitial_ad">ca-app-pub-8201262723803857/2113390152</string>
 </resources>

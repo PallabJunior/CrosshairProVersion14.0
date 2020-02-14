@@ -21,7 +21,6 @@ import com.customscopecommunity.crosshairpro.*
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.ProService
 import com.customscopecommunity.crosshairpro.databinding.FragmentMainBinding
-import com.customscopecommunity.crosshairpro.mInterstitialAd
 import com.customscopecommunity.crosshairpro.services.PremiumService
 import kotlinx.android.synthetic.main.permission_dialog.view.*
 
@@ -35,6 +34,10 @@ class MainFragment : Fragment() {
     private lateinit var premiumServiceIntent: Intent
     private lateinit var mBuilder: AlertDialog.Builder
 
+    private lateinit var premimumIntent: Intent
+    private lateinit var proIntent: Intent
+    private lateinit var classicIntent: Intent
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,6 +49,11 @@ class MainFragment : Fragment() {
         serviceIntent = Intent(activity, MainService::class.java)
         proServiceIntent = Intent(activity, ProService::class.java)
         premiumServiceIntent = Intent(activity, PremiumService::class.java)
+
+        premimumIntent = Intent(activity, PremiumActivity::class.java)
+        proIntent = Intent(activity, ProActivity::class.java)
+        classicIntent = Intent(activity, ClassicActivity::class.java)
+
 
         broadcastReceiver = object : BroadcastReceiver() {
 
@@ -73,7 +81,7 @@ class MainFragment : Fragment() {
             if (!Settings.canDrawOverlays(context)) {
                 permissionDialog()
             } else {
-                startActivity(Intent(activity, ClassicActivity::class.java))
+                startActivity(classicIntent)
             }
 
 
@@ -83,7 +91,7 @@ class MainFragment : Fragment() {
             if (!Settings.canDrawOverlays(context)) {
                 permissionDialog()
             } else {
-                startActivity(Intent(activity, ProActivity::class.java))
+                startActivity(proIntent)
             }
 
         }
@@ -92,10 +100,7 @@ class MainFragment : Fragment() {
             if (!Settings.canDrawOverlays(context)) {
                 permissionDialog()
             } else {
-                startActivity(Intent(activity, PremiumActivity::class.java))
-                if (mInterstitialAd.isLoaded) {
-                    mInterstitialAd.show()
-                }
+                startActivity(premimumIntent)
             }
         }
 

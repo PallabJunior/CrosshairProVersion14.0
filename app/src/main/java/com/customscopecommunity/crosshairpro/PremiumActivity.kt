@@ -16,6 +16,14 @@ class PremiumActivity : AppCompatActivity() {
         setContentView(R.layout.activity_premium)
 
         initialize()
+
+        if (mRewardedVideoAd.isLoaded) {
+            mRewardedVideoAd.show()
+        } else {
+            if (mInterstitialAd.isLoaded) {
+                mInterstitialAd.show()
+            }
+        }
     }
 
     private fun initialize() {

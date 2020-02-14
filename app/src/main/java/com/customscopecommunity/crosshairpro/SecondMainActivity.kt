@@ -12,19 +12,22 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import com.customscopecommunity.crosshairpro.databinding.ActivitySecondMainBinding
-import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.reward.RewardItem
+import com.google.android.gms.ads.reward.RewardedVideoAd
+import com.google.android.gms.ads.reward.RewardedVideoAdListener
 
 
 const val CHANNEL_ID = "crosshair"
 var crossNum: Int = 200
 var afterFinishVisibility: Int = 0
+internal lateinit var mRewardedVideoAd: RewardedVideoAd
 internal lateinit var mInterstitialAd: InterstitialAd
 const val systemAlertWindowPermission = 2084
 
-class SecondMainActivity : AppCompatActivity() {
+class SecondMainActivity : AppCompatActivity(), RewardedVideoAdListener {
 
     private lateinit var binding: ActivitySecondMainBinding
 
@@ -37,17 +40,16 @@ class SecondMainActivity : AppCompatActivity() {
             createNotificationChannel()
         }
 
-        MobileAds.initialize(this, "ca-app-pub-8201262723803857~4410500643")  // App unit id
+        MobileAds.initialize(this, getString(R.string.app_unit_id))
+
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this)
+        mRewardedVideoAd.rewardedVideoAdListener = this
+        mRewardedVideoAd.loadAd(getString(R.string.rewarded_video_ad), AdRequest.Builder().build())
 
         mInterstitialAd = InterstitialAd(this)
-        mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712" // test ad
+        mInterstitialAd.adUnitId = getString(R.string.interstitial_ad)
         mInterstitialAd.loadAd(AdRequest.Builder().build())
 
-        mInterstitialAd.adListener = object : AdListener() {
-            override fun onAdClosed() {
-                mInterstitialAd.loadAd(AdRequest.Builder().build())
-            }
-        }
 
     }
 
@@ -99,4 +101,27 @@ class SecondMainActivity : AppCompatActivity() {
         startActivity(launch)
     }
 
+    override fun onRewardedVideoAdClosed() {
+    }
+
+    override fun onRewardedVideoAdLeftApplication() {
+    }
+
+    override fun onRewardedVideoAdLoaded() {
+    }
+
+    override fun onRewardedVideoAdOpened() {
+    }
+
+    override fun onRewardedVideoCompleted() {
+    }
+
+    override fun onRewarded(p0: RewardItem?) {
+    }
+
+    override fun onRewardedVideoStarted() {
+    }
+
+    override fun onRewardedVideoAdFailedToLoad(p0: Int) {
+    }
 }
