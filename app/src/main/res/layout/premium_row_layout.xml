@@ -11,6 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/x70dp"
             android:layout_margin="@dimen/x4dp"
+            android:background="@color/black"
             android:contentDescription="@string/crosshair"
             android:scaleType="fitCenter"
             android:src="@drawable/pro1n"/>

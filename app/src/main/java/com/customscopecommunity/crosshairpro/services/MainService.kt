@@ -10,8 +10,6 @@ import android.view.*
 import android.view.View.inflate
 import android.widget.ImageView
 import androidx.core.app.NotificationCompat
-import kotlinx.android.synthetic.main.layout_controller.view.*
-import android.view.MotionEvent
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import android.widget.SeekBar
@@ -20,9 +18,11 @@ import android.os.Build
 import com.customscopecommunity.crosshairpro.*
 import com.customscopecommunity.crosshairpro.screens.backgroundLight
 import com.customscopecommunity.crosshairpro.screens.colour
+import kotlinx.android.synthetic.main.layout_pro_controller.view.*
 
 
 private const val notificationId = 1
+
 class MainService : Service(), View.OnClickListener {
 
     private lateinit var mWindowManager: WindowManager
@@ -71,941 +71,32 @@ class MainService : Service(), View.OnClickListener {
             imageView.setBackgroundResource(0)
         }
 
-        if (crossNum == 100) {
-            imageView.setImageResource(R.drawable.crosshair4)
-            DrawableCompat.setTint(
-                imageView.drawable, ContextCompat.getColor(
-                    this,
-                    R.color.white
-                )
-            )
-        } else {
+        when (crossNum) {
+            51 -> addCrosshair(R.drawable.crosshair1)
+            52 -> addCrosshair(R.drawable.crosshair2)
+            53 -> addCrosshair(R.drawable.crosshair3)
+            54 -> addCrosshair(R.drawable.crosshair4)
+            55 -> addCrosshair(R.drawable.crosshair5)
+            56 -> addCrosshair(R.drawable.crosshair6)
+            57 -> addCrosshair(R.drawable.crosshair7)
+            58 -> addCrosshair(R.drawable.crosshair8)
+            59 -> addCrosshair(R.drawable.crosshair9)
+            60 -> addCrosshair(R.drawable.crosshair10)
+            61 -> addCrosshair(R.drawable.crosshair11)
+            62 -> addCrosshair(R.drawable.crosshair12)
+            63 -> addCrosshair(R.drawable.crosshair13)
+            64 -> addCrosshair(R.drawable.crosshair14)
+            65 -> addCrosshair(R.drawable.crosshair15)
+            66 -> addCrosshair(R.drawable.crosshair16)
+            67 -> addCrosshair(R.drawable.crosshair17)
+            68 -> addCrosshair(R.drawable.crosshair18)
+            69 -> addCrosshair(R.drawable.crosshair19)
+            70 -> addCrosshair(R.drawable.crosshair20)
 
-            when (crossNum) {
-                51 -> imageView.setImageResource(R.drawable.crosshair1).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                52 -> imageView.setImageResource(R.drawable.crosshair2).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                53 -> imageView.setImageResource(R.drawable.crosshair3).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                54 -> imageView.setImageResource(R.drawable.crosshair4).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                55 -> imageView.setImageResource(R.drawable.crosshair5).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                56 -> imageView.setImageResource(R.drawable.crosshair6).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                57 -> imageView.setImageResource(R.drawable.crosshair7).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                58 -> imageView.setImageResource(R.drawable.crosshair8).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                59 -> imageView.setImageResource(R.drawable.crosshair9).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                60 -> imageView.setImageResource(R.drawable.crosshair10).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                61 -> imageView.setImageResource(R.drawable.crosshair11).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                62 -> imageView.setImageResource(R.drawable.crosshair12).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                63 -> imageView.setImageResource(R.drawable.crosshair13).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                64 -> imageView.setImageResource(R.drawable.crosshair14).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                65 -> imageView.setImageResource(R.drawable.crosshair15).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                66 -> imageView.setImageResource(R.drawable.crosshair16).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                67 -> imageView.setImageResource(R.drawable.crosshair17).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                68 -> imageView.setImageResource(R.drawable.crosshair18).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                69 -> imageView.setImageResource(R.drawable.crosshair19).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-                70 -> imageView.setImageResource(R.drawable.crosshair20).also {
-                    when (colour) {
-                        0 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        1 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.primary
-                            )
-                        )
-                        2 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.white
-                            )
-                        )
-                        3 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.green
-                            )
-                        )
-                        4 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.yellow
-                            )
-                        )
-                        5 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.purple
-                            )
-                        )
-                        6 -> DrawableCompat.setTint(
-                            imageView.drawable, ContextCompat.getColor(
-                                this,
-                                R.color.blue
-                            )
-                        )
-                    }
-                }
-
-            }
+            else -> addCrosshair(R.drawable.crosshair4)
 
         }
+
         val layoutFlag: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         } else {
@@ -1052,7 +143,7 @@ class MainService : Service(), View.OnClickListener {
 
         checkFun = true
 
-        xFloatingView = inflate(this, R.layout.layout_controller, null)
+        xFloatingView = inflate(this, R.layout.layout_pro_controller, null)
         xWindowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
         val xlayoutFlag: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -1072,34 +163,33 @@ class MainService : Service(), View.OnClickListener {
 
         xWindowManager.addView(xFloatingView, xParams)
 
-        xCollapsedView = xFloatingView.findViewById(R.id.controller)
+        xCollapsedView = xFloatingView.findViewById(R.id.proController)
 
-        xCollapsedView.buttonUp.setOnClickListener {
-            params.y -= 2
-            mWindowManager.updateViewLayout(mFloatingView, params)
+        xCollapsedView.apply {
+            proButtonUp.setOnClickListener {
+                params.y -= 2
+                updateLayout()
+            }
+            proButtonDown.setOnClickListener {
+                params.y += 2
+                updateLayout()
+            }
+            proButtonLeft.setOnClickListener {
+                params.x -= 2
+                updateLayout()
+            }
+            proButtonRight.setOnClickListener {
+                params.x += 2
+                updateLayout()
+            }
+            proButtonCancel.setOnClickListener {
+                xWindowManager.removeView(xFloatingView)
+                checkFun = false
+            }
         }
 
-        xCollapsedView.buttonDown.setOnClickListener {
-            params.y += 2
-            mWindowManager.updateViewLayout(mFloatingView, params)
-        }
 
-        xCollapsedView.buttonLeft.setOnClickListener {
-            params.x -= 2
-            mWindowManager.updateViewLayout(mFloatingView, params)
-        }
-
-        xCollapsedView.buttonRight.setOnClickListener {
-            params.x += 2
-            mWindowManager.updateViewLayout(mFloatingView, params)
-        }
-
-        xCollapsedView.buttonCancel.setOnClickListener {
-            xWindowManager.removeView(xFloatingView)
-            checkFun = false
-        }
-
-        val seekBar = xCollapsedView.findViewById(R.id.seekBar) as SeekBar
+        val seekBar = xCollapsedView.findViewById(R.id.proSeekBar) as SeekBar
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {
@@ -1109,52 +199,80 @@ class MainService : Service(), View.OnClickListener {
 
             }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-
-            }
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
 
-        xCollapsedView.setOnTouchListener(object : View.OnTouchListener {
-            private var initialX: Int = 0
-            private var initialY: Int = 0
-            private var initialTouchX: Float = 0.toFloat()
-            private var initialTouchY: Float = 0.toFloat()
+        val opacitySeekBar: SeekBar = xCollapsedView.findViewById(R.id.opacity_seekbar)
+        opacitySeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {
+                imageView.imageAlpha = progress
 
-            override fun onTouch(v: View, event: MotionEvent): Boolean {
-
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        initialX = xParams.x
-                        initialY = xParams.y
-                        initialTouchX = event.rawX
-                        initialTouchY = event.rawY
-                        return true
-                    }
-
-
-                    MotionEvent.ACTION_UP -> {
-                        v.performClick()
-                        return true
-                    }
-
-                    MotionEvent.ACTION_MOVE -> {
-                        xParams.x = initialX - (event.rawX - initialTouchX).toInt()
-                        xParams.y = initialY + (event.rawY - initialTouchY).toInt()
-                        xWindowManager.updateViewLayout(xFloatingView, xParams)
-                        return true
-                    }
-                }
-                return false
             }
 
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
+    }
 
-        xCollapsedView.setOnClickListener(this)
+    private fun addCrosshair(img: Int) {
+        imageView.setImageResource(img)
 
+        setCrosshairColour()
+    }
+
+    private fun setCrosshairColour() {
+
+        when (colour) {
+            0 -> DrawableCompat.setTint(
+                imageView.drawable, ContextCompat.getColor(
+                    this,
+                    R.color.white
+                )
+            )
+            1 -> DrawableCompat.setTint(
+                imageView.drawable, ContextCompat.getColor(
+                    this,
+                    R.color.primary
+                )
+            )
+            2 -> DrawableCompat.setTint(
+                imageView.drawable, ContextCompat.getColor(
+                    this,
+                    R.color.white
+                )
+            )
+            3 -> DrawableCompat.setTint(
+                imageView.drawable, ContextCompat.getColor(
+                    this,
+                    R.color.green
+                )
+            )
+            4 -> DrawableCompat.setTint(
+                imageView.drawable, ContextCompat.getColor(
+                    this,
+                    R.color.yellow
+                )
+            )
+            5 -> DrawableCompat.setTint(
+                imageView.drawable, ContextCompat.getColor(
+                    this,
+                    R.color.purple
+                )
+            )
+            6 -> DrawableCompat.setTint(
+                imageView.drawable, ContextCompat.getColor(
+                    this,
+                    R.color.blue
+                )
+            )
+        }
+
+    }
+
+    private fun updateLayout() {
+        mWindowManager.updateViewLayout(mFloatingView, params)
     }
 
     override fun onDestroy() {

@@ -21,15 +21,13 @@ class ProActivity : AppCompatActivity() {
         initialize()
 
         proBannerAd.loadAd(AdRequest.Builder().build())
-
     }
 
     private fun initialize() {
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle(R.string.pro_collection)
 
-        val gridLayoutManager = GridLayoutManager(this, 4)
+        val gridLayoutManager = GridLayoutManager(this, 3)
         pro_recycler_view.layoutManager = gridLayoutManager
 
         imageList.add(R.drawable.pro1n)

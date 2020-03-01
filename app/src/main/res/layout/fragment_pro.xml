@@ -5,35 +5,37 @@
                                                    xmlns:tools="http://schemas.android.com/tools"
                                                    android:layout_width="match_parent"
                                                    android:layout_height="match_parent"
-                                                   android:orientation="vertical"
                                                    tools:context=".screens.ProActivity">
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/pro_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="@dimen/x0dp"
+            android:layout_height="@dimen/x0dp"
             android:layout_marginBottom="@dimen/x10dp"
-            app:layout_constraintBottom_toTopOf="@+id/proBannerAd"
+            app:layout_constraintBottom_toTopOf="@+id/banner_Layout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <com.google.android.gms.ads.AdView
-            android:id="@+id/proBannerAd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/x5dp"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/pro_banner_ad"
+    <LinearLayout
+            android:id="@+id/banner_Layout"
+            android:layout_width="@dimen/x0dp"
+            android:layout_height="@dimen/x60dp"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent">
-    </com.google.android.gms.ads.AdView>
+
+        <com.google.android.gms.ads.AdView
+                android:id="@+id/proBannerAd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                ads:adSize="BANNER"
+                ads:adUnitId="@string/pro_banner_ad">
+        </com.google.android.gms.ads.AdView>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.customscopecommunity.crosshairpro.*
@@ -37,6 +38,9 @@ class MainFragment : Fragment() {
     private lateinit var premimumIntent: Intent
     private lateinit var proIntent: Intent
     private lateinit var classicIntent: Intent
+
+    private lateinit var startButton: Button
+    private lateinit var stopButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,8 +70,8 @@ class MainFragment : Fragment() {
             .registerReceiver(broadcastReceiver, IntentFilter(action))
 
 
-        val startButton = binding.buttonStart
-        val stopButton = binding.buttonStop
+        startButton = binding.buttonStart
+        stopButton = binding.buttonStop
 
 
 
@@ -106,44 +110,7 @@ class MainFragment : Fragment() {
 
 
         binding.buttonStart.setOnClickListener {
-
-            if (!Settings.canDrawOverlays(activity)) {
-
-                if (!Settings.canDrawOverlays(context)) {
-                    permissionDialog()
-                }
-
-            } else {
-
-                if (crossNum in 0..19) {
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        activity!!.startForegroundService(proServiceIntent)
-                    } else {
-                        activity!!.startService(proServiceIntent)
-                    }
-                } else {
-
-                    if (crossNum in 51..70) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            activity!!.startForegroundService(serviceIntent)
-                        } else {
-                            activity!!.startService(serviceIntent)
-                        }
-                    } else {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            activity!!.startForegroundService(premiumServiceIntent)
-                        } else {
-                            activity!!.startService(premiumServiceIntent)
-                        }
-                    }
-
-
-                }
-                startButton.visibility = View.GONE
-                stopButton.visibility = View.VISIBLE
-            }
-
+            startRequiredService()
         }
 
         binding.buttonStop.setOnClickListener {
@@ -156,6 +123,46 @@ class MainFragment : Fragment() {
 
 
         return binding.root
+    }
+
+    private fun startRequiredService() {
+
+        if (!Settings.canDrawOverlays(activity)) {
+
+            if (!Settings.canDrawOverlays(context)) {
+                permissionDialog()
+            }
+
+        } else {
+
+            if (crossNum in 0..19) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    activity!!.startForegroundService(proServiceIntent)
+                } else {
+                    activity!!.startService(proServiceIntent)
+                }
+            } else {
+
+                if (crossNum in 51..70) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        activity!!.startForegroundService(serviceIntent)
+                    } else {
+                        activity!!.startService(serviceIntent)
+                    }
+                } else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        activity!!.startForegroundService(premiumServiceIntent)
+                    } else {
+                        activity!!.startService(premiumServiceIntent)
+                    }
+                }
+
+
+            }
+            startButton.visibility = View.GONE
+            stopButton.visibility = View.VISIBLE
+        }
     }
 
     private fun stopServices() {

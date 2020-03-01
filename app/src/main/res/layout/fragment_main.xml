@@ -96,9 +96,9 @@
                      android:layout_height="wrap_content"
                      android:layout_marginStart="@dimen/x8dp"
                      android:layout_marginEnd="@dimen/x8dp"
-                     android:layout_marginBottom="@dimen/x60dp"
                      app:layout_constraintBottom_toBottomOf="parent"
-                     app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintStart_toStartOf="parent">
 
             <Button
                     android:id="@+id/buttonStop"

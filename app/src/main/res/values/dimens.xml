@@ -29,4 +29,5 @@
     <dimen name="x110dp">110dp</dimen>
     <dimen name="x14sp">14sp</dimen>
     <dimen name="x0dp">0dp</dimen>
+    <dimen name="x155dp">155dp</dimen>
 </resources>

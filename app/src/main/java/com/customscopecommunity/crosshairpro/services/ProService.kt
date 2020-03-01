@@ -7,10 +7,7 @@ import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
-import android.view.Gravity
-import android.view.MotionEvent
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
@@ -19,6 +16,7 @@ import com.customscopecommunity.crosshairpro.*
 import kotlinx.android.synthetic.main.layout_pro_controller.view.*
 
 private const val notificationId = 2
+
 class ProService : Service(), View.OnClickListener {
 
     private lateinit var mWindowManager: WindowManager
@@ -61,28 +59,29 @@ class ProService : Service(), View.OnClickListener {
         mFloatingView = View.inflate(this, R.layout.layout_pro_crosshair, null)
         imageView = mFloatingView.findViewById(R.id.proServiceCrosshair)
 
-
         when (crossNum) {
-            0 -> imageView.setImageResource(R.drawable.pro1n)
-            1 -> imageView.setImageResource(R.drawable.pro2n)
-            2 -> imageView.setImageResource(R.drawable.pro3n)
-            3 -> imageView.setImageResource(R.drawable.pro4n)
-            4 -> imageView.setImageResource(R.drawable.pro5n)
-            5 -> imageView.setImageResource(R.drawable.pro6n)
-            6 -> imageView.setImageResource(R.drawable.pro7n)
-            7 -> imageView.setImageResource(R.drawable.pro8n)
-            8 -> imageView.setImageResource(R.drawable.pro9n)
-            9 -> imageView.setImageResource(R.drawable.pro10n)
-            10 -> imageView.setImageResource(R.drawable.pro11n)
-            11 -> imageView.setImageResource(R.drawable.pro12n)
-            12 -> imageView.setImageResource(R.drawable.pro13n)
-            13 -> imageView.setImageResource(R.drawable.pro14n)
-            14 -> imageView.setImageResource(R.drawable.pro15n)
-            15 -> imageView.setImageResource(R.drawable.pro16n)
-            16 -> imageView.setImageResource(R.drawable.pro17n)
-            17 -> imageView.setImageResource(R.drawable.pro18n)
-            18 -> imageView.setImageResource(R.drawable.pro19n)
-            19 -> imageView.setImageResource(R.drawable.pro20n)
+            0 -> addImage(R.drawable.pro1n)
+            1 -> addImage(R.drawable.pro2n)
+            2 -> addImage(R.drawable.pro3n)
+            3 -> addImage(R.drawable.pro4n)
+            4 -> addImage(R.drawable.pro5n)
+            5 -> addImage(R.drawable.pro6n)
+            6 -> addImage(R.drawable.pro7n)
+            7 -> addImage(R.drawable.pro8n)
+            8 -> addImage(R.drawable.pro9n)
+            9 -> addImage(R.drawable.pro10n)
+            10 -> addImage(R.drawable.pro11n)
+            11 -> addImage(R.drawable.pro12n)
+            12 -> addImage(R.drawable.pro13n)
+            13 -> addImage(R.drawable.pro14n)
+            14 -> addImage(R.drawable.pro15n)
+            15 -> addImage(R.drawable.pro16n)
+            16 -> addImage(R.drawable.pro17n)
+            17 -> addImage(R.drawable.pro18n)
+            18 -> addImage(R.drawable.pro19n)
+            19 -> addImage(R.drawable.pro20n)
+
+            else -> addImage(R.drawable.pro12n)
         }
 
 
@@ -154,29 +153,27 @@ class ProService : Service(), View.OnClickListener {
 
         xCollapsedView = xFloatingView.findViewById(R.id.proController)
 
-        xCollapsedView.proButtonUp.setOnClickListener {
-            params.y -= 2
-            mWindowManager.updateViewLayout(mFloatingView, params)
-        }
-
-        xCollapsedView.proButtonDown.setOnClickListener {
-            params.y += 2
-            mWindowManager.updateViewLayout(mFloatingView, params)
-        }
-
-        xCollapsedView.proButtonLeft.setOnClickListener {
-            params.x -= 2
-            mWindowManager.updateViewLayout(mFloatingView, params)
-        }
-
-        xCollapsedView.proButtonRight.setOnClickListener {
-            params.x += 2
-            mWindowManager.updateViewLayout(mFloatingView, params)
-        }
-
-        xCollapsedView.proButtonCancel.setOnClickListener {
-            xWindowManager.removeView(xFloatingView)
-            checkFun = false
+        xCollapsedView.apply {
+            proButtonUp.setOnClickListener {
+                params.y -= 2
+                updateLayout()
+            }
+            proButtonDown.setOnClickListener {
+                params.y += 2
+                updateLayout()
+            }
+            proButtonLeft.setOnClickListener {
+                params.x -= 2
+                updateLayout()
+            }
+            proButtonRight.setOnClickListener {
+                params.x += 2
+                updateLayout()
+            }
+            proButtonCancel.setOnClickListener {
+                xWindowManager.removeView(xFloatingView)
+                checkFun = false
+            }
         }
 
         val seekBar = xCollapsedView.findViewById(R.id.proSeekBar) as SeekBar
@@ -192,53 +189,31 @@ class ProService : Service(), View.OnClickListener {
 
             }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-
-            }
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
 
+        val opacitySeekBar: SeekBar = xCollapsedView.findViewById(R.id.opacity_seekbar)
+        opacitySeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {
 
-        xCollapsedView.setOnTouchListener(object : View.OnTouchListener {
-            private var initialX: Int = 0
-            private var initialY: Int = 0
-            private var initialTouchX: Float = 0.toFloat()
-            private var initialTouchY: Float = 0.toFloat()
+                imageView.imageAlpha = progress
 
-            override fun onTouch(v: View, event: MotionEvent): Boolean {
-
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        initialX = xParams.x
-                        initialY = xParams.y
-                        initialTouchX = event.rawX
-                        initialTouchY = event.rawY
-                        return true
-                    }
-
-
-                    MotionEvent.ACTION_UP -> {
-                        v.performClick()
-                        return true
-                    }
-
-                    MotionEvent.ACTION_MOVE -> {
-                        xParams.x = initialX - (event.rawX - initialTouchX).toInt()
-                        xParams.y = initialY + (event.rawY - initialTouchY).toInt()
-                        xWindowManager.updateViewLayout(xFloatingView, xParams)
-                        return true
-                    }
-                }
-                return false
             }
 
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
+    }
 
-        xCollapsedView.setOnClickListener(this)
+    private fun addImage(img: Int) {
+        imageView.setImageResource(img)
+    }
 
+    private fun updateLayout() {
+        mWindowManager.updateViewLayout(mFloatingView, params)
     }
 
     override fun onDestroy() {

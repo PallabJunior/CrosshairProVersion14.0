@@ -18,7 +18,7 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.reward.RewardItem
 import com.google.android.gms.ads.reward.RewardedVideoAd
 import com.google.android.gms.ads.reward.RewardedVideoAdListener
-
+import kotlinx.android.synthetic.main.activity_second_main.*
 
 const val CHANNEL_ID = "crosshair"
 var crossNum: Int = 200
@@ -49,6 +49,8 @@ class SecondMainActivity : AppCompatActivity(), RewardedVideoAdListener {
         mInterstitialAd = InterstitialAd(this)
         mInterstitialAd.adUnitId = getString(R.string.interstitial_ad)
         mInterstitialAd.loadAd(AdRequest.Builder().build())
+
+        first_banner_ad.loadAd(AdRequest.Builder().build())
 
 
     }
