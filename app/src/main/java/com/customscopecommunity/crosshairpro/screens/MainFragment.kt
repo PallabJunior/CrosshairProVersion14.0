@@ -24,9 +24,13 @@ import com.customscopecommunity.crosshairpro.services.ProService
 import com.customscopecommunity.crosshairpro.databinding.FragmentMainBinding
 import com.customscopecommunity.crosshairpro.services.PremiumService
 import kotlinx.android.synthetic.main.permission_dialog.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlin.coroutines.CoroutineContext
 
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), CoroutineScope {
 
     private lateinit var broadcastReceiver: BroadcastReceiver
 
@@ -41,6 +45,13 @@ class MainFragment : Fragment() {
 
     private lateinit var startButton: Button
     private lateinit var stopButton: Button
+    private lateinit var minimizeButton: Button
+
+    private var checkMinimize = true
+
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +60,8 @@ class MainFragment : Fragment() {
         val binding: FragmentMainBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_main, container, false
         )
+
+        job = Job()
 
         serviceIntent = Intent(activity, MainService::class.java)
         proServiceIntent = Intent(activity, ProService::class.java)
@@ -64,6 +77,8 @@ class MainFragment : Fragment() {
             override fun onReceive(context: Context, intent: Intent) {
                 binding.buttonStop.visibility = View.GONE
                 binding.buttonStart.visibility = View.VISIBLE
+
+                binding.btnMinimize.visibility = View.GONE   // FOR MINIMIZE BUTTON
             }
         }
         LocalBroadcastManager.getInstance(activity!!)
@@ -72,13 +87,16 @@ class MainFragment : Fragment() {
 
         startButton = binding.buttonStart
         stopButton = binding.buttonStop
-
+        minimizeButton = binding.btnMinimize
 
 
         when (afterFinishVisibility) {
-            1 -> startButton.visibility = View.GONE
-            2 -> startButton.visibility = View.GONE
-            3 -> startButton.visibility = View.GONE
+            1, 2, 3 -> {
+                startButton.visibility = View.GONE
+                checkMinimize = true
+                minimizeButton.visibility = View.VISIBLE
+
+            }
         }
 
         binding.classicPackage.setOnClickListener {
@@ -87,8 +105,6 @@ class MainFragment : Fragment() {
             } else {
                 startActivity(classicIntent)
             }
-
-
         }
 
         binding.proPackage.setOnClickListener {
@@ -109,16 +125,23 @@ class MainFragment : Fragment() {
         }
 
 
-        binding.buttonStart.setOnClickListener {
+        startButton.setOnClickListener {
             startRequiredService()
         }
 
-        binding.buttonStop.setOnClickListener {
+        stopButton.setOnClickListener {
 
             stopServices()
-
+            checkMinimize = false
+            minimizeButton.visibility = View.GONE       // for minimize the app
             stopButton.visibility = View.GONE
             startButton.visibility = View.VISIBLE
+        }
+
+        if (checkMinimize) {
+            minimizeButton.setOnClickListener {
+                activity!!.finish()
+            }
         }
 
 
@@ -157,11 +180,11 @@ class MainFragment : Fragment() {
                         activity!!.startService(premiumServiceIntent)
                     }
                 }
-
-
             }
             startButton.visibility = View.GONE
             stopButton.visibility = View.VISIBLE
+            checkMinimize = true
+            minimizeButton.visibility = View.VISIBLE       // for minimize the app
         }
     }
 

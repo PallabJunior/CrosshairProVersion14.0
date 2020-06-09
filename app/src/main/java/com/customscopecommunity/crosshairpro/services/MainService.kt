@@ -1,11 +1,9 @@
 package com.customscopecommunity.crosshairpro.services
 
 import android.app.PendingIntent
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
-import android.os.IBinder
 import android.view.*
 import android.view.View.inflate
 import android.widget.ImageView
@@ -15,15 +13,21 @@ import androidx.core.graphics.drawable.DrawableCompat
 import android.widget.SeekBar
 import android.view.WindowManager
 import android.os.Build
+import android.util.Log
 import com.customscopecommunity.crosshairpro.*
+import com.customscopecommunity.crosshairpro.database.Position
+import com.customscopecommunity.crosshairpro.database.PositionDatabase
 import com.customscopecommunity.crosshairpro.screens.backgroundLight
 import com.customscopecommunity.crosshairpro.screens.colour
 import kotlinx.android.synthetic.main.layout_pro_controller.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 private const val notificationId = 1
 
-class MainService : Service(), View.OnClickListener {
+class MainService : BaseService(), View.OnClickListener {
 
     private lateinit var mWindowManager: WindowManager
     private lateinit var mFloatingView: View
@@ -38,17 +42,12 @@ class MainService : Service(), View.OnClickListener {
 
     private var checkFun = false
 
-    override fun onBind(intent: Intent): IBinder? {
-        return null
-    }
-
     override fun onCreate() {
 
         val intent = Intent(this, SecondMainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-
 
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.actionbar_logo)
@@ -110,7 +109,25 @@ class MainService : Service(), View.OnClickListener {
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         )
-        params.gravity = Gravity.CENTER
+
+        CoroutineScope(Dispatchers.Main).launch {
+
+            position = PositionDatabase(applicationContext).getPositionDao().getAllPositions()
+
+            if (position == null) {
+                params.gravity = Gravity.CENTER
+            } else {
+                val verticalP = position!!.vPosition
+                val horizontalP = position!!.hPosition
+
+                params.y = verticalP
+                params.x = horizontalP
+                updateLayout()
+
+                vValue = verticalP
+                hValue = horizontalP
+            }
+        }
 
         if (!checkFun) {
             controller()
@@ -119,7 +136,6 @@ class MainService : Service(), View.OnClickListener {
 
         mWindowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         mWindowManager.addView(mFloatingView, params)
-
         mCrosshairView = mFloatingView.findViewById(R.id.mainServiceCrosshair)
 
         mCrosshairView.setOnClickListener {
@@ -128,7 +144,6 @@ class MainService : Service(), View.OnClickListener {
                 controller()
             }
         }
-
     }
 
     override fun onClick(v: View) {
@@ -168,18 +183,22 @@ class MainService : Service(), View.OnClickListener {
         xCollapsedView.apply {
             proButtonUp.setOnClickListener {
                 params.y -= 2
+                vValue -= 2
                 updateLayout()
             }
             proButtonDown.setOnClickListener {
                 params.y += 2
+                vValue += 2
                 updateLayout()
             }
             proButtonLeft.setOnClickListener {
                 params.x -= 2
+                hValue -= 2
                 updateLayout()
             }
             proButtonRight.setOnClickListener {
                 params.x += 2
+                hValue += 2
                 updateLayout()
             }
             proButtonCancel.setOnClickListener {
@@ -276,6 +295,17 @@ class MainService : Service(), View.OnClickListener {
     }
 
     override fun onDestroy() {
+
+        CoroutineScope(Dispatchers.Main).launch {
+            val mPosition = Position(vValue, hValue)
+
+            if (position == null) {
+                PositionDatabase(applicationContext).getPositionDao().addPosition(mPosition)
+            } else {
+                mPosition.id = position!!.id
+                PositionDatabase(applicationContext).getPositionDao().updatePosition(mPosition)
+            }
+        }
 
         afterFinishVisibility = 5
         mWindowManager.removeView(mFloatingView)

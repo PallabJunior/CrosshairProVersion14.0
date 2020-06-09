@@ -22,7 +22,7 @@
     <LinearLayout
             android:id="@+id/banner_Layout"
             android:layout_width="@dimen/x0dp"
-            android:layout_height="@dimen/x60dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 ads:adSize="BANNER"
-                ads:adUnitId="@string/pro_banner_ad">
+                ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
         </com.google.android.gms.ads.AdView>
 
     </LinearLayout>

@@ -7,17 +7,23 @@ import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import androidx.core.app.NotificationCompat
 import com.customscopecommunity.crosshairpro.*
+import com.customscopecommunity.crosshairpro.database.Position
+import com.customscopecommunity.crosshairpro.database.PositionDatabase
 import kotlinx.android.synthetic.main.layout_pro_controller.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 private const val notificationId = 2
 
-class ProService : Service(), View.OnClickListener {
+class ProService : BaseService(), View.OnClickListener {
 
     private lateinit var mWindowManager: WindowManager
     private lateinit var mFloatingView: View
@@ -32,9 +38,9 @@ class ProService : Service(), View.OnClickListener {
 
     private var checkFun = false
 
-    override fun onBind(intent: Intent): IBinder? {
-        return null
-    }
+//    override fun onBind(intent: Intent): IBinder? {
+//        return null
+//    }
 
     override fun onCreate() {
 
@@ -98,7 +104,24 @@ class ProService : Service(), View.OnClickListener {
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         )
-        params.gravity = Gravity.CENTER
+        CoroutineScope(Dispatchers.Main).launch {
+
+            position = PositionDatabase(applicationContext).getPositionDao().getAllPositions()
+
+            if (position == null) {
+                params.gravity = Gravity.CENTER
+            } else {
+                val verticalP = position!!.vPosition
+                val horizontalP = position!!.hPosition
+
+                params.y = verticalP
+                params.x = horizontalP
+                updateLayout()
+
+                vValue = verticalP
+                hValue = horizontalP
+            }
+        }
 
         if (!checkFun) {
             controller()
@@ -156,18 +179,22 @@ class ProService : Service(), View.OnClickListener {
         xCollapsedView.apply {
             proButtonUp.setOnClickListener {
                 params.y -= 2
+                vValue -= 2
                 updateLayout()
             }
             proButtonDown.setOnClickListener {
                 params.y += 2
+                vValue += 2
                 updateLayout()
             }
             proButtonLeft.setOnClickListener {
                 params.x -= 2
+                hValue -= 2
                 updateLayout()
             }
             proButtonRight.setOnClickListener {
                 params.x += 2
+                hValue += 2
                 updateLayout()
             }
             proButtonCancel.setOnClickListener {
@@ -217,6 +244,16 @@ class ProService : Service(), View.OnClickListener {
     }
 
     override fun onDestroy() {
+        CoroutineScope(Dispatchers.Main).launch {
+            val mPosition = Position(vValue, hValue)
+
+            if (position == null) {
+                PositionDatabase(applicationContext).getPositionDao().addPosition(mPosition)
+            } else {
+                mPosition.id = position!!.id
+                PositionDatabase(applicationContext).getPositionDao().updatePosition(mPosition)
+            }
+        }
 
         afterFinishVisibility = 6
         mWindowManager.removeView(mFloatingView)
