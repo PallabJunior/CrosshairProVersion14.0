@@ -12,5 +12,5 @@ data class Position(
     val hPosition: Int = 0
 ) {
     @PrimaryKey(autoGenerate = true)
-    var id : Int = 0
+    var id: Int = 0
 }

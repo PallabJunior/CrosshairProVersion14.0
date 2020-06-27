@@ -11,17 +11,16 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.customscopecommunity.crosshairpro.*
-import com.customscopecommunity.crosshairpro.services.MainService
-import com.customscopecommunity.crosshairpro.services.ProService
 import com.customscopecommunity.crosshairpro.databinding.FragmentMainBinding
+import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
 import kotlinx.android.synthetic.main.permission_dialog.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -35,12 +34,10 @@ class MainFragment : Fragment(), CoroutineScope {
     private lateinit var broadcastReceiver: BroadcastReceiver
 
     private lateinit var serviceIntent: Intent
-    private lateinit var proServiceIntent: Intent
     private lateinit var premiumServiceIntent: Intent
     private lateinit var mBuilder: AlertDialog.Builder
 
     private lateinit var premimumIntent: Intent
-    private lateinit var proIntent: Intent
     private lateinit var classicIntent: Intent
 
     private lateinit var startButton: Button
@@ -64,11 +61,9 @@ class MainFragment : Fragment(), CoroutineScope {
         job = Job()
 
         serviceIntent = Intent(activity, MainService::class.java)
-        proServiceIntent = Intent(activity, ProService::class.java)
         premiumServiceIntent = Intent(activity, PremiumService::class.java)
 
         premimumIntent = Intent(activity, PremiumActivity::class.java)
-        proIntent = Intent(activity, ProActivity::class.java)
         classicIntent = Intent(activity, ClassicActivity::class.java)
 
 
@@ -78,7 +73,7 @@ class MainFragment : Fragment(), CoroutineScope {
                 binding.buttonStop.visibility = View.GONE
                 binding.buttonStart.visibility = View.VISIBLE
 
-                binding.btnMinimize.visibility = View.GONE   // FOR MINIMIZE BUTTON
+                binding.btnMinimize.visibility = View.GONE
             }
         }
         LocalBroadcastManager.getInstance(activity!!)
@@ -107,14 +102,6 @@ class MainFragment : Fragment(), CoroutineScope {
             }
         }
 
-        binding.proPackage.setOnClickListener {
-            if (!Settings.canDrawOverlays(context)) {
-                permissionDialog()
-            } else {
-                startActivity(proIntent)
-            }
-
-        }
 
         binding.premiumPackage.setOnClickListener {
             if (!Settings.canDrawOverlays(context)) {
@@ -133,7 +120,7 @@ class MainFragment : Fragment(), CoroutineScope {
 
             stopServices()
             checkMinimize = false
-            minimizeButton.visibility = View.GONE       // for minimize the app
+            minimizeButton.visibility = View.GONE
             stopButton.visibility = View.GONE
             startButton.visibility = View.VISIBLE
         }
@@ -158,39 +145,30 @@ class MainFragment : Fragment(), CoroutineScope {
 
         } else {
 
-            if (crossNum in 0..19) {
 
+            if (crossNum in 0..50) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    activity!!.startForegroundService(proServiceIntent)
+                    activity!!.startForegroundService(serviceIntent)
                 } else {
-                    activity!!.startService(proServiceIntent)
+                    activity!!.startService(serviceIntent)
                 }
             } else {
-
-                if (crossNum in 51..70) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        activity!!.startForegroundService(serviceIntent)
-                    } else {
-                        activity!!.startService(serviceIntent)
-                    }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    activity!!.startForegroundService(premiumServiceIntent)
                 } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        activity!!.startForegroundService(premiumServiceIntent)
-                    } else {
-                        activity!!.startService(premiumServiceIntent)
-                    }
+                    activity!!.startService(premiumServiceIntent)
                 }
             }
+
             startButton.visibility = View.GONE
             stopButton.visibility = View.VISIBLE
             checkMinimize = true
-            minimizeButton.visibility = View.VISIBLE       // for minimize the app
+            minimizeButton.visibility = View.VISIBLE
         }
     }
 
     private fun stopServices() {
         activity!!.stopService(serviceIntent)
-        activity!!.stopService(proServiceIntent)
         activity!!.stopService(premiumServiceIntent)
     }
 

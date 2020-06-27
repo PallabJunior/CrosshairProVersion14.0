@@ -5,11 +5,11 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Build
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.customscopecommunity.crosshairpro.databinding.ActivitySecondMainBinding
 import com.google.android.gms.ads.AdRequest
@@ -40,20 +40,22 @@ class SecondMainActivity : AppCompatActivity(), RewardedVideoAdListener {
             createNotificationChannel()
         }
 
-        MobileAds.initialize(this, getString(R.string.app_unit_id))
+        MobileAds.initialize(this)
 
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this)
         mRewardedVideoAd.rewardedVideoAdListener = this
 //        mRewardedVideoAd.loadAd(getString(R.string.rewarded_video_ad), AdRequest.Builder().build())
-        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", AdRequest.Builder().build())
+        mRewardedVideoAd.loadAd(
+            "ca-app-pub-3940256099942544/5224354917",
+            AdRequest.Builder().build()
+        )
+
         mInterstitialAd = InterstitialAd(this)
 //        mInterstitialAd.adUnitId = getString(R.string.interstitial_ad)
         mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712"
         mInterstitialAd.loadAd(AdRequest.Builder().build())
 
         first_banner_ad.loadAd(AdRequest.Builder().build())
-
-
     }
 
     private fun createNotificationChannel() {

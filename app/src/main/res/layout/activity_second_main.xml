@@ -7,7 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/black"
+            android:background="@drawable/gradient_bg"
             android:orientation="vertical">
 
         <fragment
@@ -20,8 +20,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:layout="@layout/fragment_main"
-        />
+                tools:layout="@layout/fragment_main" />
 
         <com.google.android.gms.ads.AdView
                 android:id="@+id/first_banner_ad"
@@ -32,8 +31,7 @@
                 ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-        </com.google.android.gms.ads.AdView>
+                app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

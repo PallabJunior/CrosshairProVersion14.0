@@ -17,7 +17,6 @@ import com.customscopecommunity.crosshairpro.crossNum
 import com.customscopecommunity.crosshairpro.screens.action
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
-import com.customscopecommunity.crosshairpro.services.ProService
 import kotlinx.android.synthetic.main.premium_row_layout.view.*
 
 
@@ -27,12 +26,12 @@ class PremiumAdapter(
 ) : RecyclerView.Adapter<PremiumAdapter.PremiumViewHolder>() {
 
     private val cService = Intent(context, MainService::class.java)
-    private val pService = Intent(context, ProService::class.java)
     private val premService = Intent(context, PremiumService::class.java)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PremiumViewHolder {
 
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.premium_row_layout, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.premium_row_layout, parent, false)
 
         return PremiumViewHolder(view)
     }
@@ -52,7 +51,6 @@ class PremiumAdapter(
 
     private fun stopServices() {
         context.stopService(cService)
-        context.stopService(pService)
         context.stopService(premService)
     }
 
@@ -70,7 +68,8 @@ class PremiumAdapter(
 
     private fun showToast() {
         LocalBroadcastManager.getInstance(context).sendBroadcast(Intent(action))
-        val toast = Toast.makeText(context, context.getString(R.string.tap_start), Toast.LENGTH_SHORT)
+        val toast =
+            Toast.makeText(context, context.getString(R.string.tap_start), Toast.LENGTH_SHORT)
         toast.setGravity(Gravity.CENTER, 0, 0)
         toast.show()
 

@@ -12,11 +12,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.customscopecommunity.crosshairpro.R
-import com.customscopecommunity.crosshairpro.services.MainService
-import com.customscopecommunity.crosshairpro.services.ProService
 import com.customscopecommunity.crosshairpro.crossNum
+import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
-import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.fragment_classic.*
 
 
@@ -27,7 +25,6 @@ const val action: String = "activity-2-initialized"
 class ClassicActivity : AppCompatActivity() {
 
     private lateinit var cService: Intent
-    private lateinit var pService: Intent
     private lateinit var premService: Intent
 
     private lateinit var crosshairViews: Array<ImageView>
@@ -41,13 +38,12 @@ class ClassicActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle(R.string.classic_collection)
 
-        classicBannerAd.loadAd(AdRequest.Builder().build())
-
         crosshairViews = arrayOf(
             classic1, classic2, classic3, classic4, classic5,
             classic6, classic7, classic8, classic9, classic10,
             classic11, classic12, classic13, classic14, classic15,
-            classic16, classic17, classic18, classic19, classic20
+            classic16, classic17, classic18, classic19, classic20,
+            classic21, classic22, classic23, classic24
         )
 
         colorControlBtns = arrayOf(
@@ -64,7 +60,6 @@ class ClassicActivity : AppCompatActivity() {
         }
 
         cService = Intent(this, MainService::class.java)
-        pService = Intent(this, ProService::class.java)
         premService = Intent(this, PremiumService::class.java)
 
 
@@ -85,7 +80,6 @@ class ClassicActivity : AppCompatActivity() {
             }
         }
 
-        // for changing the colours of crosshairs by clicking the colour buttons
         for (colorBtn in colorControlBtns) {
             colorBtn.setOnClickListener {
                 when (colorBtn) {
@@ -122,32 +116,36 @@ class ClassicActivity : AppCompatActivity() {
 
                 }
             }
-        } // done
+        }
 
         for (v in crosshairViews) {
 
             v.setOnClickListener {
                 when (v) {
-                    classic1 -> crossNum = 51
-                    classic2 -> crossNum = 52
-                    classic3 -> crossNum = 53
-                    classic4 -> crossNum = 54
-                    classic5 -> crossNum = 55
-                    classic6 -> crossNum = 56
-                    classic7 -> crossNum = 57
-                    classic8 -> crossNum = 58
-                    classic9 -> crossNum = 59
-                    classic10 -> crossNum = 60
-                    classic11 -> crossNum = 61
-                    classic12 -> crossNum = 62
-                    classic13 -> crossNum = 63
-                    classic14 -> crossNum = 64
-                    classic15 -> crossNum = 65
-                    classic16 -> crossNum = 66
-                    classic17 -> crossNum = 67
-                    classic18 -> crossNum = 68
-                    classic19 -> crossNum = 69
-                    classic20 -> crossNum = 70
+                    classic1 -> crossNum = 1
+                    classic2 -> crossNum = 2
+                    classic3 -> crossNum = 3
+                    classic4 -> crossNum = 4
+                    classic5 -> crossNum = 5
+                    classic6 -> crossNum = 6
+                    classic7 -> crossNum = 7
+                    classic8 -> crossNum = 8
+                    classic9 -> crossNum = 9
+                    classic10 -> crossNum = 10
+                    classic11 -> crossNum = 11
+                    classic12 -> crossNum = 12
+                    classic13 -> crossNum = 13
+                    classic14 -> crossNum = 14
+                    classic15 -> crossNum = 15
+                    classic16 -> crossNum = 16
+                    classic17 -> crossNum = 17
+                    classic18 -> crossNum = 18
+                    classic19 -> crossNum = 19
+                    classic20 -> crossNum = 20
+                    classic21 -> crossNum = 21
+                    classic22 -> crossNum = 22
+                    classic23 -> crossNum = 23
+                    classic24 -> crossNum = 24
                 }
                 stopServices()
                 toastShow()
@@ -169,7 +167,6 @@ class ClassicActivity : AppCompatActivity() {
 
     private fun stopServices() {
         stopService(cService)
-        stopService(pService)
         stopService(premService)
     }
 

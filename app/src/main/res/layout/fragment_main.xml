@@ -7,95 +7,80 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/black"
             android:padding="@dimen/x10dp">
 
         <LinearLayout
-                android:id="@+id/linearLayout3"
-                android:layout_width="@dimen/x0dp"
-                android:layout_height="@dimen/x50dp"
-                android:layout_marginStart="@dimen/x8dp"
-                android:layout_marginEnd="@dimen/x8dp"
-                android:background="@color/green"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:padding="@dimen/x1dp"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="@dimen/x10dp"
+                android:clipToPadding="false"
+                android:padding="@dimen/x10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
+                    android:id="@+id/classic_package"
                     android:layout_width="@dimen/x0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/black"
-                    android:gravity="center"
-                    android:padding="@dimen/x5dp">
+                    app:cardBackgroundColor="@color/dark_theme_center_blue_bg"
+                    app:cardCornerRadius="@dimen/x10dp"
+                    app:cardElevation="@dimen/x10dp">
 
-                <TextView
-                        android:id="@+id/classic_package"
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/black"
-                        android:gravity="center"
-                        android:text="@string/classic"
-                        android:textColor="@color/material_white"
-                        android:textStyle="normal|bold"
-                        app:autoSizeTextType="uniform" />
+                        android:background="@drawable/card_bg">
 
-            </LinearLayout>
 
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="@dimen/x20dp"
+                            android:gravity="center"
+                            android:text="@string/classic"
+                            android:textColor="@color/dark_purple"
+                            android:textStyle="normal|bold"
+                            app:autoSizeTextType="uniform" />
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
 
             <Space
-                    android:layout_width="@dimen/x1dp"
+                    android:layout_width="@dimen/x10dp"
                     android:layout_height="match_parent" />
 
-            <LinearLayout
+            <androidx.cardview.widget.CardView
+                    android:id="@+id/premium_package"
                     android:layout_width="@dimen/x0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/black"
-                    android:gravity="center"
-                    android:padding="@dimen/x5dp">
+                    app:cardBackgroundColor="@color/dark_theme_center_blue_bg"
+                    app:cardCornerRadius="@dimen/x10dp"
+                    app:cardElevation="@dimen/x10dp">
 
-                <TextView
-                        android:id="@+id/pro_package"
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/black"
-                        android:gravity="center"
-                        android:text="@string/pro"
-                        android:textColor="@color/material_red"
-                        android:textStyle="normal|bold"
-                        app:autoSizeTextType="uniform" />
+                        android:background="@drawable/card_bg">
 
-            </LinearLayout>
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="@dimen/x20dp"
+                            android:gravity="center"
+                            android:text="@string/pro"
+                            android:textColor="@color/material_red"
+                            android:textStyle="normal|bold"
+                            app:autoSizeTextType="uniform" />
 
-            <Space
-                    android:layout_width="@dimen/x1dp"
-                    android:layout_height="match_parent" />
+                </LinearLayout>
 
-            <LinearLayout
-                    android:layout_width="@dimen/x0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@color/black"
-                    android:gravity="center"
-                    android:padding="@dimen/x5dp">
 
-                <TextView
-                        android:id="@+id/premium_package"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/black"
-                        android:gravity="center"
-                        android:text="@string/premium"
-                        android:textColor="@color/golden_color"
-                        android:textStyle="normal|bold"
-                        app:autoSizeTextType="uniform" />
-
-            </LinearLayout>
-
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
@@ -106,6 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/x8dp"
                 android:layout_marginEnd="@dimen/x8dp"
+                android:layout_marginBottom="@dimen/x30dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
@@ -115,10 +101,10 @@
                     style="@android:style/Widget.Material.Button.Inset"
                     android:layout_width="@dimen/x90dp"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/material_red"
+                    android:background="@drawable/android_button_bg_red"
                     android:text="@string/stop"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/material_red"
                     android:textSize="@dimen/x14sp"
                     android:textStyle="bold" />
 
@@ -127,10 +113,10 @@
                     style="@android:style/Widget.Material.Button.Inset"
                     android:layout_width="@dimen/x90dp"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/material_green"
+                    android:background="@drawable/android_button_bg_green"
                     android:text="@string/start"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/material_green"
                     android:textSize="@dimen/x14sp"
                     android:textStyle="bold" />
 
@@ -141,9 +127,9 @@
                 android:layout_width="@dimen/x90dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:backgroundTint="@color/white"
+                android:background="@drawable/android_button_bg_white"
                 android:text="@string/exit"
-                android:textColor="@color/black"
+                android:textColor="@color/material_white"
                 android:textSize="@dimen/x14sp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/frameLayout"

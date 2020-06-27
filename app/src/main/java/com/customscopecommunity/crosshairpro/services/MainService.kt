@@ -4,16 +4,16 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
-import android.view.*
+import android.os.Build
+import android.view.Gravity
+import android.view.View
 import android.view.View.inflate
+import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.SeekBar
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import android.widget.SeekBar
-import android.view.WindowManager
-import android.os.Build
-import android.util.Log
 import com.customscopecommunity.crosshairpro.*
 import com.customscopecommunity.crosshairpro.database.Position
 import com.customscopecommunity.crosshairpro.database.PositionDatabase
@@ -71,26 +71,31 @@ class MainService : BaseService(), View.OnClickListener {
         }
 
         when (crossNum) {
-            51 -> addCrosshair(R.drawable.crosshair1)
-            52 -> addCrosshair(R.drawable.crosshair2)
-            53 -> addCrosshair(R.drawable.crosshair3)
-            54 -> addCrosshair(R.drawable.crosshair4)
-            55 -> addCrosshair(R.drawable.crosshair5)
-            56 -> addCrosshair(R.drawable.crosshair6)
-            57 -> addCrosshair(R.drawable.crosshair7)
-            58 -> addCrosshair(R.drawable.crosshair8)
-            59 -> addCrosshair(R.drawable.crosshair9)
-            60 -> addCrosshair(R.drawable.crosshair10)
-            61 -> addCrosshair(R.drawable.crosshair11)
-            62 -> addCrosshair(R.drawable.crosshair12)
-            63 -> addCrosshair(R.drawable.crosshair13)
-            64 -> addCrosshair(R.drawable.crosshair14)
-            65 -> addCrosshair(R.drawable.crosshair15)
-            66 -> addCrosshair(R.drawable.crosshair16)
-            67 -> addCrosshair(R.drawable.crosshair17)
-            68 -> addCrosshair(R.drawable.crosshair18)
-            69 -> addCrosshair(R.drawable.crosshair19)
-            70 -> addCrosshair(R.drawable.crosshair20)
+            1 -> addCrosshair(R.drawable.crosshair1)
+            2 -> addCrosshair(R.drawable.crosshair2)
+            3 -> addCrosshair(R.drawable.crosshair3)
+            4 -> addCrosshair(R.drawable.crosshair4)
+            5 -> addCrosshair(R.drawable.crosshair5)
+            6 -> addCrosshair(R.drawable.crosshair6)
+            7 -> addCrosshair(R.drawable.crosshair7)
+            8 -> addCrosshair(R.drawable.crosshair8)
+            9 -> addCrosshair(R.drawable.crosshair9)
+            10 -> addCrosshair(R.drawable.crosshair10)
+            11 -> addCrosshair(R.drawable.crosshair11)
+            12 -> addCrosshair(R.drawable.crosshair12)
+            13 -> addCrosshair(R.drawable.crosshair13)
+            14 -> addCrosshair(R.drawable.crosshair14)
+            15 -> addCrosshair(R.drawable.crosshair15)
+            16 -> addCrosshair(R.drawable.crosshair16)
+            17 -> addCrosshair(R.drawable.crosshair17)
+            18 -> addCrosshair(R.drawable.crosshair18)
+            19 -> addCrosshair(R.drawable.crosshair19)
+            20 -> addCrosshair(R.drawable.crosshair20)
+
+            21 -> addCrosshair(R.drawable.new_classic_1)
+            22 -> addCrosshair(R.drawable.new_classic_2)
+            23 -> addCrosshair(R.drawable.new_classic_3)
+            24 -> addCrosshair(R.drawable.new_classic_4)
 
             else -> addCrosshair(R.drawable.crosshair4)
 

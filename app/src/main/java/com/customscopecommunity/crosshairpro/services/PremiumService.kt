@@ -1,12 +1,10 @@
 package com.customscopecommunity.crosshairpro.services
 
 import android.app.PendingIntent
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
-import android.os.IBinder
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -20,9 +18,7 @@ import com.customscopecommunity.crosshairpro.database.PositionDatabase
 import kotlinx.android.synthetic.main.layout_pro_controller.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 private const val notificationId = 3
 
@@ -86,6 +82,27 @@ class PremiumService : BaseService(), View.OnClickListener {
             98 -> addImage(R.drawable.prem19n)
             99 -> addImage(R.drawable.prem20n)
             100 -> addImage(R.drawable.prem21n)
+
+            101 -> addImage(R.drawable.pro1n)
+            102 -> addImage(R.drawable.pro2n)
+            103 -> addImage(R.drawable.pro3n)
+            104 -> addImage(R.drawable.pro4n)
+            105 -> addImage(R.drawable.pro5n)
+            106 -> addImage(R.drawable.pro6n)
+            107 -> addImage(R.drawable.pro7n)
+            108 -> addImage(R.drawable.pro8n)
+            109 -> addImage(R.drawable.pro9n)
+            110 -> addImage(R.drawable.pro10n)
+            111 -> addImage(R.drawable.pro11n)
+            112 -> addImage(R.drawable.pro12n)
+            113 -> addImage(R.drawable.pro13n)
+            114 -> addImage(R.drawable.pro14n)
+            115 -> addImage(R.drawable.pro15n)
+            116 -> addImage(R.drawable.pro16n)
+            117 -> addImage(R.drawable.pro17n)
+            118 -> addImage(R.drawable.pro18n)
+            119 -> addImage(R.drawable.pro19n)
+            120 -> addImage(R.drawable.pro20n)
 
             else -> addImage(R.drawable.prem17n)
 

@@ -14,10 +14,11 @@ abstract class PositionDatabase : RoomDatabase() {
     abstract fun getPositionDao(): PositionDao
 
     companion object {
-        @Volatile private var instance: PositionDatabase? = null
+        @Volatile
+        private var instance: PositionDatabase? = null
         private val LOCK = Any()
 
-        operator fun invoke(context: Context) = instance ?: synchronized(LOCK){
+        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
             instance ?: buildDatabase(context).also {
                 instance = it
             }

@@ -21,4 +21,12 @@
     <color name="material_red">#F44336</color>
     <color name="golden_color">#FFD700</color>
     <color name="material_white">#EEEEEE</color>
+
+    <color name="dark_background">#121212</color>
+    <color name="dark_card">#1C1C1C</color>
+    <color name="dark_primary">#1E1E1E</color>
+    <color name="dark_purple">#BB86FC</color>
+    <color name="dark_theme_outer_blue_bg">#201750</color>
+    <color name="dark_theme_center_blue_bg">#202674</color>
+    <color name="dark_theme_start_blue_bg">#233891</color>
 </resources>

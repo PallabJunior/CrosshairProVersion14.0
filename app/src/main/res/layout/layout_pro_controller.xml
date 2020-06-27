@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:background="@color/green"
-             android:padding="@dimen/x2dp">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/android_button_bg_green">
 
-    <androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/proController"
-                                                       android:layout_width="@dimen/x125dp"
-                                                       android:layout_height="@dimen/x155dp"
-                                                       android:background="@color/black">
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/proController"
+            android:layout_width="@dimen/x125dp"
+            android:layout_height="@dimen/x155dp">
 
 
         <ImageView
@@ -22,7 +21,8 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/button_left"
                 app:layout_constraintEnd_toStartOf="@+id/proButtonUp"
-                app:layout_constraintTop_toBottomOf="@+id/proButtonUp"/>
+                app:layout_constraintTop_toBottomOf="@+id/proButtonUp" />
+
         <ImageView
                 android:id="@+id/proButtonRight"
                 android:layout_width="@dimen/x25dp"
@@ -33,7 +33,8 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/button_right"
                 app:layout_constraintStart_toEndOf="@+id/proButtonUp"
-                app:layout_constraintTop_toBottomOf="@+id/proButtonUp"/>
+                app:layout_constraintTop_toBottomOf="@+id/proButtonUp" />
+
         <ImageView
                 android:id="@+id/proButtonDown"
                 android:layout_width="@dimen/x25dp"
@@ -44,7 +45,8 @@
                 android:src="@drawable/button_down"
                 app:layout_constraintEnd_toStartOf="@+id/proButtonRight"
                 app:layout_constraintStart_toEndOf="@+id/proButtonLeft"
-                app:layout_constraintTop_toBottomOf="@+id/proButtonRight"/>
+                app:layout_constraintTop_toBottomOf="@+id/proButtonRight" />
+
         <ImageView
                 android:id="@+id/proButtonUp"
                 android:layout_width="@dimen/x25dp"
@@ -53,8 +55,10 @@
                 android:contentDescription="@string/crosshair"
                 android:scaleType="fitCenter"
                 android:src="@drawable/button_up"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
                 android:id="@+id/proButtonCancel"
                 android:layout_width="@dimen/x20dp"
@@ -62,8 +66,10 @@
                 android:layout_marginTop="@dimen/x8dp"
                 android:layout_marginEnd="@dimen/x8dp"
                 android:contentDescription="@string/crosshair"
-                android:src="@drawable/cancel_button" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                android:src="@drawable/cancel_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         <SeekBar
                 android:id="@+id/proSeekBar"
                 style="@style/Widget.AppCompat.SeekBar"
@@ -78,7 +84,7 @@
                 app:layout_constraintBottom_toTopOf="@id/opacity_seekbar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/proButtonDown"/>
+                app:layout_constraintTop_toBottomOf="@+id/proButtonDown" />
 
         <SeekBar
                 android:id="@+id/opacity_seekbar"
@@ -97,7 +103,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/proSeekBar"
 
-        />
+                />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,11 +1,11 @@
 package com.customscopecommunity.crosshairpro
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.customscopecommunity.crosshairpro.adapter.PremiumAdapter
 import kotlinx.android.synthetic.main.activity_premium.*
-import java.util.ArrayList
+import java.util.*
 
 class PremiumActivity : AppCompatActivity() {
 
@@ -55,6 +55,27 @@ class PremiumActivity : AppCompatActivity() {
         imageList.add(R.drawable.prem19n)
         imageList.add(R.drawable.prem20n)
         imageList.add(R.drawable.prem21n)
+
+        imageList.add(R.drawable.pro1n)
+        imageList.add(R.drawable.pro2n)
+        imageList.add(R.drawable.pro3n)
+        imageList.add(R.drawable.pro4n)
+        imageList.add(R.drawable.pro5n)
+        imageList.add(R.drawable.pro6n)
+        imageList.add(R.drawable.pro7n)
+        imageList.add(R.drawable.pro8n)
+        imageList.add(R.drawable.pro9n)
+        imageList.add(R.drawable.pro10n)
+        imageList.add(R.drawable.pro11n)
+        imageList.add(R.drawable.pro12n)
+        imageList.add(R.drawable.pro13n)
+        imageList.add(R.drawable.pro14n)
+        imageList.add(R.drawable.pro15n)
+        imageList.add(R.drawable.pro16n)
+        imageList.add(R.drawable.pro17n)
+        imageList.add(R.drawable.pro18n)
+        imageList.add(R.drawable.pro19n)
+        imageList.add(R.drawable.pro20n)
 
         premium_recycler_view.adapter = PremiumAdapter(this, imageList)
 
