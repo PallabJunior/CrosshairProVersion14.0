@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity() {
                 iv_logo.visibility = View.GONE
                 startActivity(Intent(this, SecondMainActivity::class.java))
                 finish()
-            }, 500)
-        }, 1000)
+            }, 0)
+        }, 500)
 
     }
 

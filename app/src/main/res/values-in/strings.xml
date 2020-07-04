@@ -7,8 +7,7 @@
     <string name="x">X</string>
     <string name="start">MULAILAH</string>
     <string name="privacy_policy">Kebijakan pribadi</string>
-    <string name="pro_collection">Koleksi pro</string>
-    <string name="premium_collection">Premium</string>
+    <string name="pro_collection">Pro</string>
     <string name="classic_collection">Klasik</string>
     <string name="classic">Klasik</string>
     <string name="pro">Pro</string>
@@ -28,8 +27,8 @@
     </string>
     <string name="give_permission">Berikan izin</string>
     <string name="app_unit_id">ca-app-pub-8201262723803857~4410500643</string>
-    <string name="rewarded_video_ad">ca-app-pub-8201262723803857/6030402097</string>
-    <string name="interstitial_ad">ca-app-pub-8201262723803857/2113390152</string>
-    <string name="home_banner">ca-app-pub-8201262723803857/3436263424</string>
+    <string name="rewarded_video_ad">ca-app-pub-8201262723803857/8367889777</string>
+    <string name="interstitial_ad">ca-app-pub-8201262723803857/5581944330</string>
+    <string name="home_banner">ca-app-pub-8201262723803857/2185624809</string>
     <string name="exit">Keluar</string>
 </resources>

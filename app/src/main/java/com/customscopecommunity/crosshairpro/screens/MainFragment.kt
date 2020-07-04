@@ -179,7 +179,6 @@ class MainFragment : Fragment(), CoroutineScope {
 
         mBuilder = AlertDialog.Builder(context)
             .setView(mDialogView)
-            .setTitle(getString(R.string.message))
 
         val mAlertDialog = mBuilder.show()
 

@@ -6,8 +6,7 @@
     <string name="x">X</string>
     <string name="start">START</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="pro_collection">Pro Collection</string>
-    <string name="premium_collection">Premium</string>
+    <string name="pro_collection">Pro</string>
     <string name="classic_collection">Classic Collection</string>
     <string name="classic">Classic</string>
     <string name="pro">Pro</string>
@@ -26,8 +25,8 @@
     <string name="alert_dialog_hint">App requires Floating Window permission to show its crosshairs</string>
     <string name="give_permission">Give permission</string>
     <string name="app_unit_id">ca-app-pub-8201262723803857~4410500643</string>
-    <string name="rewarded_video_ad">ca-app-pub-8201262723803857/6030402097</string>
-    <string name="interstitial_ad">ca-app-pub-8201262723803857/2113390152</string>
-    <string name="home_banner">ca-app-pub-8201262723803857/3436263424</string>
+    <string name="rewarded_video_ad">ca-app-pub-8201262723803857/8367889777</string>
+    <string name="interstitial_ad">ca-app-pub-8201262723803857/5581944330</string>
+    <string name="home_banner">ca-app-pub-8201262723803857/2185624809</string>
     <string name="exit">Exit</string>
 </resources>

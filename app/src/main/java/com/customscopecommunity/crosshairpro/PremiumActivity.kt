@@ -29,7 +29,7 @@ class PremiumActivity : AppCompatActivity() {
     private fun initialize() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setTitle(R.string.premium_collection)
+        supportActionBar?.setTitle(R.string.pro_collection)
 
         val gridLayoutManager = GridLayoutManager(this, 3)
         premium_recycler_view.layoutManager = gridLayoutManager
@@ -76,6 +76,20 @@ class PremiumActivity : AppCompatActivity() {
         imageList.add(R.drawable.pro18n)
         imageList.add(R.drawable.pro19n)
         imageList.add(R.drawable.pro20n)
+
+        imageList.add(R.drawable.nn1)
+        imageList.add(R.drawable.nn2)
+        imageList.add(R.drawable.nn3)
+        imageList.add(R.drawable.nn4)
+        imageList.add(R.drawable.nn5)
+        imageList.add(R.drawable.nn6)
+        imageList.add(R.drawable.nn7)
+        imageList.add(R.drawable.nn8)
+        imageList.add(R.drawable.nn9)
+        imageList.add(R.drawable.nn10)
+        imageList.add(R.drawable.nn11)
+        imageList.add(R.drawable.nn12)
+        imageList.add(R.drawable.nn13)
 
         premium_recycler_view.adapter = PremiumAdapter(this, imageList)
 

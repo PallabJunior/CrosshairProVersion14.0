@@ -104,6 +104,21 @@ class PremiumService : BaseService(), View.OnClickListener {
             119 -> addImage(R.drawable.pro19n)
             120 -> addImage(R.drawable.pro20n)
 
+
+            121 -> addImage(R.drawable.nn1)
+            122 -> addImage(R.drawable.nn2)
+            123 -> addImage(R.drawable.nn3)
+            124 -> addImage(R.drawable.nn4)
+            125 -> addImage(R.drawable.nn5)
+            126 -> addImage(R.drawable.nn6)
+            127 -> addImage(R.drawable.nn7)
+            128 -> addImage(R.drawable.nn8)
+            129 -> addImage(R.drawable.nn9)
+            130 -> addImage(R.drawable.nn10)
+            131 -> addImage(R.drawable.nn11)
+            132 -> addImage(R.drawable.nn12)
+            133 -> addImage(R.drawable.nn13)
+
             else -> addImage(R.drawable.prem17n)
 
         }

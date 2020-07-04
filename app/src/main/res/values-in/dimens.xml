@@ -1,4 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="x20dp">20dp</dimen>
+    <dimen name="x18sp">18sp</dimen>
+    <dimen name="x50dp">50dp</dimen>
+    <dimen name="x25dp">25dp</dimen>
+    <dimen name="x10dp">10dp</dimen>
+    <dimen name="x8dp">8dp</dimen>
+    <dimen name="x24dp">24dp</dimen>
+    <dimen name="x1dp">1dp</dimen>
+    <dimen name="x30sp">30sp</dimen>
+    <dimen name="x80dp">80dp</dimen>
+    <dimen name="x16sp">16sp</dimen>
+    <dimen name="x30dp">30dp</dimen>
+    <dimen name="x2dp">2dp</dimen>
+    <dimen name="x125dp">125dp</dimen>
+    <dimen name="x150dp">150dp</dimen>
+    <dimen name="x90dp">90dp</dimen>
+    <dimen name="x40dp">40dp</dimen>
+    <dimen name="x12sp">12sp</dimen>
+    <dimen name="x16dp">16dp</dimen>
+    <dimen name="x70dp">70dp</dimen>
+    <dimen name="x5dp">5dp</dimen>
+    <dimen name="x4dp">4dp</dimen>
+    <dimen name="x140dp">140dp</dimen>
+    <dimen name="x60dp">60dp</dimen>
+    <dimen name="x12dp">12dp</dimen>
+    <dimen name="x6dp">6dp</dimen>
+    <dimen name="x110dp">110dp</dimen>
+    <dimen name="x14sp">14sp</dimen>
+    <dimen name="x0dp">0dp</dimen>
     <dimen name="x155dp">155dp</dimen>
+    <dimen name="x200dp">200dp</dimen>
 </resources>
