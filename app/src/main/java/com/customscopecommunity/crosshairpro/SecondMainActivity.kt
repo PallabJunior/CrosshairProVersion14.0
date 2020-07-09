@@ -7,14 +7,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.customscopecommunity.crosshairpro.databinding.ActivitySecondMainBinding
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.InterstitialAd
-import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.*
 import com.google.android.gms.ads.reward.RewardItem
 import com.google.android.gms.ads.reward.RewardedVideoAd
 import com.google.android.gms.ads.reward.RewardedVideoAdListener
@@ -31,6 +30,27 @@ class SecondMainActivity : AppCompatActivity(), RewardedVideoAdListener {
 
     private lateinit var binding: ActivitySecondMainBinding
 
+    private lateinit var adView: AdView
+
+    private var initialLayoutComplete = false
+
+    private val adSize: AdSize
+        get() {
+            val display = windowManager.defaultDisplay
+            val outMetrics = DisplayMetrics()
+            display.getMetrics(outMetrics)
+
+            val density = outMetrics.density
+
+            var adWidthPixels = ad_view_container.width.toFloat()
+            if (adWidthPixels == 0f) {
+                adWidthPixels = outMetrics.widthPixels.toFloat()
+            }
+
+            val adWidth = (adWidthPixels / density).toInt()
+            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_second_main)
@@ -42,21 +62,26 @@ class SecondMainActivity : AppCompatActivity(), RewardedVideoAdListener {
 
         MobileAds.initialize(this)
 
-        val adRequest = AdRequest.Builder().build()
-        first_banner_ad.loadAd(adRequest)
+        adView = AdView(this)
+        ad_view_container.addView(adView)
+        ad_view_container.viewTreeObserver.addOnGlobalLayoutListener {
+            if (!initialLayoutComplete) {
+                initialLayoutComplete = true
+                loadBanner()
+            }
+        }
 
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this)
         mRewardedVideoAd.rewardedVideoAdListener = this
-//        mRewardedVideoAd.loadAd(getString(R.string.rewarded_video_ad), AdRequest.Builder().build())
+        //mRewardedVideoAd.loadAd(getString(R.string.rewarded_video_ad), AdRequest.Builder().build())
         mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", AdRequest.Builder().build())
 
         mInterstitialAd = InterstitialAd(this)
-//        mInterstitialAd.adUnitId = getString(R.string.interstitial_ad)
+        //mInterstitialAd.adUnitId = getString(R.string.interstitial_ad)
         mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712"
 
         mInterstitialAd.loadAd(AdRequest.Builder().build())
 
-        first_banner_ad.loadAd(AdRequest.Builder().build())
     }
 
     private fun createNotificationChannel() {
@@ -129,5 +154,31 @@ class SecondMainActivity : AppCompatActivity(), RewardedVideoAdListener {
     }
 
     override fun onRewardedVideoAdFailedToLoad(p0: Int) {
+    }
+
+    private fun loadBanner() {
+        adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
+
+        adView.adSize = adSize
+
+        val adRequest = AdRequest.Builder().build()
+
+        adView.loadAd(adRequest)
+    }
+
+
+    public override fun onPause() {
+        adView.pause()
+        super.onPause()
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        adView.resume()
+    }
+
+    public override fun onDestroy() {
+        adView.destroy()
+        super.onDestroy()
     }
 }
