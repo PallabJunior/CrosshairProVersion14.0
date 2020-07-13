@@ -13,24 +13,29 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.customscopecommunity.crosshairpro.databinding.ActivitySecondMainBinding
-import com.google.android.gms.ads.*
-import com.google.android.gms.ads.reward.RewardItem
-import com.google.android.gms.ads.reward.RewardedVideoAd
-import com.google.android.gms.ads.reward.RewardedVideoAdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
+import com.unity3d.ads.IUnityAdsListener
+import com.unity3d.ads.UnityAds
 import kotlinx.android.synthetic.main.activity_second_main.*
+
 
 const val CHANNEL_ID = "crosshair"
 var crossNum: Int = 200
 var afterFinishVisibility: Int = 0
-internal lateinit var mRewardedVideoAd: RewardedVideoAd
-internal lateinit var mInterstitialAd: InterstitialAd
 const val systemAlertWindowPermission = 2084
-
-class SecondMainActivity : AppCompatActivity(), RewardedVideoAdListener {
+var transitionEffect = true
+var isAdShowed = false
+class SecondMainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySecondMainBinding
 
     private lateinit var adView: AdView
+
+    private val unityGameID = "3708923"
+    private val testMode = true
 
     private var initialLayoutComplete = false
 
@@ -54,7 +59,11 @@ class SecondMainActivity : AppCompatActivity(), RewardedVideoAdListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_second_main)
-        overridePendingTransition(R.anim.second_fade_in, R.anim.second_fade_out)
+
+        if (transitionEffect){
+            overridePendingTransition(R.anim.second_fade_in, R.anim.second_fade_out)
+        }
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
@@ -71,16 +80,9 @@ class SecondMainActivity : AppCompatActivity(), RewardedVideoAdListener {
             }
         }
 
-        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this)
-        mRewardedVideoAd.rewardedVideoAdListener = this
-        //mRewardedVideoAd.loadAd(getString(R.string.rewarded_video_ad), AdRequest.Builder().build())
-        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", AdRequest.Builder().build())
-
-        mInterstitialAd = InterstitialAd(this)
-        //mInterstitialAd.adUnitId = getString(R.string.interstitial_ad)
-        mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712"
-
-        mInterstitialAd.loadAd(AdRequest.Builder().build())
+        val myAdsListener = UnityAdsListener()
+        UnityAds.initialize(this, unityGameID, testMode)
+        UnityAds.addListener(myAdsListener)
 
     }
 
@@ -132,31 +134,8 @@ class SecondMainActivity : AppCompatActivity(), RewardedVideoAdListener {
         startActivity(launch)
     }
 
-    override fun onRewardedVideoAdClosed() {
-    }
-
-    override fun onRewardedVideoAdLeftApplication() {
-    }
-
-    override fun onRewardedVideoAdLoaded() {
-    }
-
-    override fun onRewardedVideoAdOpened() {
-    }
-
-    override fun onRewardedVideoCompleted() {
-    }
-
-    override fun onRewarded(p0: RewardItem?) {
-    }
-
-    override fun onRewardedVideoStarted() {
-    }
-
-    override fun onRewardedVideoAdFailedToLoad(p0: Int) {
-    }
-
     private fun loadBanner() {
+        //adView.adUnitId = getString(R.string.main_banner)
         adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
 
         adView.adSize = adSize
@@ -180,5 +159,26 @@ class SecondMainActivity : AppCompatActivity(), RewardedVideoAdListener {
     public override fun onDestroy() {
         adView.destroy()
         super.onDestroy()
+    }
+
+    // Implement the IUnityAdsListener interface methods:
+    inner class UnityAdsListener : IUnityAdsListener {
+        override fun onUnityAdsReady(placementId: String?) {
+        }
+
+        override fun onUnityAdsStart(placementId: String?) {
+        }
+
+        override fun onUnityAdsFinish(placementId: String?, finishState: UnityAds.FinishState?) {
+            openPremiumActivity()
+        }
+
+        override fun onUnityAdsError(error: UnityAds.UnityAdsError?, message: String?) {
+        }
+    }
+
+    private fun openPremiumActivity(){
+        isAdShowed = true
+        startActivity(Intent(this, PremiumActivity::class.java))
     }
 }

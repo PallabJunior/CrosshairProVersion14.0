@@ -26,8 +26,7 @@
     <string name="alert_dialog_hint">O aplicativo requer permissão da Janela flutuante para mostrar sua mira</string>
     <string name="give_permission">Dar permissão</string>
     <string name="app_unit_id">ca-app-pub-8201262723803857~4410500643</string>
-    <string name="rewarded_video_ad">ca-app-pub-8201262723803857/8367889777</string>
-    <string name="interstitial_ad">ca-app-pub-8201262723803857/5581944330</string>
-    <string name="home_banner">ca-app-pub-8201262723803857/2185624809</string>
     <string name="exit">Saída</string>
+    <string name="main_banner">ca-app-pub-8201262723803857/3944836137</string>
+    <string name="unity_interstitial_ad_unit">interstitialAdCrosshairPro</string>
 </resources>

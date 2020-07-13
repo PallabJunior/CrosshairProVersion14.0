@@ -15,15 +15,15 @@ class PremiumActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_premium)
 
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowTitleEnabled(false)
+        }
+
+        transitionEffect = false
+
         initialize()
 
-        if (mRewardedVideoAd.isLoaded) {
-            mRewardedVideoAd.show()
-        } else {
-            if (mInterstitialAd.isLoaded) {
-                mInterstitialAd.show()
-            }
-        }
     }
 
     private fun initialize() {
@@ -93,5 +93,10 @@ class PremiumActivity : AppCompatActivity() {
 
         premium_recycler_view.adapter = PremiumAdapter(this, imageList)
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

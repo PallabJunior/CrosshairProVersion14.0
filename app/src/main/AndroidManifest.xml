@@ -38,13 +38,11 @@
 
         <activity
                 android:name=".screens.ClassicActivity"
-                android:parentActivityName=".SecondMainActivity"
                 android:screenOrientation="portrait" />
 
 
         <activity
                 android:name=".PremiumActivity"
-                android:parentActivityName=".SecondMainActivity"
                 android:screenOrientation="portrait" />
 
 
