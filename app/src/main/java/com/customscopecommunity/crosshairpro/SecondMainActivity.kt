@@ -8,10 +8,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.customscopecommunity.crosshairpro.databinding.ActivitySecondMainBinding
@@ -20,7 +18,6 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.unity3d.ads.UnityAds
-import com.unity3d.services.banners.IUnityBannerListener
 import kotlinx.android.synthetic.main.activity_second_main.*
 
 
