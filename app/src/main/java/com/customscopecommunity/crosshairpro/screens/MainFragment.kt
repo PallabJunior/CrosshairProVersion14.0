@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -22,7 +24,6 @@ import com.customscopecommunity.crosshairpro.*
 import com.customscopecommunity.crosshairpro.databinding.FragmentMainBinding
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
-import com.unity3d.ads.UnityAds
 import kotlinx.android.synthetic.main.permission_dialog.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -108,12 +109,7 @@ class MainFragment : Fragment(), CoroutineScope {
             if (!Settings.canDrawOverlays(context)) {
                 permissionDialog()
             } else {
-                if (UnityAds.isReady(getString(R.string.unity_interstitial_ad_unit)) && !isAdShowed) {
-                    UnityAds.show(activity, getString(R.string.unity_interstitial_ad_unit))
-                } else {
-                    startActivity(premimumIntent)
-                }
-
+                startActivity(premimumIntent)
             }
         }
 
@@ -187,6 +183,7 @@ class MainFragment : Fragment(), CoroutineScope {
             .setView(mDialogView)
 
         val mAlertDialog = mBuilder.show()
+        mAlertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         mDialogView.permission_btn.setOnClickListener {
             mAlertDialog.dismiss()

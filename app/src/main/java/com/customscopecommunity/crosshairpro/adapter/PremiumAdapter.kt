@@ -17,6 +17,8 @@ import com.customscopecommunity.crosshairpro.crossNum
 import com.customscopecommunity.crosshairpro.screens.action
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
+import com.customscopecommunity.crosshairpro.showUnityVideoAd
+import com.unity3d.ads.UnityAds
 import kotlinx.android.synthetic.main.premium_row_layout.view.*
 
 
@@ -42,10 +44,22 @@ class PremiumAdapter(
 
         holder.itemView.setOnClickListener {
 
-            crossNum = 80 + position
-            stopServices()
-            showToast()
-            (context as Activity).finish()
+            // show Unity Video Ad
+            if (UnityAds.isReady(context.getString(R.string.unity_interstitial_ad_unit)) && showUnityVideoAd) {
+                UnityAds.show(
+                    context as Activity,
+                    context.getString(R.string.unity_interstitial_ad_unit)
+                )
+                /// manage the services in the activity
+                crossNum = 80 + position
+            } else {
+                // manage the services here
+                crossNum = 80 + position
+                stopServices()
+                showToast()
+                (context as Activity).finish()
+            }
+
         }
     }
 

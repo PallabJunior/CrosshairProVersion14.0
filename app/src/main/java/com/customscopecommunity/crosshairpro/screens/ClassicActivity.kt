@@ -15,7 +15,6 @@ import com.customscopecommunity.crosshairpro.R
 import com.customscopecommunity.crosshairpro.crossNum
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
-import com.customscopecommunity.crosshairpro.transitionEffect
 import kotlinx.android.synthetic.main.fragment_classic.*
 
 
@@ -40,8 +39,6 @@ class ClassicActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(false)
         }
-
-        transitionEffect = false
 
         crosshairViews = arrayOf(
             classic1, classic2, classic3, classic4, classic5,

@@ -2,9 +2,6 @@ package com.customscopecommunity.crosshairpro
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.view.View
-import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -14,23 +11,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
-        iv_logo.startAnimation(AnimationUtils.loadAnimation(this, R.anim.splash_in))
 
-        Handler().postDelayed({
-            iv_logo.startAnimation(AnimationUtils.loadAnimation(this, R.anim.splash_out))
-            Handler().postDelayed({
-                iv_logo.visibility = View.GONE
-                startActivity(Intent(this, SecondMainActivity::class.java))
-                finish()
-            }, 0)
-        }, 500)
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+        iv_logo.alpha = 0f
+        iv_logo.animate().setDuration(300).alpha(1f).withEndAction {
+            val intent = Intent(this, SecondMainActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+            finish()
+        }
     }
 
 }

@@ -23,7 +23,7 @@
                 tools:layout="@layout/fragment_main" />
 
         <FrameLayout
-                android:id="@+id/ad_view_container"
+                android:id="@+id/banner_ad_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 ads:layout_constraintStart_toStartOf="parent"

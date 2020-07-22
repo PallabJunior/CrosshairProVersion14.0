@@ -8,8 +8,10 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.customscopecommunity.crosshairpro.databinding.ActivitySecondMainBinding
@@ -17,8 +19,8 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
-import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
+import com.unity3d.services.banners.IUnityBannerListener
 import kotlinx.android.synthetic.main.activity_second_main.*
 
 
@@ -26,16 +28,18 @@ const val CHANNEL_ID = "crosshair"
 var crossNum: Int = 200
 var afterFinishVisibility: Int = 0
 const val systemAlertWindowPermission = 2084
-var transitionEffect = true
-var isAdShowed = false
+var showUnityVideoAd = true
+
 class SecondMainActivity : AppCompatActivity() {
+
+    ///unity ads
+    private val unityGameID = "3708923"
+    private val testMode = true
+
 
     private lateinit var binding: ActivitySecondMainBinding
 
     private lateinit var adView: AdView
-
-    private val unityGameID = "3708923"
-    private val testMode = true
 
     private var initialLayoutComplete = false
 
@@ -47,7 +51,7 @@ class SecondMainActivity : AppCompatActivity() {
 
             val density = outMetrics.density
 
-            var adWidthPixels = ad_view_container.width.toFloat()
+            var adWidthPixels = banner_ad_container.width.toFloat()
             if (adWidthPixels == 0f) {
                 adWidthPixels = outMetrics.widthPixels.toFloat()
             }
@@ -60,30 +64,24 @@ class SecondMainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_second_main)
 
-        if (transitionEffect){
-            overridePendingTransition(R.anim.second_fade_in, R.anim.second_fade_out)
-        }
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
         }
 
+        //unity ads initialize
+        UnityAds.initialize(this, unityGameID, testMode)
+
+
         MobileAds.initialize(this)
 
         adView = AdView(this)
-        ad_view_container.addView(adView)
-        ad_view_container.viewTreeObserver.addOnGlobalLayoutListener {
+        banner_ad_container.addView(adView)
+        banner_ad_container.viewTreeObserver.addOnGlobalLayoutListener {
             if (!initialLayoutComplete) {
                 initialLayoutComplete = true
                 loadBanner()
             }
         }
-
-        val myAdsListener = UnityAdsListener()
-        UnityAds.initialize(this, unityGameID, testMode)
-        UnityAds.addListener(myAdsListener)
-
     }
 
     private fun createNotificationChannel() {
@@ -141,7 +139,6 @@ class SecondMainActivity : AppCompatActivity() {
         adView.adSize = adSize
 
         val adRequest = AdRequest.Builder().build()
-
         adView.loadAd(adRequest)
     }
 
@@ -159,26 +156,5 @@ class SecondMainActivity : AppCompatActivity() {
     public override fun onDestroy() {
         adView.destroy()
         super.onDestroy()
-    }
-
-    // Implement the IUnityAdsListener interface methods:
-    inner class UnityAdsListener : IUnityAdsListener {
-        override fun onUnityAdsReady(placementId: String?) {
-        }
-
-        override fun onUnityAdsStart(placementId: String?) {
-        }
-
-        override fun onUnityAdsFinish(placementId: String?, finishState: UnityAds.FinishState?) {
-            openPremiumActivity()
-        }
-
-        override fun onUnityAdsError(error: UnityAds.UnityAdsError?, message: String?) {
-        }
-    }
-
-    private fun openPremiumActivity(){
-        isAdShowed = true
-        startActivity(Intent(this, PremiumActivity::class.java))
     }
 }
