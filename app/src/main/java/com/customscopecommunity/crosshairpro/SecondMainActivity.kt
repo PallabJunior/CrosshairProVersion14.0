@@ -17,6 +17,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
 import kotlinx.android.synthetic.main.activity_second_main.*
 
@@ -25,7 +26,9 @@ const val CHANNEL_ID = "crosshair"
 var crossNum: Int = 200
 var afterFinishVisibility: Int = 0
 const val systemAlertWindowPermission = 2084
-var showUnityVideoAd = true
+var showUnityVideoAd = false
+var showUnityAdAgain = true
+var isCrosshairSelected = false
 
 class SecondMainActivity : AppCompatActivity() {
 
@@ -36,10 +39,11 @@ class SecondMainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySecondMainBinding
 
-    private lateinit var adView: AdView
+    private lateinit var adView: AdView              // admob banner
 
     private var initialLayoutComplete = false
 
+    // admob banner
     private val adSize: AdSize
         get() {
             val display = windowManager.defaultDisplay
@@ -65,12 +69,17 @@ class SecondMainActivity : AppCompatActivity() {
             createNotificationChannel()
         }
 
+        isCrosshairSelected = false
+
+        val myAdsListener = UnityAdsListener()
         //unity ads initialize
         UnityAds.initialize(this, unityGameID, testMode)
+        UnityAds.addListener(myAdsListener)
 
 
-        MobileAds.initialize(this)
+        MobileAds.initialize(this)  // admob banner
 
+        //admob banner
         adView = AdView(this)
         banner_ad_container.addView(adView)
         banner_ad_container.viewTreeObserver.addOnGlobalLayoutListener {
@@ -143,15 +152,45 @@ class SecondMainActivity : AppCompatActivity() {
     public override fun onPause() {
         adView.pause()
         super.onPause()
+        showUnityVideoAd = false
     }
 
     public override fun onResume() {
         super.onResume()
         adView.resume()
+        showUnityAd()
     }
 
     public override fun onDestroy() {
         adView.destroy()
         super.onDestroy()
+    }
+
+    private fun showUnityAd() {
+        // show Unity Video Ad
+        if (UnityAds.isReady(getString(R.string.unity_interstitial_ad_unit)) && showUnityVideoAd && showUnityAdAgain) {
+            UnityAds.show(
+                this,
+                getString(R.string.unity_interstitial_ad_unit)
+            )
+
+            showUnityVideoAd = false
+            showUnityAdAgain = false
+        }
+    }
+
+    // Implement the IUnityAdsListener interface methods:
+    inner class UnityAdsListener : IUnityAdsListener {
+        override fun onUnityAdsReady(placementId: String?) {
+        }
+
+        override fun onUnityAdsStart(placementId: String?) {
+        }
+
+        override fun onUnityAdsFinish(placementId: String?, finishState: UnityAds.FinishState?) {
+        }
+
+        override fun onUnityAdsError(error: UnityAds.UnityAdsError?, message: String?) {
+        }
     }
 }

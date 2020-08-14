@@ -336,6 +336,7 @@
                     android:layout_width="@dimen/x0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:backgroundTint="@color/primary" />
 
             <Button
@@ -344,6 +345,7 @@
                     android:layout_width="@dimen/x0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:backgroundTint="@color/white" />
 
             <Button
@@ -352,6 +354,7 @@
                     android:layout_width="@dimen/x0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:backgroundTint="@color/green" />
 
             <Button
@@ -360,6 +363,7 @@
                     android:layout_width="@dimen/x0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:backgroundTint="@color/yellow" />
 
             <Button
@@ -368,6 +372,7 @@
                     android:layout_width="@dimen/x0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:backgroundTint="@color/purple" />
 
             <Button
@@ -376,6 +381,7 @@
                     android:layout_width="@dimen/x0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:backgroundTint="@color/blue" />
 
 

@@ -1,19 +1,9 @@
 package com.customscopecommunity.crosshairpro
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.view.Gravity
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.customscopecommunity.crosshairpro.adapter.PremiumAdapter
-import com.customscopecommunity.crosshairpro.screens.action
-import com.customscopecommunity.crosshairpro.services.MainService
-import com.customscopecommunity.crosshairpro.services.PremiumService
-import com.unity3d.ads.IUnityAdsListener
-import com.unity3d.ads.UnityAds
 import kotlinx.android.synthetic.main.activity_premium.*
 import java.util.*
 
@@ -30,9 +20,7 @@ class PremiumActivity : AppCompatActivity() {
             setDisplayShowTitleEnabled(false)
         }
 
-        // unity Ads
-        val myAdsListener = UnityAdsListener()
-        UnityAds.addListener(myAdsListener)
+        showUnityVideoAd = true
 
         initialize()
     }
@@ -112,38 +100,4 @@ class PremiumActivity : AppCompatActivity() {
         return true
     }
 
-    private fun stopServices() {
-        stopService(Intent(this, MainService::class.java))
-        stopService(Intent(this, PremiumService::class.java))
-    }
-
-    private fun showToast() {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(action))
-        val toast =
-            Toast.makeText(this, getString(R.string.tap_start), Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
-
-        val handler = Handler()
-        handler.postDelayed({ toast.cancel() }, 700)
-    }
-
-    // Implement the IUnityAdsListener interface methods:
-    inner class UnityAdsListener : IUnityAdsListener {
-        override fun onUnityAdsReady(placementId: String?) {
-        }
-
-        override fun onUnityAdsStart(placementId: String?) {
-        }
-
-        override fun onUnityAdsFinish(placementId: String?, finishState: UnityAds.FinishState?) {
-            showUnityVideoAd = false
-            stopServices()
-            showToast()
-            onBackPressed()
-        }
-
-        override fun onUnityAdsError(error: UnityAds.UnityAdsError?, message: String?) {
-        }
-    }
 }

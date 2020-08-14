@@ -3,22 +3,18 @@ package com.customscopecommunity.crosshairpro.adapter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Handler
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.RecyclerView
 import com.customscopecommunity.crosshairpro.R
 import com.customscopecommunity.crosshairpro.crossNum
+import com.customscopecommunity.crosshairpro.isCrosshairSelected
 import com.customscopecommunity.crosshairpro.screens.action
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
-import com.customscopecommunity.crosshairpro.showUnityVideoAd
-import com.unity3d.ads.UnityAds
 import kotlinx.android.synthetic.main.premium_row_layout.view.*
 
 
@@ -43,23 +39,11 @@ class PremiumAdapter(
         holder.imageCrosshair.setImageResource(imageList[position])
 
         holder.itemView.setOnClickListener {
-
-            // show Unity Video Ad
-            if (UnityAds.isReady(context.getString(R.string.unity_interstitial_ad_unit)) && showUnityVideoAd) {
-                UnityAds.show(
-                    context as Activity,
-                    context.getString(R.string.unity_interstitial_ad_unit)
-                )
-                /// manage the services in the activity
-                crossNum = 80 + position
-            } else {
-                // manage the services here
-                crossNum = 80 + position
-                stopServices()
-                showToast()
-                (context as Activity).finish()
-            }
-
+            // manage the services here
+            crossNum = 80 + position
+            stopServices()
+            showToast()
+            (context as Activity).finish()
         }
     }
 
@@ -81,13 +65,7 @@ class PremiumAdapter(
     }
 
     private fun showToast() {
+        isCrosshairSelected = true
         LocalBroadcastManager.getInstance(context).sendBroadcast(Intent(action))
-        val toast =
-            Toast.makeText(context, context.getString(R.string.tap_start), Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
-
-        val handler = Handler()
-        handler.postDelayed({ toast.cancel() }, 700)
     }
 }

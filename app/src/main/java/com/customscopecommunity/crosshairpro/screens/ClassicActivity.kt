@@ -2,17 +2,15 @@ package com.customscopecommunity.crosshairpro.screens
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.view.Gravity
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.customscopecommunity.crosshairpro.R
 import com.customscopecommunity.crosshairpro.crossNum
+import com.customscopecommunity.crosshairpro.isCrosshairSelected
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
 import kotlinx.android.synthetic.main.fragment_classic.*
@@ -174,13 +172,9 @@ class ClassicActivity : AppCompatActivity() {
 
     private fun toastShow() {
 
+        isCrosshairSelected = true
         LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(action))
-        val toast = Toast.makeText(this, getString(R.string.tap_start), Toast.LENGTH_SHORT)
-        toast.setGravity(Gravity.CENTER, 0, 0)
-        toast.show()
 
-        val handler = Handler()
-        handler.postDelayed({ toast.cancel() }, 700)
     }
 
     private fun closeFg() {

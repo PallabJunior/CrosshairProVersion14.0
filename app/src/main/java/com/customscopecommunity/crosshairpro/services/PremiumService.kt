@@ -37,6 +37,8 @@ class PremiumService : BaseService(), View.OnClickListener {
 
     private var checkFun = false
 
+    private var isToastShowed = false
+
     override fun onCreate() {
 
         val intent = Intent(this, SecondMainActivity::class.java).apply {
@@ -204,6 +206,7 @@ class PremiumService : BaseService(), View.OnClickListener {
             PixelFormat.TRANSLUCENT
         )
         xParams.gravity = Gravity.CENTER_HORIZONTAL or Gravity.END
+        xParams.x = 15
 
         xWindowManager.addView(xFloatingView, xParams)
 
@@ -233,6 +236,11 @@ class PremiumService : BaseService(), View.OnClickListener {
             proButtonCancel.setOnClickListener {
                 xWindowManager.removeView(xFloatingView)
                 checkFun = false
+                if (!isToastShowed) {
+                    showToast()
+                    isToastShowed = true
+                }
+
             }
         }
 
