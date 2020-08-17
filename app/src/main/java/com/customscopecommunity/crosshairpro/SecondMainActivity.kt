@@ -7,18 +7,18 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
+import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.customscopecommunity.crosshairpro.databinding.ActivitySecondMainBinding
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
+import com.unity3d.services.banners.BannerErrorInfo
+import com.unity3d.services.banners.BannerView
+import com.unity3d.services.banners.BannerView.IListener
+import com.unity3d.services.banners.UnityBannerSize
 import kotlinx.android.synthetic.main.activity_second_main.*
 
 
@@ -35,31 +35,38 @@ class SecondMainActivity : AppCompatActivity() {
     ///unity ads
     private val unityGameID = "3708923"
     private val testMode = true
+    private val bannerPlacement = "bannerPro"
 
+    // Interstitial ad listener
+    private val unityAdsListener = UnityAdsListener()
+
+    // Listener for banner ad events
+    private val bannerListener = UnityBannerListener()
+    private lateinit var topBanner: BannerView
 
     private lateinit var binding: ActivitySecondMainBinding
 
-    private lateinit var adView: AdView              // admob banner
+    //private lateinit var adView: AdView              // admob banner
 
-    private var initialLayoutComplete = false
+    //private var initialLayoutComplete = false
 
     // admob banner
-    private val adSize: AdSize
-        get() {
-            val display = windowManager.defaultDisplay
-            val outMetrics = DisplayMetrics()
-            display.getMetrics(outMetrics)
-
-            val density = outMetrics.density
-
-            var adWidthPixels = banner_ad_container.width.toFloat()
-            if (adWidthPixels == 0f) {
-                adWidthPixels = outMetrics.widthPixels.toFloat()
-            }
-
-            val adWidth = (adWidthPixels / density).toInt()
-            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
-        }
+//    private val adSize: AdSize
+//        get() {
+//            val display = windowManager.defaultDisplay
+//            val outMetrics = DisplayMetrics()
+//            display.getMetrics(outMetrics)
+//
+//            val density = outMetrics.density
+//
+//            var adWidthPixels = banner_ad_container.width.toFloat()
+//            if (adWidthPixels == 0f) {
+//                adWidthPixels = outMetrics.widthPixels.toFloat()
+//            }
+//
+//            val adWidth = (adWidthPixels / density).toInt()
+//            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
+//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,23 +78,32 @@ class SecondMainActivity : AppCompatActivity() {
 
         isCrosshairSelected = false
 
-        val myAdsListener = UnityAdsListener()
         //unity ads initialize
         UnityAds.initialize(this, unityGameID, testMode)
-        UnityAds.addListener(myAdsListener)
 
+        // Listener for interstitial ad events
+        UnityAds.addListener(unityAdsListener)
 
-        MobileAds.initialize(this)  // admob banner
-
-        //admob banner
-        adView = AdView(this)
-        banner_ad_container.addView(adView)
-        banner_ad_container.viewTreeObserver.addOnGlobalLayoutListener {
-            if (!initialLayoutComplete) {
-                initialLayoutComplete = true
-                loadBanner()
-            }
+        if (UnityAds.isInitialized()){
+            showUnityBannerAd()
+        }else{
+            val handler = Handler()
+            handler.postDelayed({
+                showUnityBannerAd()
+            }, 3000)
         }
+
+//        MobileAds.initialize(this)  // admob banner
+//
+//        //admob banner
+//        adView = AdView(this)
+//        banner_ad_container.addView(adView)
+//        banner_ad_container.viewTreeObserver.addOnGlobalLayoutListener {
+//            if (!initialLayoutComplete) {
+//                initialLayoutComplete = true
+//                loadBanner()
+//            }
+//        }
     }
 
     private fun createNotificationChannel() {
@@ -138,31 +154,31 @@ class SecondMainActivity : AppCompatActivity() {
         startActivity(launch)
     }
 
-    private fun loadBanner() {
-        //adView.adUnitId = getString(R.string.main_banner)
-        adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
-
-        adView.adSize = adSize
-
-        val adRequest = AdRequest.Builder().build()
-        adView.loadAd(adRequest)
-    }
+//    private fun loadBanner() {
+//        //adView.adUnitId = getString(R.string.main_banner)
+//        adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
+//
+//        adView.adSize = adSize
+//
+//        val adRequest = AdRequest.Builder().build()
+//        adView.loadAd(adRequest)
+//    }
 
 
     public override fun onPause() {
-        adView.pause()
+        //adView.pause()
         super.onPause()
         showUnityVideoAd = false
     }
 
     public override fun onResume() {
         super.onResume()
-        adView.resume()
+        //adView.resume()
         showUnityAd()
     }
 
     public override fun onDestroy() {
-        adView.destroy()
+        //adView.destroy()
         super.onDestroy()
     }
 
@@ -179,7 +195,18 @@ class SecondMainActivity : AppCompatActivity() {
         }
     }
 
-    // Implement the IUnityAdsListener interface methods:
+    private fun showUnityBannerAd() {
+        topBanner = BannerView(this, bannerPlacement, UnityBannerSize(320, 50))
+        topBanner.listener = bannerListener
+        topBanner.load()
+        banner_ad_container.addView(topBanner)
+    }
+
+//    private fun destroyUnityBannerAd() {
+//        topBannerView.removeAllViews()
+//    }
+
+    // Implement the Listener interface methods for unity interstitial ad
     inner class UnityAdsListener : IUnityAdsListener {
         override fun onUnityAdsReady(placementId: String?) {
         }
@@ -191,6 +218,21 @@ class SecondMainActivity : AppCompatActivity() {
         }
 
         override fun onUnityAdsError(error: UnityAds.UnityAdsError?, message: String?) {
+        }
+    }
+
+    // Implement the Listener interface methods for unity banner ad
+    inner class UnityBannerListener : IListener {
+        override fun onBannerLoaded(bannerAdView: BannerView) {
+        }
+
+        override fun onBannerFailedToLoad(bannerAdView: BannerView, errorInfo: BannerErrorInfo) {
+        }
+
+        override fun onBannerClick(bannerAdView: BannerView) {
+        }
+
+        override fun onBannerLeftApplication(bannerAdView: BannerView) {
         }
     }
 }

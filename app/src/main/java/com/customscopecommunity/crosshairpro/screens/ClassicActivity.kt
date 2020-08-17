@@ -13,6 +13,7 @@ import com.customscopecommunity.crosshairpro.crossNum
 import com.customscopecommunity.crosshairpro.isCrosshairSelected
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
+import com.customscopecommunity.crosshairpro.showUnityVideoAd
 import kotlinx.android.synthetic.main.fragment_classic.*
 
 
@@ -37,6 +38,8 @@ class ClassicActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(false)
         }
+
+        showUnityVideoAd = true
 
         crosshairViews = arrayOf(
             classic1, classic2, classic3, classic4, classic5,

@@ -22,10 +22,11 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout="@layout/fragment_main" />
 
-        <FrameLayout
+        <RelativeLayout
                 android:id="@+id/banner_ad_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 ads:layout_constraintStart_toStartOf="parent"
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintBottom_toBottomOf="parent"/>
