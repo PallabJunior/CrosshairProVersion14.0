@@ -26,9 +26,11 @@ const val CHANNEL_ID = "crosshair"
 var crossNum: Int = 200
 var afterFinishVisibility: Int = 0
 const val systemAlertWindowPermission = 2084
-var showUnityVideoAd = false
-var showUnityAdAgain = true
+
 var isCrosshairSelected = false
+
+var showUnityVideoAd = false          // var showUnityVideoAd = false
+private var showUnityVideoAdAgain = true            // interstitial and rewarded ad
 
 class SecondMainActivity : AppCompatActivity() {
 
@@ -36,9 +38,12 @@ class SecondMainActivity : AppCompatActivity() {
     private val unityGameID = "3708923"
     private val testMode = true
     private val bannerPlacement = "bannerPro"
+    private val rewardedPlacement = "crosshairRewarded"
+    private val interstitialPlacement = "interstitialAdCrosshairPro"
 
-    // Interstitial ad listener
-    private val unityAdsListener = UnityAdsListener()
+
+    // Interstitial and rewarded ad listener
+    private val rewardedUnityAdsListener = UnityVideoAdsListener()
 
     // Listener for banner ad events
     private val bannerListener = UnityBannerListener()
@@ -81,12 +86,12 @@ class SecondMainActivity : AppCompatActivity() {
         //unity ads initialize
         UnityAds.initialize(this, unityGameID, testMode)
 
-        // Listener for interstitial ad events
-        UnityAds.addListener(unityAdsListener)
+        // Listener for rewarded and interstitial ad events
+        UnityAds.addListener(rewardedUnityAdsListener)
 
-        if (UnityAds.isInitialized()){
+        if (UnityAds.isInitialized()) {
             showUnityBannerAd()
-        }else{
+        } else {
             val handler = Handler()
             handler.postDelayed({
                 showUnityBannerAd()
@@ -154,6 +159,7 @@ class SecondMainActivity : AppCompatActivity() {
         startActivity(launch)
     }
 
+
 //    private fun loadBanner() {
 //        //adView.adUnitId = getString(R.string.main_banner)
 //        adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
@@ -174,7 +180,9 @@ class SecondMainActivity : AppCompatActivity() {
     public override fun onResume() {
         super.onResume()
         //adView.resume()
-        showUnityAd()
+        //showUnityInterstitialAd()
+        showRewardedVideoAd()
+
     }
 
     public override fun onDestroy() {
@@ -182,16 +190,23 @@ class SecondMainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    private fun showUnityAd() {
+    private fun showUnityInterstitialAd() {
         // show Unity Video Ad
-        if (UnityAds.isReady(getString(R.string.unity_interstitial_ad_unit)) && showUnityVideoAd && showUnityAdAgain) {
-            UnityAds.show(
-                this,
-                getString(R.string.unity_interstitial_ad_unit)
-            )
+        if (UnityAds.isReady(interstitialPlacement) && showUnityVideoAd && showUnityVideoAdAgain) {
+            UnityAds.show(this, interstitialPlacement)
 
-            showUnityVideoAd = false
-            showUnityAdAgain = false
+            showUnityVideoAdAgain = false
+        }
+    }
+
+    private fun showRewardedVideoAd() {
+        // Rewarded video ad
+        if (UnityAds.isReady(rewardedPlacement) && showUnityVideoAd && showUnityVideoAdAgain) {
+            UnityAds.show(this, rewardedPlacement)
+            showUnityVideoAdAgain = false
+        } else {
+            // Interstitial Video ad
+            showUnityInterstitialAd()
         }
     }
 
@@ -206,23 +221,26 @@ class SecondMainActivity : AppCompatActivity() {
 //        topBannerView.removeAllViews()
 //    }
 
-    // Implement the Listener interface methods for unity interstitial ad
-    inner class UnityAdsListener : IUnityAdsListener {
+
+    //////////// unity rewarded video ad listener
+    class UnityVideoAdsListener : IUnityAdsListener {
+
         override fun onUnityAdsReady(placementId: String?) {
         }
 
         override fun onUnityAdsStart(placementId: String?) {
         }
 
-        override fun onUnityAdsFinish(placementId: String?, finishState: UnityAds.FinishState?) {
+        override fun onUnityAdsFinish(placementId: String?, p1: UnityAds.FinishState?) {
         }
 
-        override fun onUnityAdsError(error: UnityAds.UnityAdsError?, message: String?) {
+        override fun onUnityAdsError(p0: UnityAds.UnityAdsError?, p1: String?) {
         }
     }
+    //////////// unity rewarded video ad listener
 
     // Implement the Listener interface methods for unity banner ad
-    inner class UnityBannerListener : IListener {
+    class UnityBannerListener : IListener {
         override fun onBannerLoaded(bannerAdView: BannerView) {
         }
 

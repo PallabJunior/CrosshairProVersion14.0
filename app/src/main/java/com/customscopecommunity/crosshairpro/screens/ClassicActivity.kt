@@ -8,12 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.customscopecommunity.crosshairpro.R
-import com.customscopecommunity.crosshairpro.crossNum
-import com.customscopecommunity.crosshairpro.isCrosshairSelected
+import com.customscopecommunity.crosshairpro.*
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
-import com.customscopecommunity.crosshairpro.showUnityVideoAd
 import kotlinx.android.synthetic.main.fragment_classic.*
 
 
