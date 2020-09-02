@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/android_button_bg_green">
+        android:background="@drawable/android_button_bg_green"
+        android:paddingStart="@dimen/x10dp"
+        android:paddingTop="@dimen/x8dp"
+        android:paddingEnd="@dimen/x10dp"
+        android:paddingBottom="@dimen/x8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/proController"
-            android:layout_width="@dimen/x125dp"
-            android:layout_height="@dimen/x155dp">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
         <ImageView
@@ -51,7 +56,6 @@
                 android:id="@+id/proButtonUp"
                 android:layout_width="@dimen/x25dp"
                 android:layout_height="@dimen/x25dp"
-                android:layout_marginTop="@dimen/x5dp"
                 android:contentDescription="@string/crosshair"
                 android:scaleType="fitCenter"
                 android:src="@drawable/button_up"
@@ -63,8 +67,6 @@
                 android:id="@+id/proButtonCancel"
                 android:layout_width="@dimen/x20dp"
                 android:layout_height="@dimen/x20dp"
-                android:layout_marginTop="@dimen/x8dp"
-                android:layout_marginEnd="@dimen/x8dp"
                 android:contentDescription="@string/crosshair"
                 android:src="@drawable/ic_cancel"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -75,25 +77,21 @@
                 style="@style/Widget.AppCompat.SeekBar"
                 android:layout_width="@dimen/x0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/x8dp"
-                android:layout_marginTop="@dimen/x12dp"
-                android:layout_marginEnd="@dimen/x8dp"
+                android:layout_marginTop="8dp"
                 android:progress="100"
                 android:progressTint="@color/primary"
                 android:thumbTint="@color/dark_red"
                 app:layout_constraintBottom_toTopOf="@id/opacity_seekbar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/proButtonDown" />
+                app:layout_constraintTop_toBottomOf="@+id/show_move_count" />
 
         <SeekBar
                 android:id="@+id/opacity_seekbar"
                 style="@style/Widget.AppCompat.SeekBar"
                 android:layout_width="@dimen/x0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/x8dp"
-                android:layout_marginTop="@dimen/x5dp"
-                android:layout_marginEnd="@dimen/x8dp"
+                android:layout_marginTop="8dp"
                 android:max="255"
                 android:progress="255"
                 android:progressTint="@color/yellow"
@@ -104,6 +102,37 @@
                 app:layout_constraintTop_toBottomOf="@id/proSeekBar"
 
                 />
+
+        <ImageView
+                android:id="@+id/btn_decrease"
+                android:layout_width="@dimen/x20dp"
+                android:layout_height="@dimen/x20dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_decrease"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/proButtonDown"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/btn_increase"
+                android:layout_width="@dimen/x20dp"
+                android:layout_height="@dimen/x20dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_increase"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/proButtonDown"
+                tools:ignore="ContentDescription" />
+
+        <TextView
+                android:id="@+id/show_move_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                tools:text="2"
+                android:textColor="@color/material_white"
+                app:layout_constraintEnd_toStartOf="@+id/btn_increase"
+                app:layout_constraintStart_toEndOf="@+id/btn_decrease"
+                app:layout_constraintTop_toBottomOf="@+id/proButtonDown" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -25,8 +25,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     app:cardBackgroundColor="@color/dark_theme_center_blue_bg"
-                    app:cardCornerRadius="@dimen/x10dp"
-                    app:cardElevation="@dimen/x10dp">
+                    app:cardCornerRadius="@dimen/x8dp"
+                    app:cardElevation="@dimen/x5dp">
 
                 <LinearLayout
                         android:layout_width="match_parent"
@@ -60,8 +60,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     app:cardBackgroundColor="@color/dark_theme_center_blue_bg"
-                    app:cardCornerRadius="@dimen/x10dp"
-                    app:cardElevation="@dimen/x10dp">
+                    app:cardCornerRadius="@dimen/x8dp"
+                    app:cardElevation="@dimen/x5dp">
 
                 <LinearLayout
                         android:layout_width="match_parent"

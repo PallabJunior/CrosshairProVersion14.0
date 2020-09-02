@@ -16,6 +16,7 @@ import com.customscopecommunity.crosshairpro.*
 import com.customscopecommunity.crosshairpro.database.Position
 import com.customscopecommunity.crosshairpro.database.PositionDatabase
 import kotlinx.android.synthetic.main.layout_pro_controller.view.*
+import kotlinx.android.synthetic.main.layout_pro_crosshair.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,6 +40,9 @@ class PremiumService : BaseService(), View.OnClickListener {
 
     private var isToastShowed = false
 
+    // control the movement of the crosshair
+    private var moveCount = 10
+
     override fun onCreate() {
 
         val intent = Intent(this, SecondMainActivity::class.java).apply {
@@ -59,7 +63,8 @@ class PremiumService : BaseService(), View.OnClickListener {
         afterFinishVisibility = 3
 
         mFloatingView = View.inflate(this, R.layout.layout_pro_crosshair, null)
-        imageView = mFloatingView.findViewById(R.id.proServiceCrosshair)
+        //imageView = mFloatingView.findViewById(R.id.proServiceCrosshair)                             // change added
+        imageView = mFloatingView.proServiceCrosshair
 
         when (crossNum) {
             200 -> addImage(R.drawable.pro1n)
@@ -213,24 +218,27 @@ class PremiumService : BaseService(), View.OnClickListener {
         xCollapsedView = xFloatingView.findViewById(R.id.proController)
 
         xCollapsedView.apply {
+
+            show_move_count.text = moveCount.toString()
+
             proButtonUp.setOnClickListener {
-                params.y -= 2
-                vValue -= 2
+                params.y -= moveCount
+                vValue -= moveCount
                 updateLayout()
             }
             proButtonDown.setOnClickListener {
-                params.y += 2
-                vValue += 2
+                params.y += moveCount
+                vValue += moveCount
                 updateLayout()
             }
             proButtonLeft.setOnClickListener {
-                params.x -= 2
-                hValue -= 2
+                params.x -= moveCount
+                hValue -= moveCount
                 updateLayout()
             }
             proButtonRight.setOnClickListener {
-                params.x += 2
-                hValue += 2
+                params.x += moveCount
+                hValue += moveCount
                 updateLayout()
             }
             proButtonCancel.setOnClickListener {
@@ -240,7 +248,26 @@ class PremiumService : BaseService(), View.OnClickListener {
                     showToast()
                     isToastShowed = true
                 }
+            }
 
+            // Decrease move count
+            btn_decrease.setOnClickListener {
+                --moveCount
+
+                if (moveCount <= 1)
+                    moveCount = 1
+
+                show_move_count.text = moveCount.toString()
+            }
+
+            // Increase move count
+            btn_increase.setOnClickListener {
+                moveCount++
+
+                if (moveCount >= 30)
+                    moveCount = 30
+
+                show_move_count.text = moveCount.toString()
             }
         }
 

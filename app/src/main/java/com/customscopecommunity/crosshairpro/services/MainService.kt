@@ -19,6 +19,7 @@ import com.customscopecommunity.crosshairpro.database.Position
 import com.customscopecommunity.crosshairpro.database.PositionDatabase
 import com.customscopecommunity.crosshairpro.screens.backgroundLight
 import com.customscopecommunity.crosshairpro.screens.colour
+import kotlinx.android.synthetic.main.layout_main_crosshair.view.*
 import kotlinx.android.synthetic.main.layout_pro_controller.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +45,9 @@ class MainService : BaseService(), View.OnClickListener {
 
     private var isToastShowed = false
 
+    // control the movement of the crosshair
+    private var moveCount = 10
+
     override fun onCreate() {
 
         val intent = Intent(this, SecondMainActivity::class.java).apply {
@@ -64,7 +68,8 @@ class MainService : BaseService(), View.OnClickListener {
         afterFinishVisibility = 1
 
         mFloatingView = inflate(this, R.layout.layout_main_crosshair, null)
-        imageView = mFloatingView.findViewById(R.id.mainServiceCrosshair)
+        //imageView = mFloatingView.findViewById(R.id.mainServiceCrosshair)                       // change added
+        imageView = mFloatingView.mainServiceCrosshair
 
         if (backgroundLight == 1) {
             imageView.setBackgroundResource(R.drawable.c_background)
@@ -189,24 +194,27 @@ class MainService : BaseService(), View.OnClickListener {
         xCollapsedView = xFloatingView.findViewById(R.id.proController)
 
         xCollapsedView.apply {
+
+            show_move_count.text = moveCount.toString()
+
             proButtonUp.setOnClickListener {
-                params.y -= 2
-                vValue -= 2
+                params.y -= moveCount
+                vValue -= moveCount
                 updateLayout()
             }
             proButtonDown.setOnClickListener {
-                params.y += 2
-                vValue += 2
+                params.y += moveCount
+                vValue += moveCount
                 updateLayout()
             }
             proButtonLeft.setOnClickListener {
-                params.x -= 2
-                hValue -= 2
+                params.x -= moveCount
+                hValue -= moveCount
                 updateLayout()
             }
             proButtonRight.setOnClickListener {
-                params.x += 2
-                hValue += 2
+                params.x += moveCount
+                hValue += moveCount
                 updateLayout()
             }
             proButtonCancel.setOnClickListener {
@@ -216,6 +224,26 @@ class MainService : BaseService(), View.OnClickListener {
                     showToast()
                     isToastShowed = true
                 }
+            }
+
+            // Decrease move count
+            btn_decrease.setOnClickListener {
+                --moveCount
+
+                if (moveCount <= 1)
+                    moveCount = 1
+
+                show_move_count.text = moveCount.toString()
+            }
+
+            // Increase move count
+            btn_increase.setOnClickListener {
+                moveCount++
+
+                if (moveCount >= 30)
+                    moveCount = 30
+
+                show_move_count.text = moveCount.toString()
             }
         }
 

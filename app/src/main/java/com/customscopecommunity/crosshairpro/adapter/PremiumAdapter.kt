@@ -56,7 +56,7 @@ class PremiumAdapter(
         return imageList.size
     }
 
-    inner class PremiumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class PremiumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
         var imageCrosshair: ImageView = itemView.premium_crosshair
