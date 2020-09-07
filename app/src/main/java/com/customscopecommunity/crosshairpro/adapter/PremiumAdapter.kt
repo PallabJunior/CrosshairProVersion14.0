@@ -3,6 +3,7 @@ package com.customscopecommunity.crosshairpro.adapter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.RecyclerView
 import com.customscopecommunity.crosshairpro.R
 import com.customscopecommunity.crosshairpro.crossNum
-import com.customscopecommunity.crosshairpro.isCrosshairSelected
 import com.customscopecommunity.crosshairpro.screens.action
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
@@ -42,7 +42,8 @@ class PremiumAdapter(
             // manage the services here
             crossNum = 80 + position
             stopServices()
-            showToast()
+            startService()
+            changeButtonsVisibility()
             (context as Activity).finish()
         }
     }
@@ -58,14 +59,18 @@ class PremiumAdapter(
 
     class PremiumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-
         var imageCrosshair: ImageView = itemView.premium_crosshair
-
-
     }
 
-    private fun showToast() {
-        isCrosshairSelected = true
+    private fun changeButtonsVisibility() {
         LocalBroadcastManager.getInstance(context).sendBroadcast(Intent(action))
+    }
+
+    private fun startService(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(premService)
+        } else {
+            context.startService(premService)
+        }
     }
 }

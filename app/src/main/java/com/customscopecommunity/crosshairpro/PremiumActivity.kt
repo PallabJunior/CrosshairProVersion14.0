@@ -20,8 +20,6 @@ class PremiumActivity : AppCompatActivity() {
             setDisplayShowTitleEnabled(false)
         }
 
-        showUnityVideoAd = true
-
         initialize()
     }
 

@@ -7,9 +7,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.DisplayMetrics
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.customscopecommunity.crosshairpro.databinding.ActivitySecondMainBinding
@@ -27,12 +29,19 @@ var crossNum: Int = 200
 var afterFinishVisibility: Int = 0
 const val systemAlertWindowPermission = 2084
 
-var isCrosshairSelected = false
-
-var showUnityVideoAd = false          // var showUnityVideoAd = false
-private var showUnityVideoAdAgain = true            // interstitial and rewarded ad
-
 class SecondMainActivity : AppCompatActivity() {
+
+    private var countShowedAd = 0
+
+    // to stop the  handler from the handler
+    private var stopHandler = false
+
+    // not to call the showAdButton() method multiple times in the onUnityAdsReady() method
+    private var timerStart = false
+
+    private var handler: Handler = Handler()
+    private var runnable: Runnable? = null
+    private var delay: Long = 3000
 
     ///unity ads
     private val unityGameID = "3708923"
@@ -45,9 +54,10 @@ class SecondMainActivity : AppCompatActivity() {
     // Interstitial and rewarded ad listener
     private val rewardedUnityAdsListener = UnityVideoAdsListener()
 
-//    // Listener for Unity banner ad events
-//    private val bannerListener = UnityBannerListener()
-//    private lateinit var unityBanner: BannerView
+
+    //    // Listener for Unity banner ad events
+    //    private val bannerListener = UnityBannerListener()
+    //    private lateinit var unityBanner: BannerView
 
     private lateinit var binding: ActivitySecondMainBinding
 
@@ -76,11 +86,14 @@ class SecondMainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_second_main)
 
+        setSupportActionBar(toolbar)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
         }
 
-        isCrosshairSelected = false
+
+        //isCrosshairSelected = false
 
         //unity ads initialize
         UnityAds.initialize(this, unityGameID, testMode)
@@ -88,14 +101,14 @@ class SecondMainActivity : AppCompatActivity() {
         // Listener for rewarded and interstitial ad events
         UnityAds.addListener(rewardedUnityAdsListener)
 
-//        if (UnityAds.isInitialized()) {
-//            showUnityBannerAd()
-//        } else {
-//            val handler = Handler()
-//            handler.postDelayed({
-//                showUnityBannerAd()
-//            }, 3000)
-//        }
+        //        if (UnityAds.isInitialized()) {
+        //            showUnityBannerAd()
+        //        } else {
+        //            val handler = Handler()
+        //            handler.postDelayed({
+        //                showUnityBannerAd()
+        //            }, 3000)
+        //        }
 
         MobileAds.initialize(this)  // admob banner
 
@@ -108,6 +121,12 @@ class SecondMainActivity : AppCompatActivity() {
                 loadBanner()
             }
         }
+
+
+        binding.adAnimationView.setOnClickListener {
+            showRewardedVideoAd()
+        }
+
     }
 
     private fun createNotificationChannel() {
@@ -170,86 +189,134 @@ class SecondMainActivity : AppCompatActivity() {
     }
 
 
-    public override fun onPause() {
-        adView.pause()
-        super.onPause()
-        showUnityVideoAd = false
-    }
-
-    public override fun onResume() {
-        super.onResume()
-        adView.resume()
-        //showUnityInterstitialAd()
-        showRewardedVideoAd()
-
-    }
-
-    public override fun onDestroy() {
-        adView.destroy()
-        super.onDestroy()
-    }
-
     private fun showUnityInterstitialAd() {
         // show Unity Video Ad
-        if (UnityAds.isReady(interstitialPlacement) && showUnityVideoAd && showUnityVideoAdAgain) {
+        if (UnityAds.isReady(interstitialPlacement)) {
             UnityAds.show(this, interstitialPlacement)
 
-            showUnityVideoAdAgain = false
         }
     }
 
     private fun showRewardedVideoAd() {
         // Rewarded video ad
-        if (UnityAds.isReady(rewardedPlacement) && showUnityVideoAd && showUnityVideoAdAgain) {
+        if (UnityAds.isReady(rewardedPlacement)) {
             UnityAds.show(this, rewardedPlacement)
-            showUnityVideoAdAgain = false
+
         } else {
             // Interstitial Video ad
             showUnityInterstitialAd()
         }
     }
 
-//    private fun showUnityBannerAd() {
-//        unityBanner = BannerView(this, bannerPlacement, UnityBannerSize(320, 50))
-//        unityBanner.listener = bannerListener
-//        unityBanner.load()
-//        banner_ad_container.addView(unityBanner)
-//    }
+    //    private fun showUnityBannerAd() {
 
-//    private fun destroyUnityBannerAd() {
-//        topBannerView.removeAllViews()
-//    }
+    //    private fun destroyUnityBannerAd() {
+
+    private fun showAdButton() {
+
+        handler.postDelayed(Runnable {
+            handler.postDelayed(runnable!!, delay)
+            // repeating method
+            if (stopHandler)
+                return@Runnable
+
+            if (UnityAds.isReady(rewardedPlacement) || UnityAds.isReady(interstitialPlacement)) {
+
+                binding.adAnimationView.visibility = View.VISIBLE
+                handler.removeCallbacks(runnable!!) // stop the repeating timer
+                stopHandler = true
+            }
+            // repeating method
+        }.also { runnable = it }, delay)
+    }
 
 
     //////////// unity rewarded video ad listener
-    class UnityVideoAdsListener : IUnityAdsListener {
-
+    inner class UnityVideoAdsListener : IUnityAdsListener {
         override fun onUnityAdsReady(placementId: String?) {
+
+            if (!timerStart) {
+                showAdButton()
+                timerStart = true
+            }
+
         }
 
         override fun onUnityAdsStart(placementId: String?) {
         }
 
         override fun onUnityAdsFinish(placementId: String?, p1: UnityAds.FinishState?) {
+            countShowedAd++
+
+            if (countShowedAd <= 1) {
+                binding.adAnimationView.visibility = View.GONE
+                stopHandler = false
+                showAdButton()
+            } else {
+                if (runnable != null) {
+                    handler.removeCallbacks(runnable!!) // stop the repeating timer
+                    stopHandler = true
+                    binding.adAnimationView.visibility = View.GONE
+                }
+            }
         }
 
         override fun onUnityAdsError(p0: UnityAds.UnityAdsError?, p1: String?) {
         }
+
     }
-    //////////// unity rewarded video ad listener
 
     // Implement the Listener interface methods for unity banner ad
-//    class UnityBannerListener : IListener {
-//        override fun onBannerLoaded(bannerAdView: BannerView) {
-//        }
-//
-//        override fun onBannerFailedToLoad(bannerAdView: BannerView, errorInfo: BannerErrorInfo) {
-//        }
-//
-//        override fun onBannerClick(bannerAdView: BannerView) {
-//        }
-//
-//        override fun onBannerLeftApplication(bannerAdView: BannerView) {
-//        }
-//    }
+
+    //    }
+    //        }
+    //        override fun onBannerLeftApplication(bannerAdView: BannerView) {
+    //
+    //        }
+    //        override fun onBannerClick(bannerAdView: BannerView) {
+    //
+    //        }
+    //        override fun onBannerFailedToLoad(bannerAdView: BannerView, errorInfo: BannerErrorInfo) {
+    //
+    //        }
+    //        override fun onBannerLoaded(bannerAdView: BannerView) {
+    //    class UnityBannerListener : IListener {
+    //////////// unity rewarded video ad listener
+    //    }
+    //        topBannerView.removeAllViews()
+    //    }
+    //        banner_ad_container.addView(unityBanner)
+    //        unityBanner.load()
+    //        unityBanner.listener = bannerListener
+    //        unityBanner = BannerView(this, bannerPlacement, UnityBannerSize(320, 50))
+
+    override fun onPause() {
+        if (runnable != null) {
+            stopHandler = true
+            handler.removeCallbacks(runnable!!) // stop the repeating timer
+        }
+        adView.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // showing ad after returning to the app or returning to the SecondMainActivity from classic and premium
+        if (UnityAds.isReady(rewardedPlacement) || UnityAds.isReady(interstitialPlacement)) {
+            if (countShowedAd <= 1)
+                binding.adAnimationView.visibility = View.VISIBLE
+        }
+
+        adView.resume()
+
+    }
+
+    override fun onDestroy() {
+        if (runnable != null) {
+            handler.removeCallbacks(runnable!!) // stop the repeating timer
+        }
+        adView.destroy()
+        super.onDestroy()
+    }
+
 }

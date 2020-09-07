@@ -24,7 +24,6 @@ import com.customscopecommunity.crosshairpro.*
 import com.customscopecommunity.crosshairpro.databinding.FragmentMainBinding
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
-import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.permission_dialog.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -73,10 +72,9 @@ class MainFragment : Fragment(), CoroutineScope {
         broadcastReceiver = object : BroadcastReceiver() {
 
             override fun onReceive(context: Context, intent: Intent) {
-                binding.buttonStop.visibility = View.GONE
-                binding.buttonStart.visibility = View.VISIBLE
-
-                binding.btnMinimize.visibility = View.GONE
+                binding.buttonStop.visibility = View.VISIBLE
+                binding.buttonStart.visibility = View.GONE
+                binding.btnMinimize.visibility = View.VISIBLE
             }
         }
         LocalBroadcastManager.getInstance(activity!!)
@@ -117,7 +115,6 @@ class MainFragment : Fragment(), CoroutineScope {
 
         startButton.setOnClickListener {
             startRequiredService()
-            is_ready.visibility = View.GONE
         }
 
         stopButton.setOnClickListener {
@@ -200,16 +197,6 @@ class MainFragment : Fragment(), CoroutineScope {
         )
         startActivityForResult(intent, systemAlertWindowPermission)
     }
-
-    override fun onResume() {
-        super.onResume()
-        // handle the visibility of the isReady text View
-        if (isCrosshairSelected) {
-            is_ready.visibility = View.VISIBLE
-            isCrosshairSelected = false
-        }
-    }
-
 
     override fun onDestroy() {
         super.onDestroy()

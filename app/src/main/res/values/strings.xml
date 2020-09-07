@@ -29,4 +29,5 @@
     <string name="main_banner">ca-app-pub-8201262723803857/4099791911</string>
     <string name="selected_ntap_start">~Selected~</string>
     <string name="tap_on_crosshair">Tap on the crosshair to get the controller</string>
+    <string name="ad">Ad</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.customscopecommunity.crosshairpro.screens
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -8,7 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.customscopecommunity.crosshairpro.*
+import com.customscopecommunity.crosshairpro.R
+import com.customscopecommunity.crosshairpro.crossNum
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
 import kotlinx.android.synthetic.main.fragment_classic.*
@@ -36,8 +38,6 @@ class ClassicActivity : AppCompatActivity() {
             setDisplayShowTitleEnabled(false)
         }
 
-        showUnityVideoAd = true
-
         crosshairViews = arrayOf(
             classic1, classic2, classic3, classic4, classic5,
             classic6, classic7, classic8, classic9, classic10,
@@ -61,6 +61,40 @@ class ClassicActivity : AppCompatActivity() {
 
         cService = Intent(this, MainService::class.java)
         premService = Intent(this, PremiumService::class.java)
+
+        // setting colours of the crosshairs when coming back to this activity
+        when (colour) {
+            0 -> {
+                for (views in crosshairViews)
+                    setColour(views, R.color.white)
+            }
+            1 -> {
+                for (views in crosshairViews)
+                    setColour(views, R.color.primary)
+            }
+            2 -> {
+                for (views in crosshairViews)
+                    setColour(views, R.color.white)
+            }
+            3 -> {
+                for (views in crosshairViews)
+                    setColour(views, R.color.green)
+            }
+            4 -> {
+                for (views in crosshairViews)
+                    setColour(views, R.color.yellow)
+            }
+            5 -> {
+                for (views in crosshairViews)
+                    setColour(views, R.color.purple)
+            }
+            6 -> {
+                for (views in crosshairViews)
+                    setColour(views, R.color.blue)
+            }
+
+
+        }
 
 
         lightSwitch.setOnCheckedChangeListener { _, isChecked ->
@@ -148,7 +182,8 @@ class ClassicActivity : AppCompatActivity() {
                     classic24 -> crossNum = 24
                 }
                 stopServices()
-                toastShow()
+                changeButtonsVisibility()
+                startService()
                 closeFg()
             }
         }
@@ -170,11 +205,16 @@ class ClassicActivity : AppCompatActivity() {
         stopService(premService)
     }
 
-    private fun toastShow() {
+    private fun startService() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(cService)
+        } else {
+            startService(cService)
+        }
+    }
 
-        isCrosshairSelected = true
+    private fun changeButtonsVisibility() {
         LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(action))
-
     }
 
     private fun closeFg() {
@@ -185,4 +225,5 @@ class ClassicActivity : AppCompatActivity() {
         onBackPressed()
         return true
     }
+
 }

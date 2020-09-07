@@ -1,11 +1,13 @@
 package com.customscopecommunity.crosshairpro.services
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
@@ -300,6 +302,36 @@ class PremiumService : BaseService(), View.OnClickListener {
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        })
+
+        ////// Move the whole controller
+        xCollapsedView.setOnTouchListener(object : View.OnTouchListener {
+            private var initialX: Int = 0
+            private var initialY: Int = 0
+            private var initialTouchX: Float = 0.toFloat()
+            private var initialTouchY: Float = 0.toFloat()
+
+            @SuppressLint("ClickableViewAccessibility")
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
+
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        initialX = xParams.x
+                        initialY = xParams.y
+                        initialTouchX = event.rawX
+                        initialTouchY = event.rawY
+                    }
+
+                    MotionEvent.ACTION_MOVE -> {
+                        xParams.x = initialX - (event.rawX - initialTouchX).toInt()
+                        xParams.y = initialY + (event.rawY - initialTouchY).toInt()
+                        xWindowManager.updateViewLayout(xFloatingView, xParams)
+                    }
+
+                    else -> return false
+                }
+                return true
+            }
         })
     }
 

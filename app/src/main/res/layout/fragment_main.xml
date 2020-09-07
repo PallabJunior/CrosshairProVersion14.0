@@ -140,21 +140,6 @@
                 app:layout_constraintEnd_toEndOf="@+id/frameLayout"
                 app:layout_constraintStart_toStartOf="@+id/frameLayout" />
 
-        <TextView
-                android:id="@+id/is_ready"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:fontFamily="@font/digita_mono_italic"
-                android:gravity="center"
-                android:text="@string/selected_ntap_start"
-                android:textColor="@color/green"
-                android:textSize="@dimen/x18sp"
-                android:visibility="gone"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/frameLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
