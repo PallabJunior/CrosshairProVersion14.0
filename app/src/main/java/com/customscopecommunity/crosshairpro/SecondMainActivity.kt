@@ -15,6 +15,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.customscopecommunity.crosshairpro.databinding.ActivitySecondMainBinding
+import com.customscopecommunity.crosshairpro.services.isClassicServiceRunning
+import com.customscopecommunity.crosshairpro.services.isProServiceRunning
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -93,8 +95,6 @@ class SecondMainActivity : AppCompatActivity() {
         }
 
 
-        //isCrosshairSelected = false
-
         //unity ads initialize
         UnityAds.initialize(this, unityGameID, testMode)
 
@@ -122,6 +122,12 @@ class SecondMainActivity : AppCompatActivity() {
             }
         }
 
+        // show ad if the user is returning from the game
+        if (isClassicServiceRunning || isProServiceRunning) {
+            Handler().postDelayed({
+                showRewardedVideoAd()
+            }, 200)
+        }
 
         binding.adAnimationView.setOnClickListener {
             showRewardedVideoAd()

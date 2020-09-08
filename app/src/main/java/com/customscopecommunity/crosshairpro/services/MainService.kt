@@ -28,6 +28,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
+// to show the ad when the user return to the app
+var isClassicServiceRunning = false
 private const val notificationId = 1
 
 class MainService : BaseService(), View.OnClickListener {
@@ -67,9 +69,12 @@ class MainService : BaseService(), View.OnClickListener {
 
         startForeground(notificationId, builder.build())
 
+        isClassicServiceRunning = true
+
         afterFinishVisibility = 1
 
         mFloatingView = inflate(this, R.layout.layout_main_crosshair, null)
+
         //imageView = mFloatingView.findViewById(R.id.mainServiceCrosshair)                       // change added
         imageView = mFloatingView.mainServiceCrosshair
 
@@ -305,7 +310,6 @@ class MainService : BaseService(), View.OnClickListener {
                 }
                 return true
             }
-
         })
     }
 
@@ -369,15 +373,18 @@ class MainService : BaseService(), View.OnClickListener {
     }
 
     override fun onDestroy() {
+        isClassicServiceRunning = false
 
-        CoroutineScope(Dispatchers.Main).launch {
-            val mPosition = Position(vValue, hValue)
+        if (applicationContext != null) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val mPosition = Position(vValue, hValue)
 
-            if (position == null) {
-                PositionDatabase(applicationContext).getPositionDao().addPosition(mPosition)
-            } else {
-                mPosition.id = position!!.id
-                PositionDatabase(applicationContext).getPositionDao().updatePosition(mPosition)
+                if (position == null) {
+                    PositionDatabase(applicationContext).getPositionDao().addPosition(mPosition)
+                } else {
+                    mPosition.id = position!!.id
+                    PositionDatabase(applicationContext).getPositionDao().updatePosition(mPosition)
+                }
             }
         }
 

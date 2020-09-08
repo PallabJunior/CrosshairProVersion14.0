@@ -25,6 +25,9 @@ import kotlinx.coroutines.launch
 
 private const val notificationId = 3
 
+// to show the ad when the user return to the app
+var isProServiceRunning = false
+
 class PremiumService : BaseService(), View.OnClickListener {
 
     private lateinit var mWindowManager: WindowManager
@@ -61,6 +64,8 @@ class PremiumService : BaseService(), View.OnClickListener {
             .setAutoCancel(true)
 
         startForeground(notificationId, builder.build())
+
+        isProServiceRunning = true
 
         afterFinishVisibility = 3
 
@@ -280,10 +285,17 @@ class PremiumService : BaseService(), View.OnClickListener {
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {
 
-                val scale = progress + 25
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                    val scale = progress / 100.0f
+                    imageView.scaleX = scale
+                    imageView.scaleY = scale
+                } else {
 
-                val newParams = LinearLayout.LayoutParams(scale, scale)
-                imageView.layoutParams = newParams
+                    val scale = progress + 25
+                    val newParams = LinearLayout.LayoutParams(scale, scale)
+                    imageView.layoutParams = newParams
+                }
+
 
             }
 
@@ -344,17 +356,20 @@ class PremiumService : BaseService(), View.OnClickListener {
     }
 
     override fun onDestroy() {
-        CoroutineScope(Dispatchers.Main).launch {
-            val mPosition = Position(vValue, hValue)
+        isProServiceRunning = false
 
-            if (position == null) {
-                PositionDatabase(applicationContext).getPositionDao().addPosition(mPosition)
-            } else {
-                mPosition.id = position!!.id
-                PositionDatabase(applicationContext).getPositionDao().updatePosition(mPosition)
+        if (applicationContext != null) {
+            CoroutineScope(Dispatchers.Main).launch {
+                val mPosition = Position(vValue, hValue)
+
+                if (position == null) {
+                    PositionDatabase(applicationContext).getPositionDao().addPosition(mPosition)
+                } else {
+                    mPosition.id = position!!.id
+                    PositionDatabase(applicationContext).getPositionDao().updatePosition(mPosition)
+                }
             }
         }
-
         afterFinishVisibility = 7
         mWindowManager.removeView(mFloatingView)
 

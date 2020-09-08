@@ -96,7 +96,7 @@ class MainFragment : Fragment(), CoroutineScope {
         }
 
         binding.classicPackage.setOnClickListener {
-            if (!Settings.canDrawOverlays(context)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
                 permissionDialog()
             } else {
                 startActivity(classicIntent)
@@ -105,7 +105,7 @@ class MainFragment : Fragment(), CoroutineScope {
 
 
         binding.premiumPackage.setOnClickListener {
-            if (!Settings.canDrawOverlays(context)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
                 permissionDialog()
             } else {
                 startActivity(premimumIntent)
@@ -138,14 +138,9 @@ class MainFragment : Fragment(), CoroutineScope {
 
     private fun startRequiredService() {
 
-        if (!Settings.canDrawOverlays(activity)) {
-
-            if (!Settings.canDrawOverlays(context)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
                 permissionDialog()
-            }
-
         } else {
-
 
             if (crossNum in 0..50) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -190,6 +185,7 @@ class MainFragment : Fragment(), CoroutineScope {
         }
     }
 
+    @SuppressLint("InlinedApi")
     private fun askPermission() {
         val intent = Intent(
             Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
