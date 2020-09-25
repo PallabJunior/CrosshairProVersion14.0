@@ -16,10 +16,11 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.airbnb.lottie.LottieAnimationView
 import com.customscopecommunity.crosshairpro.*
 import com.customscopecommunity.crosshairpro.databinding.FragmentMainBinding
 import com.customscopecommunity.crosshairpro.services.MainService
@@ -42,9 +43,10 @@ class MainFragment : Fragment(), CoroutineScope {
     private lateinit var premimumIntent: Intent
     private lateinit var classicIntent: Intent
 
-    private lateinit var startButton: Button
-    private lateinit var stopButton: Button
-    private lateinit var minimizeButton: Button
+    private lateinit var lottieAnimationView: LottieAnimationView
+    private lateinit var startButton: ImageView
+    private lateinit var stopButton: ImageView
+    private lateinit var minimizeButton: ImageView
 
     private var checkMinimize = true
 
@@ -74,6 +76,7 @@ class MainFragment : Fragment(), CoroutineScope {
             override fun onReceive(context: Context, intent: Intent) {
                 binding.buttonStop.visibility = View.VISIBLE
                 binding.buttonStart.visibility = View.GONE
+                binding.animationView.visibility = View.INVISIBLE
                 binding.btnMinimize.visibility = View.VISIBLE
             }
         }
@@ -84,11 +87,13 @@ class MainFragment : Fragment(), CoroutineScope {
         startButton = binding.buttonStart
         stopButton = binding.buttonStop
         minimizeButton = binding.btnMinimize
+        lottieAnimationView = binding.animationView
 
 
         when (afterFinishVisibility) {
             1, 2, 3 -> {
                 startButton.visibility = View.GONE
+                lottieAnimationView.visibility = View.INVISIBLE
                 checkMinimize = true
                 minimizeButton.visibility = View.VISIBLE
 
@@ -124,6 +129,7 @@ class MainFragment : Fragment(), CoroutineScope {
             minimizeButton.visibility = View.GONE
             stopButton.visibility = View.GONE
             startButton.visibility = View.VISIBLE
+            lottieAnimationView.visibility = View.VISIBLE
         }
 
         if (checkMinimize) {
@@ -139,7 +145,7 @@ class MainFragment : Fragment(), CoroutineScope {
     private fun startRequiredService() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
-                permissionDialog()
+            permissionDialog()
         } else {
 
             if (crossNum in 0..50) {
@@ -156,6 +162,7 @@ class MainFragment : Fragment(), CoroutineScope {
                 }
             }
 
+            lottieAnimationView.visibility = View.INVISIBLE
             startButton.visibility = View.GONE
             stopButton.visibility = View.VISIBLE
             checkMinimize = true

@@ -20,7 +20,7 @@
     <string name="message">mensagem!!!</string>
     <string name="running_notification">O Crosshair Pro está em execução</string>
     <string name="tap_to_open">Toque para abrir o aplicativo</string>
-    <string name="policy_url">https://sites.google.com/view/crosshairpro</string>
+    <string name="policy_url">https://appranger.blogspot.com/2020/09/crosshair-pro-privacy-policy.html</string>
     <string name="rate_me_url">https://play.google.com/store/apps/details?id=com.customscopecommunity.crosshairpro
     </string>
     <string name="alert_dialog_hint">O aplicativo requer permissão da Janela flutuante para mostrar sua mira</string>
@@ -31,4 +31,5 @@
     <string name="selected_ntap_start">~Selecionado~</string>
     <string name="tap_on_crosshair">Toque na mira para obter o controlador</string>
     <string name="ad">Ad</string>
+    <string name="loading">Carregando…</string>
 </resources>

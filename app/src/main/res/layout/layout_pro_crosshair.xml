@@ -8,6 +8,7 @@
             android:layout_width="@dimen/x60dp"
             android:layout_height="@dimen/x60dp"
             android:adjustViewBounds="true"
+            android:visibility="gone"
             android:contentDescription="@string/crosshair"
             android:scaleType="fitCenter" />
 

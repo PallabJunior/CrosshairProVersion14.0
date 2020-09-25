@@ -33,28 +33,21 @@
 
         </activity>
 
-
         <activity
                 android:name=".screens.ClassicActivity"
                 android:screenOrientation="portrait" />
-
-
         <activity
                 android:name=".PremiumActivity"
                 android:screenOrientation="portrait" />
-
 
         <service
                 android:name=".services.MainService"
                 android:enabled="true"
                 android:exported="false" />
-
-
         <service
                 android:name=".services.PremiumService"
                 android:enabled="true"
                 android:exported="false" />
-
     </application>
 
 </manifest>

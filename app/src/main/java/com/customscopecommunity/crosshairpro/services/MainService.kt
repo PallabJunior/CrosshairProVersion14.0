@@ -1,7 +1,6 @@
 package com.customscopecommunity.crosshairpro.services
 
 import android.annotation.SuppressLint
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
@@ -11,12 +10,14 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.inflate
 import android.view.WindowManager
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.SeekBar
-import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import com.customscopecommunity.crosshairpro.*
+import com.customscopecommunity.crosshairpro.R
+import com.customscopecommunity.crosshairpro.afterFinishVisibility
+import com.customscopecommunity.crosshairpro.crossNum
 import com.customscopecommunity.crosshairpro.database.Position
 import com.customscopecommunity.crosshairpro.database.PositionDatabase
 import com.customscopecommunity.crosshairpro.screens.backgroundLight
@@ -38,6 +39,7 @@ class MainService : BaseService(), View.OnClickListener {
     private lateinit var mFloatingView: View
     private lateinit var mCrosshairView: View
     private lateinit var imageView: ImageView
+    private lateinit var imageViewBg: ImageView
 
     private lateinit var xWindowManager: WindowManager
     private lateinit var xFloatingView: View
@@ -52,22 +54,9 @@ class MainService : BaseService(), View.OnClickListener {
     // control the movement of the crosshair
     private var moveCount = 10
 
-    override fun onCreate() {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        val intent = Intent(this, SecondMainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-
-        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.actionbar_logo)
-            .setContentTitle(getString(R.string.running_notification))
-            .setContentText(getString(R.string.tap_to_open))
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-
-        startForeground(notificationId, builder.build())
+        createNotificationChannel(notificationId)
 
         isClassicServiceRunning = true
 
@@ -77,6 +66,7 @@ class MainService : BaseService(), View.OnClickListener {
 
         //imageView = mFloatingView.findViewById(R.id.mainServiceCrosshair)                       // change added
         imageView = mFloatingView.mainServiceCrosshair
+        imageViewBg = mFloatingView.mainBg
 
         if (backgroundLight == 1) {
             imageView.setBackgroundResource(R.drawable.c_background)
@@ -141,7 +131,9 @@ class MainService : BaseService(), View.OnClickListener {
 
                 params.y = verticalP
                 params.x = horizontalP
+
                 updateLayout()
+                makeCrosshairVisible()
 
                 vValue = verticalP
                 hValue = horizontalP
@@ -163,6 +155,12 @@ class MainService : BaseService(), View.OnClickListener {
                 controller()
             }
         }
+
+        return START_STICKY
+    }
+
+    private fun makeCrosshairVisible() {
+        imageView.visibility = View.VISIBLE
     }
 
     override fun onClick(v: View) {
@@ -180,7 +178,7 @@ class MainService : BaseService(), View.OnClickListener {
         xFloatingView = inflate(this, R.layout.layout_pro_controller, null)
         xWindowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
-        val xlayoutFlag: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val xlayoutType: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         } else {
             WindowManager.LayoutParams.TYPE_PHONE
@@ -189,7 +187,7 @@ class MainService : BaseService(), View.OnClickListener {
         val xParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
-            xlayoutFlag,
+            xlayoutType,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         )
@@ -259,9 +257,11 @@ class MainService : BaseService(), View.OnClickListener {
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {
-                val scale = progress / 100.0f
-                imageView.scaleX = scale
-                imageView.scaleY = scale
+
+                val scale = dpToPx(progress)
+                val newParams = FrameLayout.LayoutParams(scale, scale)
+                imageView.layoutParams = newParams
+                imageViewBg.layoutParams = newParams
 
             }
 
@@ -369,12 +369,15 @@ class MainService : BaseService(), View.OnClickListener {
     }
 
     private fun updateLayout() {
-        mWindowManager.updateViewLayout(mFloatingView, params)
+        try {
+            mWindowManager.updateViewLayout(mFloatingView, params)
+
+        } catch (e: IllegalArgumentException) {
+        }
     }
 
-    override fun onDestroy() {
-        isClassicServiceRunning = false
 
+    private fun savePosition() {
         if (applicationContext != null) {
             CoroutineScope(Dispatchers.Main).launch {
                 val mPosition = Position(vValue, hValue)
@@ -387,6 +390,13 @@ class MainService : BaseService(), View.OnClickListener {
                 }
             }
         }
+    }
+
+
+    override fun onDestroy() {
+        isClassicServiceRunning = false
+
+        savePosition()
 
         afterFinishVisibility = 5
         mWindowManager.removeView(mFloatingView)
@@ -394,6 +404,8 @@ class MainService : BaseService(), View.OnClickListener {
         if (checkFun) {
             xWindowManager.removeView(xFloatingView)
         }
+
+        super.onDestroy()
     }
 
 }

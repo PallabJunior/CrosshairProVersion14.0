@@ -1,5 +1,6 @@
 package com.customscopecommunity.crosshairpro
 
+import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -33,6 +34,9 @@ const val systemAlertWindowPermission = 2084
 
 class SecondMainActivity : AppCompatActivity() {
 
+    // Show dialog before showing the ad after returning to the app
+    private lateinit var dialog: AlertDialog
+    private var isDialogShowed = false
     private var countShowedAd = 0
 
     // to stop the  handler from the handler
@@ -90,9 +94,13 @@ class SecondMainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel()
-        }
+        createNotificationChannel()
+
+        //creating loading dialog
+        val builder = AlertDialog.Builder(this)
+        val dialogView = layoutInflater.inflate(R.layout.loading_dialog, null)
+        builder.setView(dialogView)
+        dialog = builder.create()
 
 
         //unity ads initialize
@@ -124,9 +132,12 @@ class SecondMainActivity : AppCompatActivity() {
 
         // show ad if the user is returning from the game
         if (isClassicServiceRunning || isProServiceRunning) {
+            dialog.show()
+            isDialogShowed = true
             Handler().postDelayed({
-                showRewardedVideoAd()
-            }, 200)
+                //showRewardedVideoAd()                               // need modification
+                showUnityInterstitialAd()
+            }, 800)
         }
 
         binding.adAnimationView.setOnClickListener {
@@ -199,13 +210,14 @@ class SecondMainActivity : AppCompatActivity() {
         // show Unity Video Ad
         if (UnityAds.isReady(interstitialPlacement)) {
             UnityAds.show(this, interstitialPlacement)
-
-        }
+        } else
+            dialog.dismiss()
     }
 
     private fun showRewardedVideoAd() {
         // Rewarded video ad
         if (UnityAds.isReady(rewardedPlacement)) {
+            dialog.dismiss()
             UnityAds.show(this, rewardedPlacement)
 
         } else {
@@ -213,10 +225,6 @@ class SecondMainActivity : AppCompatActivity() {
             showUnityInterstitialAd()
         }
     }
-
-    //    private fun showUnityBannerAd() {
-
-    //    private fun destroyUnityBannerAd() {
 
     private fun showAdButton() {
 
@@ -297,6 +305,10 @@ class SecondMainActivity : AppCompatActivity() {
     //        unityBanner = BannerView(this, bannerPlacement, UnityBannerSize(320, 50))
 
     override fun onPause() {
+        if (isDialogShowed) {
+            dialog.dismiss()
+        }
+
         if (runnable != null) {
             stopHandler = true
             handler.removeCallbacks(runnable!!) // stop the repeating timer

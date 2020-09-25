@@ -15,12 +15,16 @@
     <color name="purple">#FF00FF</color>
     <color name="orange">#FF4500</color>
     <color name="dark_red">#CE1313</color>
+    <color name="gaming_red">#F85325</color>
     <color name="dark_gray">#1F1B24</color>
     <color name="teal">#03DA35</color>
     <color name="material_green">#00E676</color>
     <color name="material_red">#F44336</color>
     <color name="golden_color">#FFD700</color>
     <color name="material_white">#EEEEEE</color>
+
+    <color name="game_space_bg_color">#212338</color>
+    <color name="game_space_fg_color">#30344D</color>
 
     <color name="dark_background">#121212</color>
     <color name="dark_card">#1C1C1C</color>

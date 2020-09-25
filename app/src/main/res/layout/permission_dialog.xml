@@ -37,7 +37,7 @@
                 android:background="@drawable/android_button_bg_green"
                 android:padding="@dimen/x12dp"
                 android:text="@string/give_permission"
-                android:textColor="@color/material_white"
+                android:textColor="@color/material_green"
                 app:autoSizeTextType="uniform" />
 
     </LinearLayout>

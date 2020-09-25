@@ -1,7 +1,6 @@
 package com.customscopecommunity.crosshairpro.services
 
 import android.annotation.SuppressLint
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
@@ -13,8 +12,9 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
-import androidx.core.app.NotificationCompat
-import com.customscopecommunity.crosshairpro.*
+import com.customscopecommunity.crosshairpro.R
+import com.customscopecommunity.crosshairpro.afterFinishVisibility
+import com.customscopecommunity.crosshairpro.crossNum
 import com.customscopecommunity.crosshairpro.database.Position
 import com.customscopecommunity.crosshairpro.database.PositionDatabase
 import kotlinx.android.synthetic.main.layout_pro_controller.view.*
@@ -48,22 +48,9 @@ class PremiumService : BaseService(), View.OnClickListener {
     // control the movement of the crosshair
     private var moveCount = 10
 
-    override fun onCreate() {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        val intent = Intent(this, SecondMainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-
-        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.actionbar_logo)
-            .setContentTitle(getString(R.string.running_notification))
-            .setContentText(getString(R.string.tap_to_open))
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-
-        startForeground(notificationId, builder.build())
+        createNotificationChannel(notificationId)
 
         isProServiceRunning = true
 
@@ -163,7 +150,9 @@ class PremiumService : BaseService(), View.OnClickListener {
 
                 params.y = verticalP
                 params.x = horizontalP
+
                 updateLayout()
+                makeCrosshairVisible()
 
                 vValue = verticalP
                 hValue = horizontalP
@@ -176,7 +165,6 @@ class PremiumService : BaseService(), View.OnClickListener {
 
         mWindowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         mWindowManager.addView(mFloatingView, params)
-
         mCrosshairView = mFloatingView.findViewById(R.id.proServiceCrosshair)
 
 
@@ -187,6 +175,32 @@ class PremiumService : BaseService(), View.OnClickListener {
             }
         }
 
+
+        return START_STICKY
+    }
+
+    // notification channel
+//    private fun createNotificationChannel() {
+//        val intent = Intent(this, SecondMainActivity::class.java).apply {
+//            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//        }
+//
+//        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+//
+//        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+//            .setSmallIcon(R.drawable.pro8n)
+//            .setContentTitle(getString(R.string.running_notification))
+//            .setContentText(getString(R.string.tap_to_open))
+//            .setPriority(NotificationCompat.PRIORITY_LOW)
+//            .setContentIntent(pendingIntent)
+//            .setAutoCancel(false)
+//
+//        startForeground(notificationId, builder.build())
+//
+//    }
+
+    private fun makeCrosshairVisible() {
+        imageView.visibility = View.VISIBLE
     }
 
     override fun onClick(v: View) {
@@ -285,16 +299,16 @@ class PremiumService : BaseService(), View.OnClickListener {
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {
 
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                    val scale = progress / 100.0f
-                    imageView.scaleX = scale
-                    imageView.scaleY = scale
-                } else {
+//                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+//                    val scale = progress / 100.0f
+//                    imageView.scaleX = scale
+//                    imageView.scaleY = scale
+//                } else {}
 
-                    val scale = progress + 25
+                    val scale = dpToPx(progress)
                     val newParams = LinearLayout.LayoutParams(scale, scale)
                     imageView.layoutParams = newParams
-                }
+
 
 
             }
@@ -347,17 +361,21 @@ class PremiumService : BaseService(), View.OnClickListener {
         })
     }
 
+
+
     private fun addImage(img: Int) {
         imageView.setImageResource(img)
     }
 
     private fun updateLayout() {
-        mWindowManager.updateViewLayout(mFloatingView, params)
+        try {
+            mWindowManager.updateViewLayout(mFloatingView, params)
+
+        } catch (e: IllegalArgumentException) {
+        }
     }
 
-    override fun onDestroy() {
-        isProServiceRunning = false
-
+    private fun savePosition() {
         if (applicationContext != null) {
             CoroutineScope(Dispatchers.Main).launch {
                 val mPosition = Position(vValue, hValue)
@@ -370,12 +388,21 @@ class PremiumService : BaseService(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        isProServiceRunning = false
+
+        savePosition()
+
         afterFinishVisibility = 7
         mWindowManager.removeView(mFloatingView)
 
         if (checkFun) {
             xWindowManager.removeView(xFloatingView)
         }
+
+        super.onDestroy()
     }
 
 }

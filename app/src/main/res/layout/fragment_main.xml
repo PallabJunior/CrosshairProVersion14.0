@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:tools="http://schemas.android.com/tools"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="@dimen/x10dp"
-            tools:ignore="UnusedAttribute">
+            tools:ignore="UnusedAttribute,ContentDescription">
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -21,72 +21,68 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.cardview.widget.CardView
+
+            <LinearLayout
                     android:id="@+id/classic_package"
-                    android:layout_width="@dimen/x0dp"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    app:cardBackgroundColor="@color/dark_theme_center_blue_bg"
-                    app:cardCornerRadius="@dimen/x8dp"
-                    app:cardElevation="@dimen/x5dp">
+                    android:background="@drawable/collections_btn_bg"
+                    android:foreground="?android:attr/selectableItemBackground">
 
-                <LinearLayout
+
+                <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/card_bg"
-                        android:foreground="?android:attr/selectableItemBackground">
+                        android:layout_margin="@dimen/x20dp"
+                        android:gravity="center"
+                        android:text="@string/classic"
+                        android:textColor="@color/white"
+                        android:textStyle="normal"
+                        app:autoSizeTextType="uniform" />
 
+            </LinearLayout>
 
-                    <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="@dimen/x20dp"
-                            android:gravity="center"
-                            android:text="@string/classic"
-                            android:textColor="@color/dark_purple"
-                            android:textStyle="normal|bold"
-                            app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-
-            </androidx.cardview.widget.CardView>
 
             <Space
                     android:layout_width="@dimen/x10dp"
                     android:layout_height="match_parent" />
 
-            <androidx.cardview.widget.CardView
+
+            <LinearLayout
                     android:id="@+id/premium_package"
                     android:layout_width="@dimen/x0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    app:cardBackgroundColor="@color/dark_theme_center_blue_bg"
-                    app:cardCornerRadius="@dimen/x8dp"
-                    app:cardElevation="@dimen/x5dp">
+                    android:background="@drawable/collections_btn_bg"
+                    android:foreground="?android:attr/selectableItemBackground">
 
-                <LinearLayout
+                <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/card_bg"
-                        android:foreground="?android:attr/selectableItemBackground">
+                        android:layout_margin="@dimen/x20dp"
+                        android:gravity="center"
+                        android:text="@string/pro"
+                        android:textColor="@color/white"
+                        android:textStyle="normal"
+                        app:autoSizeTextType="uniform" />
 
-                    <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="@dimen/x20dp"
-                            android:gravity="center"
-                            android:text="@string/pro"
-                            android:textColor="@color/material_red"
-                            android:textStyle="normal|bold"
-                            app:autoSizeTextType="uniform" />
-
-                </LinearLayout>
-
-
-            </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
         </LinearLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:layout_width="@dimen/x155dp"
+                android:layout_height="@dimen/x155dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/btn_background"
+                android:layout_marginStart="@dimen/x8dp"
+                android:layout_marginEnd="@dimen/x8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
         <FrameLayout
                 android:id="@+id/frameLayout"
@@ -94,49 +90,34 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/x8dp"
                 android:layout_marginEnd="@dimen/x8dp"
-                android:layout_marginBottom="@dimen/x30dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/animation_view"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/animation_view">
 
-            <Button
+
+            <ImageView
                     android:id="@+id/buttonStop"
-                    style="@android:style/Widget.Material.Button.Inset"
-                    android:layout_width="@dimen/x90dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/android_button_bg_red"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:text="@string/stop"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@color/material_red"
-                    android:textSize="@dimen/x14sp"
-                    android:textStyle="bold" />
+                    android:layout_width="@dimen/x80dp"
+                    android:layout_height="@dimen/x80dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_stop_btn_bg" />
 
-            <Button
+            <ImageView
                     android:id="@+id/buttonStart"
-                    style="@android:style/Widget.Material.Button.Inset"
-                    android:layout_width="@dimen/x90dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/android_button_bg_green"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:text="@string/start"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@color/material_green"
-                    android:textSize="@dimen/x14sp"
-                    android:textStyle="bold" />
+                    android:layout_width="@dimen/x80dp"
+                    android:layout_height="@dimen/x80dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_start_btn_bg" />
 
         </FrameLayout>
 
-        <Button
+        <ImageView
                 android:id="@+id/btnMinimize"
-                android:layout_width="@dimen/x90dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/android_button_bg_white"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:text="@string/exit"
-                android:textColor="@color/material_white"
-                android:textSize="@dimen/x14sp"
+                android:layout_width="@dimen/x80dp"
+                android:layout_height="@dimen/x80dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_btn_minimize_bg"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/frameLayout"
                 app:layout_constraintEnd_toEndOf="@+id/frameLayout"
