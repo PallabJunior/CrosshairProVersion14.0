@@ -57,9 +57,6 @@ class SecondMainActivity : AppCompatActivity() {
     private val rewardedPlacement = "crosshairRewarded"
     private val interstitialPlacement = "interstitialAdCrosshairPro"
 
-    // Interstitial and rewarded ad listener
-    private val rewardedUnityAdsListener = UnityVideoAdsListener()
-
 
     //    // Listener for Unity banner ad events
     //    private val bannerListener = UnityBannerListener()
@@ -102,21 +99,13 @@ class SecondMainActivity : AppCompatActivity() {
         builder.setView(dialogView)
         dialog = builder.create()
 
-
-        //unity ads initialize
-        UnityAds.initialize(this, unityGameID, testMode)
-
+        // Interstitial and rewarded ad listener
+        val rewardedUnityAdsListener = UnityVideoAdsListener()
         // Listener for rewarded and interstitial ad events
         UnityAds.addListener(rewardedUnityAdsListener)
 
-        //        if (UnityAds.isInitialized()) {
-        //            showUnityBannerAd()
-        //        } else {
-        //            val handler = Handler()
-        //            handler.postDelayed({
-        //                showUnityBannerAd()
-        //            }, 3000)
-        //        }
+        //unity ads initialize
+        UnityAds.initialize(this, unityGameID, testMode)
 
         MobileAds.initialize(this)  // admob banner
 

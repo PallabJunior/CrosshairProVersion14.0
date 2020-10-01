@@ -35,13 +35,13 @@ private const val notificationId = 1
 
 class MainService : BaseService(), View.OnClickListener {
 
-    private lateinit var mWindowManager: WindowManager
+    private var mWindowManager: WindowManager? = null
     private lateinit var mFloatingView: View
     private lateinit var mCrosshairView: View
     private lateinit var imageView: ImageView
     private lateinit var imageViewBg: ImageView
 
-    private lateinit var xWindowManager: WindowManager
+    private var xWindowManager: WindowManager? = null
     private lateinit var xFloatingView: View
     private lateinit var xCollapsedView: View
 
@@ -125,6 +125,8 @@ class MainService : BaseService(), View.OnClickListener {
 
             if (position == null) {
                 params.gravity = Gravity.CENTER
+                updateLayout()
+                makeCrosshairVisible()
             } else {
                 val verticalP = position!!.vPosition
                 val horizontalP = position!!.hPosition
@@ -146,7 +148,7 @@ class MainService : BaseService(), View.OnClickListener {
         }
 
         mWindowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        mWindowManager.addView(mFloatingView, params)
+        mWindowManager?.addView(mFloatingView, params)
         mCrosshairView = mFloatingView.findViewById(R.id.mainServiceCrosshair)
 
         mCrosshairView.setOnClickListener {
@@ -160,7 +162,10 @@ class MainService : BaseService(), View.OnClickListener {
     }
 
     private fun makeCrosshairVisible() {
-        imageView.visibility = View.VISIBLE
+        try {
+            imageView.visibility = View.VISIBLE
+        } catch (e: Exception) {
+        }
     }
 
     override fun onClick(v: View) {
@@ -194,7 +199,7 @@ class MainService : BaseService(), View.OnClickListener {
         xParams.gravity = Gravity.CENTER_HORIZONTAL or Gravity.END
         xParams.x = 15
 
-        xWindowManager.addView(xFloatingView, xParams)
+        xWindowManager?.addView(xFloatingView, xParams)
 
         xCollapsedView = xFloatingView.findViewById(R.id.proController)
 
@@ -223,7 +228,7 @@ class MainService : BaseService(), View.OnClickListener {
                 updateLayout()
             }
             proButtonCancel.setOnClickListener {
-                xWindowManager.removeView(xFloatingView)
+                xWindowManager?.removeView(xFloatingView)
                 checkFun = false
                 if (!isToastShowed) {
                     showToast()
@@ -303,7 +308,7 @@ class MainService : BaseService(), View.OnClickListener {
                     MotionEvent.ACTION_MOVE -> {
                         xParams.x = initialX - (event.rawX - initialTouchX).toInt()
                         xParams.y = initialY + (event.rawY - initialTouchY).toInt()
-                        xWindowManager.updateViewLayout(xFloatingView, xParams)
+                        xWindowManager?.updateViewLayout(xFloatingView, xParams)
                     }
 
                     else -> return false
@@ -370,7 +375,7 @@ class MainService : BaseService(), View.OnClickListener {
 
     private fun updateLayout() {
         try {
-            mWindowManager.updateViewLayout(mFloatingView, params)
+            mWindowManager?.updateViewLayout(mFloatingView, params)
 
         } catch (e: IllegalArgumentException) {
         }
@@ -399,10 +404,11 @@ class MainService : BaseService(), View.OnClickListener {
         savePosition()
 
         afterFinishVisibility = 5
-        mWindowManager.removeView(mFloatingView)
+
+        mWindowManager?.removeView(mFloatingView)
 
         if (checkFun) {
-            xWindowManager.removeView(xFloatingView)
+            xWindowManager?.removeView(xFloatingView)
         }
 
         super.onDestroy()
