@@ -59,7 +59,7 @@ class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
 
     ///unity ads
     private val unityGameID = "3708923"
-    private val testMode = false
+    private val testMode = true
 
     //private val bannerPlacement = "bannerPro"
     private val rewardedPlacement = "crosshairRewarded"
@@ -203,8 +203,8 @@ class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
 
 
     private fun loadBanner() {
-        adView.adUnitId = getString(R.string.main_banner)
-        //adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
+        //adView.adUnitId = getString(R.string.main_banner)
+        adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
 
         adView.adSize = adSize
 
