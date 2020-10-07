@@ -38,7 +38,7 @@ import kotlinx.coroutines.withContext
 var crossNum: Int = 500
 var afterFinishVisibility: Int = 0
 const val systemAlertWindowPermission = 2084
-var firstOpen = true
+var firstOpen = true // To show the toast message on first open because of slow creating of service
 
 class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
 
@@ -59,7 +59,7 @@ class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
 
     ///unity ads
     private val unityGameID = "3708923"
-    private val testMode = true
+    private val testMode = false
 
     //private val bannerPlacement = "bannerPro"
     private val rewardedPlacement = "crosshairRewarded"
@@ -141,8 +141,10 @@ class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
         builder.setView(dialogView)
         dialog = builder.create()
 
-        dialog.show()
-        isDialogShowed = true
+        if (!firstOpen) {
+            dialog.show()
+            isDialogShowed = true
+        }
 
 
         binding.adAnimationView.setOnClickListener {
@@ -201,8 +203,8 @@ class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
 
 
     private fun loadBanner() {
-        //adView.adUnitId = getString(R.string.main_banner)
-        adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
+        adView.adUnitId = getString(R.string.main_banner)
+        //adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
 
         adView.adSize = adSize
 
