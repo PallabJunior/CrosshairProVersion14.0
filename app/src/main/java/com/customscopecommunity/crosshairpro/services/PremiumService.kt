@@ -14,21 +14,21 @@ import android.widget.LinearLayout
 import android.widget.SeekBar
 import com.customscopecommunity.crosshairpro.R
 import com.customscopecommunity.crosshairpro.afterFinishVisibility
-import com.customscopecommunity.crosshairpro.crossNum
+import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_NUMBER
 import com.customscopecommunity.crosshairpro.database.Position
 import com.customscopecommunity.crosshairpro.database.PositionDatabase
+import com.customscopecommunity.crosshairpro.newdatabase.State
+import com.customscopecommunity.crosshairpro.newdatabase.StateDatabase
 import kotlinx.android.synthetic.main.layout_pro_controller.view.*
 import kotlinx.android.synthetic.main.layout_pro_crosshair.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-private const val notificationId = 3
-
-// to show the ad when the user return to the app
-var isProServiceRunning = false
 
 class PremiumService : BaseService(), View.OnClickListener {
+
+    private val notificationId = 3
 
     private var mWindowManager: WindowManager? = null
     private lateinit var mFloatingView: View
@@ -52,14 +52,14 @@ class PremiumService : BaseService(), View.OnClickListener {
 
         createNotificationChannel(notificationId)
 
-        isProServiceRunning = true
-
         afterFinishVisibility = 3
 
         mFloatingView = View.inflate(this, R.layout.layout_pro_crosshair, null)
         imageView = mFloatingView.proServiceCrosshair
 
-        when (crossNum) {
+        val cNum = intent?.getIntExtra(CROSSHAIR_NUMBER, 200)
+
+        when (cNum ?: 200) {
             200 -> addImage(R.drawable.pro1n)
             80 -> addImage(R.drawable.prem1n)
             81 -> addImage(R.drawable.prem2)
@@ -119,7 +119,7 @@ class PremiumService : BaseService(), View.OnClickListener {
             132 -> addImage(R.drawable.nn12)
             133 -> addImage(R.drawable.nn13)
 
-            else -> addImage(R.drawable.prem17n)
+            else -> addImage(R.drawable.pro1n)
 
         }
 
@@ -164,6 +164,7 @@ class PremiumService : BaseService(), View.OnClickListener {
             controller()
         }
 
+
         mWindowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         mWindowManager?.addView(mFloatingView, params)
         mCrosshairView = mFloatingView.findViewById(R.id.proServiceCrosshair)
@@ -176,29 +177,10 @@ class PremiumService : BaseService(), View.OnClickListener {
             }
         }
 
+        saveRunningState()
 
         return START_STICKY
     }
-
-    // notification channel
-//    private fun createNotificationChannel() {
-//        val intent = Intent(this, SecondMainActivity::class.java).apply {
-//            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//        }
-//
-//        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-//
-//        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-//            .setSmallIcon(R.drawable.pro8n)
-//            .setContentTitle(getString(R.string.running_notification))
-//            .setContentText(getString(R.string.tap_to_open))
-//            .setPriority(NotificationCompat.PRIORITY_LOW)
-//            .setContentIntent(pendingIntent)
-//            .setAutoCancel(false)
-//
-//        startForeground(notificationId, builder.build())
-//
-//    }
 
     private fun makeCrosshairVisible() {
         try {
@@ -377,9 +359,30 @@ class PremiumService : BaseService(), View.OnClickListener {
         }
     }
 
+
+    private fun saveRunningState() {
+        if (applicationContext != null) {
+            CoroutineScope(Dispatchers.IO).launch {
+
+                // refState == null on very first launch
+                val refState: State? =
+                    StateDatabase(applicationContext).getStateDao().getAllStates()
+
+                val mState = State(true)
+
+                if (refState == null) {
+                    StateDatabase(applicationContext).getStateDao().addState(mState)
+                } else {
+                    mState.id = refState.id
+                    StateDatabase(applicationContext).getStateDao().updateState(mState)
+                }
+            }
+        }
+    }
+
     private fun savePosition() {
         if (applicationContext != null) {
-            CoroutineScope(Dispatchers.Main).launch {
+            CoroutineScope(Dispatchers.IO).launch {
                 val mPosition = Position(vValue, hValue)
 
                 if (position == null) {
@@ -393,8 +396,6 @@ class PremiumService : BaseService(), View.OnClickListener {
     }
 
     override fun onDestroy() {
-        isProServiceRunning = false
-
         savePosition()
 
         afterFinishVisibility = 7

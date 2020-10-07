@@ -5,12 +5,18 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.customscopecommunity.crosshairpro.R
+import com.customscopecommunity.crosshairpro.constants.Constants.ACTION
+import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_BG
+import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_COLOUR
+import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_NUMBER
 import com.customscopecommunity.crosshairpro.crossNum
+import com.customscopecommunity.crosshairpro.firstOpen
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
 import kotlinx.android.synthetic.main.fragment_classic.*
@@ -18,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_classic.*
 
 var colour: Int = 0
 var backgroundLight: Int = 0
-const val action: String = "activity-2-initialized"
 
 class ClassicActivity : AppCompatActivity() {
 
@@ -206,6 +211,19 @@ class ClassicActivity : AppCompatActivity() {
     }
 
     private fun startService() {
+
+        if (firstOpen) {
+            Toast.makeText(applicationContext, getString(R.string.please_wait), Toast.LENGTH_SHORT)
+                .show()
+            firstOpen = false
+        }
+
+        cService.apply {
+            putExtra(CROSSHAIR_NUMBER, crossNum)
+            putExtra(CROSSHAIR_BG, backgroundLight)
+            putExtra(CROSSHAIR_COLOUR, colour)
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(cService)
         } else {
@@ -214,7 +232,7 @@ class ClassicActivity : AppCompatActivity() {
     }
 
     private fun changeButtonsVisibility() {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(action))
+        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(ACTION))
     }
 
     private fun closeFg() {

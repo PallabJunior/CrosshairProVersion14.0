@@ -8,11 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.RecyclerView
 import com.customscopecommunity.crosshairpro.R
+import com.customscopecommunity.crosshairpro.constants.Constants.ACTION
+import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_NUMBER
 import com.customscopecommunity.crosshairpro.crossNum
-import com.customscopecommunity.crosshairpro.screens.action
+import com.customscopecommunity.crosshairpro.firstOpen
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
 import kotlinx.android.synthetic.main.premium_row_layout.view.*
@@ -63,10 +66,18 @@ class PremiumAdapter(
     }
 
     private fun changeButtonsVisibility() {
-        LocalBroadcastManager.getInstance(context).sendBroadcast(Intent(action))
+        LocalBroadcastManager.getInstance(context).sendBroadcast(Intent(ACTION))
     }
 
     private fun startService(){
+
+        if (firstOpen){
+            Toast.makeText(context, context.getString(R.string.please_wait), Toast.LENGTH_SHORT).show()
+            firstOpen = false
+        }
+
+        premService.putExtra(CROSSHAIR_NUMBER, crossNum)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(premService)
         } else {

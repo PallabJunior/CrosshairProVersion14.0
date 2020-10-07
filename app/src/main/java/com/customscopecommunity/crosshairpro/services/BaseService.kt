@@ -7,9 +7,9 @@ import android.content.res.Resources
 import android.os.IBinder
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
-import com.customscopecommunity.crosshairpro.CHANNEL_ID
 import com.customscopecommunity.crosshairpro.R
 import com.customscopecommunity.crosshairpro.SecondMainActivity
+import com.customscopecommunity.crosshairpro.constants.Constants.CHANNEL_ID
 import com.customscopecommunity.crosshairpro.database.Position
 
 open class BaseService : Service() {
@@ -23,7 +23,7 @@ open class BaseService : Service() {
         return null
     }
 
-    fun showToast(){
+    fun showToast() {
         Toast.makeText(this, getString(R.string.tap_on_crosshair), Toast.LENGTH_SHORT).show()
     }
 

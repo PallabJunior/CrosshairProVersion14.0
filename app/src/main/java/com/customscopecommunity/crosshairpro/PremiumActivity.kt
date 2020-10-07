@@ -30,7 +30,7 @@ class PremiumActivity : AppCompatActivity() {
 
         val gridLayoutManager = GridLayoutManager(this, 3)
         premium_recycler_view.layoutManager = gridLayoutManager
-        premium_recycler_view.setHasFixedSize(true)                        // later add
+        premium_recycler_view.setHasFixedSize(true)
 
         imageList.add(R.drawable.prem1n)
         imageList.add(R.drawable.prem2)

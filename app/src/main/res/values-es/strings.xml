@@ -33,4 +33,5 @@
     <string name="tap_on_crosshair">Toque en la cruz para obtener el controlador</string>
     <string name="ad">Ad</string>
     <string name="loading">Cargando…</string>
+    <string name="please_wait">por favor espera…</string>
 </resources>

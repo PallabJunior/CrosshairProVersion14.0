@@ -15,9 +15,12 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import com.customscopecommunity.crosshairpro.constants.Constants.CHANNEL_ID
 import com.customscopecommunity.crosshairpro.databinding.ActivitySecondMainBinding
-import com.customscopecommunity.crosshairpro.services.isClassicServiceRunning
-import com.customscopecommunity.crosshairpro.services.isProServiceRunning
+import com.customscopecommunity.crosshairpro.newdatabase.State
+import com.customscopecommunity.crosshairpro.newdatabase.StateDatabase
+import com.customscopecommunity.crosshairpro.screens.MainFragment
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -25,14 +28,19 @@ import com.google.android.gms.ads.MobileAds
 import com.unity3d.ads.IUnityAdsListener
 import com.unity3d.ads.UnityAds
 import kotlinx.android.synthetic.main.activity_second_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
-const val CHANNEL_ID = "crosshair"
-var crossNum: Int = 200
+var crossNum: Int = 500
 var afterFinishVisibility: Int = 0
 const val systemAlertWindowPermission = 2084
+var firstOpen = true
 
-class SecondMainActivity : AppCompatActivity() {
+class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
 
     // Show dialog before showing the ad after returning to the app
     private lateinit var dialog: AlertDialog
@@ -67,6 +75,8 @@ class SecondMainActivity : AppCompatActivity() {
     private lateinit var adView: AdView              // admob banner
     private var initialLayoutComplete = false
 
+    private lateinit var mFragment: Fragment
+
     // admob banner
     private val adSize: AdSize
         get() {
@@ -85,29 +95,33 @@ class SecondMainActivity : AppCompatActivity() {
             return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
         }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_second_main)
 
         setSupportActionBar(toolbar)
 
+        mFragment = MainFragment()
+        addMainFragment(mFragment)
+
+        CoroutineScope(IO).launch {
+            getStateFromRoomDb()
+        }
+
         createNotificationChannel()
 
-        //creating loading dialog
-        val builder = AlertDialog.Builder(this)
-        val dialogView = layoutInflater.inflate(R.layout.loading_dialog, null)
-        builder.setView(dialogView)
-        dialog = builder.create()
-
+        /////////////////////////////////////////////////Ads
         // Interstitial and rewarded ad listener
-        val rewardedUnityAdsListener = UnityVideoAdsListener()
+        //val adListener = IUnityAdsListener()
         // Listener for rewarded and interstitial ad events
-        UnityAds.addListener(rewardedUnityAdsListener)
+        UnityAds.addListener(this)
 
         //unity ads initialize
-        UnityAds.initialize(this, unityGameID, testMode)
+        UnityAds.initialize(applicationContext, unityGameID, testMode)
 
         MobileAds.initialize(this)  // admob banner
+
 
         //admob banner
         adView = AdView(this)
@@ -118,16 +132,18 @@ class SecondMainActivity : AppCompatActivity() {
                 loadBanner()
             }
         }
+        /////////////////////////////////////////////////Ads
 
-        // show ad if the user is returning from the game
-        if (isClassicServiceRunning || isProServiceRunning) {
-            dialog.show()
-            isDialogShowed = true
-            Handler().postDelayed({
-                //showRewardedVideoAd()                               // need modification
-                showUnityInterstitialAd()
-            }, 800)
-        }
+
+        //creating loading dialog
+        val builder = AlertDialog.Builder(this)
+        val dialogView = layoutInflater.inflate(R.layout.loading_dialog, null)
+        builder.setView(dialogView)
+        dialog = builder.create()
+
+        dialog.show()
+        isDialogShowed = true
+
 
         binding.adAnimationView.setOnClickListener {
             showRewardedVideoAd()
@@ -216,7 +232,6 @@ class SecondMainActivity : AppCompatActivity() {
     }
 
     private fun showAdButton() {
-
         handler.postDelayed(Runnable {
             handler.postDelayed(runnable!!, delay)
             // repeating method
@@ -224,7 +239,6 @@ class SecondMainActivity : AppCompatActivity() {
                 return@Runnable
 
             if (UnityAds.isReady(rewardedPlacement) || UnityAds.isReady(interstitialPlacement)) {
-
                 binding.adAnimationView.visibility = View.VISIBLE
                 handler.removeCallbacks(runnable!!) // stop the repeating timer
                 stopHandler = true
@@ -232,66 +246,6 @@ class SecondMainActivity : AppCompatActivity() {
             // repeating method
         }.also { runnable = it }, delay)
     }
-
-
-    //////////// unity rewarded video ad listener
-    inner class UnityVideoAdsListener : IUnityAdsListener {
-        override fun onUnityAdsReady(placementId: String?) {
-
-            if (!timerStart) {
-                showAdButton()
-                timerStart = true
-            }
-
-        }
-
-        override fun onUnityAdsStart(placementId: String?) {
-        }
-
-        override fun onUnityAdsFinish(placementId: String?, p1: UnityAds.FinishState?) {
-            countShowedAd++
-
-            if (countShowedAd <= 1) {
-                binding.adAnimationView.visibility = View.GONE
-                stopHandler = false
-                showAdButton()
-            } else {
-                if (runnable != null) {
-                    handler.removeCallbacks(runnable!!) // stop the repeating timer
-                    stopHandler = true
-                    binding.adAnimationView.visibility = View.GONE
-                }
-            }
-        }
-
-        override fun onUnityAdsError(p0: UnityAds.UnityAdsError?, p1: String?) {
-        }
-
-    }
-
-    // Implement the Listener interface methods for unity banner ad
-
-    //    }
-    //        }
-    //        override fun onBannerLeftApplication(bannerAdView: BannerView) {
-    //
-    //        }
-    //        override fun onBannerClick(bannerAdView: BannerView) {
-    //
-    //        }
-    //        override fun onBannerFailedToLoad(bannerAdView: BannerView, errorInfo: BannerErrorInfo) {
-    //
-    //        }
-    //        override fun onBannerLoaded(bannerAdView: BannerView) {
-    //    class UnityBannerListener : IListener {
-    //////////// unity rewarded video ad listener
-    //    }
-    //        topBannerView.removeAllViews()
-    //    }
-    //        banner_ad_container.addView(unityBanner)
-    //        unityBanner.load()
-    //        unityBanner.listener = bannerListener
-    //        unityBanner = BannerView(this, bannerPlacement, UnityBannerSize(320, 50))
 
     override fun onPause() {
         if (isDialogShowed) {
@@ -308,22 +262,86 @@ class SecondMainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // showing ad after returning to the app or returning to the SecondMainActivity from classic and premium
+
+        // showing ad button after returning to the app or returning to the SecondMainActivity from classic and premium
         if (UnityAds.isReady(rewardedPlacement) || UnityAds.isReady(interstitialPlacement)) {
             if (countShowedAd <= 1)
                 binding.adAnimationView.visibility = View.VISIBLE
         }
 
         adView.resume()
-
     }
+
+    private fun setStateOnUi(isRunning: Boolean?) {
+
+        // show ad and handle button visibility in fragment if the user is returning from the game
+        if (isRunning == true && crossNum != 500) {
+            (mFragment as MainFragment).setButtonsVisibility()
+            showUnityInterstitialAd()
+
+        } else {
+            dialog.dismiss()
+        }
+    }
+
+    private suspend fun sendStateToMainThread(state: Boolean?) {
+        withContext(Main) {
+            setStateOnUi(state)
+        }
+    }
+
+    private suspend fun getStateFromRoomDb() {
+        val refState: State? = StateDatabase(applicationContext).getStateDao().getAllStates()
+        val serviceState: Boolean? = refState?.isRunning
+
+        sendStateToMainThread(serviceState)
+    }
+
+    private fun addMainFragment(fragment: Fragment) {
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment_container, fragment)
+        fragmentTransaction.commit()
+    }
+
 
     override fun onDestroy() {
         if (runnable != null) {
             handler.removeCallbacks(runnable!!) // stop the repeating timer
         }
+        UnityAds.removeListener(this)
         adView.destroy()
         super.onDestroy()
     }
+
+    /////////////////////////////////////////////////////////////Unity Video Ads Listener
+    override fun onUnityAdsReady(p0: String?) {
+        if (!timerStart) {
+            showAdButton()
+            timerStart = true
+        }
+    }
+
+    override fun onUnityAdsStart(p0: String?) {
+    }
+
+    override fun onUnityAdsFinish(p0: String?, p1: UnityAds.FinishState?) {
+        countShowedAd++
+
+        if (countShowedAd <= 1) {
+            binding.adAnimationView.visibility = View.GONE
+            stopHandler = false
+            showAdButton()
+        } else {
+            if (runnable != null) {
+                handler.removeCallbacks(runnable!!) // stop the repeating timer
+                stopHandler = true
+                binding.adAnimationView.visibility = View.GONE
+            }
+        }
+    }
+
+    override fun onUnityAdsError(p0: UnityAds.UnityAdsError?, p1: String?) {
+    }
+    /////////////////////////////////////////////////////////////Unity Video Ads Listener
 
 }

@@ -43,11 +43,13 @@
         <service
                 android:name=".services.MainService"
                 android:enabled="true"
-                android:exported="false" />
+                android:exported="false"
+                android:process=":backgroundProcess"/>
         <service
                 android:name=".services.PremiumService"
                 android:enabled="true"
-                android:exported="false" />
+                android:exported="false"
+                android:process=":backgroundProcess"/>
     </application>
 
 </manifest>

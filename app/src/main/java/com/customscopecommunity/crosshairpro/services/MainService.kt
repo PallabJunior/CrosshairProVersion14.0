@@ -17,11 +17,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.customscopecommunity.crosshairpro.R
 import com.customscopecommunity.crosshairpro.afterFinishVisibility
-import com.customscopecommunity.crosshairpro.crossNum
+import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_BG
+import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_COLOUR
+import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_NUMBER
 import com.customscopecommunity.crosshairpro.database.Position
 import com.customscopecommunity.crosshairpro.database.PositionDatabase
-import com.customscopecommunity.crosshairpro.screens.backgroundLight
-import com.customscopecommunity.crosshairpro.screens.colour
+import com.customscopecommunity.crosshairpro.newdatabase.State
+import com.customscopecommunity.crosshairpro.newdatabase.StateDatabase
 import kotlinx.android.synthetic.main.layout_main_crosshair.view.*
 import kotlinx.android.synthetic.main.layout_pro_controller.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -29,8 +31,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-// to show the ad when the user return to the app
-var isClassicServiceRunning = false
 private const val notificationId = 1
 
 class MainService : BaseService(), View.OnClickListener {
@@ -54,27 +54,30 @@ class MainService : BaseService(), View.OnClickListener {
     // control the movement of the crosshair
     private var moveCount = 10
 
+    private var cColour: Int? = null
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         createNotificationChannel(notificationId)
-
-        isClassicServiceRunning = true
 
         afterFinishVisibility = 1
 
         mFloatingView = inflate(this, R.layout.layout_main_crosshair, null)
 
-        //imageView = mFloatingView.findViewById(R.id.mainServiceCrosshair)                       // change added
         imageView = mFloatingView.mainServiceCrosshair
         imageViewBg = mFloatingView.mainBg
 
-        if (backgroundLight == 1) {
+        val cNum = intent?.getIntExtra(CROSSHAIR_NUMBER, 1)
+        val bgLight = intent?.getIntExtra(CROSSHAIR_BG, 0)
+        cColour = intent?.getIntExtra(CROSSHAIR_COLOUR, 0)
+
+        if (bgLight == 1) {
             imageView.setBackgroundResource(R.drawable.c_background)
         } else {
             imageView.setBackgroundResource(0)
         }
 
-        when (crossNum) {
+        when (cNum!!) {
             1 -> addCrosshair(R.drawable.crosshair1)
             2 -> addCrosshair(R.drawable.crosshair2)
             3 -> addCrosshair(R.drawable.crosshair3)
@@ -157,6 +160,8 @@ class MainService : BaseService(), View.OnClickListener {
                 controller()
             }
         }
+
+        saveRunningState()
 
         return START_STICKY
     }
@@ -326,7 +331,7 @@ class MainService : BaseService(), View.OnClickListener {
 
     private fun setCrosshairColour() {
 
-        when (colour) {
+        when (cColour) {
             0 -> DrawableCompat.setTint(
                 imageView.drawable, ContextCompat.getColor(
                     this,
@@ -381,6 +386,26 @@ class MainService : BaseService(), View.OnClickListener {
         }
     }
 
+    private fun saveRunningState() {
+        if (applicationContext != null) {
+            CoroutineScope(Dispatchers.IO).launch {
+
+                // refState == null on very first launch
+                val refState: State? =
+                    StateDatabase(applicationContext).getStateDao().getAllStates()
+
+                val mState = State(true)
+
+                if (refState == null) {
+                    StateDatabase(applicationContext).getStateDao().addState(mState)
+                } else {
+                    mState.id = refState.id
+                    StateDatabase(applicationContext).getStateDao().updateState(mState)
+                }
+            }
+        }
+    }
+
 
     private fun savePosition() {
         if (applicationContext != null) {
@@ -399,7 +424,6 @@ class MainService : BaseService(), View.OnClickListener {
 
 
     override fun onDestroy() {
-        isClassicServiceRunning = false
 
         savePosition()
 

@@ -17,18 +17,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.airbnb.lottie.LottieAnimationView
 import com.customscopecommunity.crosshairpro.*
+import com.customscopecommunity.crosshairpro.constants.Constants
+import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_BG
+import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_COLOUR
+import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_NUMBER
 import com.customscopecommunity.crosshairpro.databinding.FragmentMainBinding
+import com.customscopecommunity.crosshairpro.newdatabase.State
+import com.customscopecommunity.crosshairpro.newdatabase.StateDatabase
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
 import kotlinx.android.synthetic.main.permission_dialog.view.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 
@@ -48,11 +56,9 @@ class MainFragment : Fragment(), CoroutineScope {
     private lateinit var stopButton: ImageView
     private lateinit var minimizeButton: ImageView
 
-    private var checkMinimize = true
-
     private lateinit var job: Job
     override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
+        get() = job + Main
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,7 +76,6 @@ class MainFragment : Fragment(), CoroutineScope {
         premimumIntent = Intent(activity, PremiumActivity::class.java)
         classicIntent = Intent(activity, ClassicActivity::class.java)
 
-
         broadcastReceiver = object : BroadcastReceiver() {
 
             override fun onReceive(context: Context, intent: Intent) {
@@ -81,24 +86,13 @@ class MainFragment : Fragment(), CoroutineScope {
             }
         }
         LocalBroadcastManager.getInstance(activity!!)
-            .registerReceiver(broadcastReceiver, IntentFilter(action))
+            .registerReceiver(broadcastReceiver, IntentFilter(Constants.ACTION))
 
 
         startButton = binding.buttonStart
         stopButton = binding.buttonStop
         minimizeButton = binding.btnMinimize
         lottieAnimationView = binding.animationView
-
-
-        when (afterFinishVisibility) {
-            1, 2, 3 -> {
-                startButton.visibility = View.GONE
-                lottieAnimationView.visibility = View.INVISIBLE
-                checkMinimize = true
-                minimizeButton.visibility = View.VISIBLE
-
-            }
-        }
 
         binding.classicPackage.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
@@ -119,23 +113,24 @@ class MainFragment : Fragment(), CoroutineScope {
 
 
         startButton.setOnClickListener {
+            if (crossNum == 500)
+                crossNum = 200
             startRequiredService()
         }
 
         stopButton.setOnClickListener {
 
             stopServices()
-            checkMinimize = false
             minimizeButton.visibility = View.GONE
             stopButton.visibility = View.GONE
             startButton.visibility = View.VISIBLE
             lottieAnimationView.visibility = View.VISIBLE
+            saveRunningState()
         }
 
-        if (checkMinimize) {
-            minimizeButton.setOnClickListener {
-                activity!!.finish()
-            }
+
+        minimizeButton.setOnClickListener {
+            activity!!.finish()
         }
 
 
@@ -148,13 +143,33 @@ class MainFragment : Fragment(), CoroutineScope {
             permissionDialog()
         } else {
 
+            if (firstOpen) {
+                Toast.makeText(
+                    activity,
+                    activity!!.getString(R.string.please_wait),
+                    Toast.LENGTH_SHORT
+                ).show()
+                firstOpen = false
+            }
+
+
             if (crossNum in 0..50) {
+
+                serviceIntent.apply {
+                    putExtra(CROSSHAIR_NUMBER, crossNum)
+                    putExtra(CROSSHAIR_BG, backgroundLight)
+                    putExtra(CROSSHAIR_COLOUR, colour)
+                }
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     activity!!.startForegroundService(serviceIntent)
                 } else {
                     activity!!.startService(serviceIntent)
                 }
             } else {
+
+                premiumServiceIntent.putExtra(CROSSHAIR_NUMBER, crossNum)
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     activity!!.startForegroundService(premiumServiceIntent)
                 } else {
@@ -165,7 +180,6 @@ class MainFragment : Fragment(), CoroutineScope {
             lottieAnimationView.visibility = View.INVISIBLE
             startButton.visibility = View.GONE
             stopButton.visibility = View.VISIBLE
-            checkMinimize = true
             minimizeButton.visibility = View.VISIBLE
         }
     }
@@ -199,6 +213,27 @@ class MainFragment : Fragment(), CoroutineScope {
             Uri.parse(getString(R.string.package_name))
         )
         startActivityForResult(intent, systemAlertWindowPermission)
+    }
+
+    private fun saveRunningState() {
+        CoroutineScope(Main).launch {
+            val refState: State? = StateDatabase(activity!!).getStateDao().getAllStates()
+            val mState = State(false)
+
+            if (refState == null) {
+                StateDatabase(activity!!).getStateDao().addState(mState)
+            } else {
+                mState.id = refState.id
+                StateDatabase(activity!!).getStateDao().updateState(mState)
+            }
+        }
+    }
+
+
+    fun setButtonsVisibility() {
+        startButton.visibility = View.GONE
+        lottieAnimationView.visibility = View.INVISIBLE
+        minimizeButton.visibility = View.VISIBLE
     }
 
     override fun onDestroy() {
