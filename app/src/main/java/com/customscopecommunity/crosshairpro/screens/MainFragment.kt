@@ -42,6 +42,8 @@ import kotlin.coroutines.CoroutineContext
 
 class MainFragment : Fragment(), CoroutineScope {
 
+    private var isStartBtnClicked = false
+
     private lateinit var broadcastReceiver: BroadcastReceiver
 
     private lateinit var serviceIntent: Intent
@@ -113,6 +115,7 @@ class MainFragment : Fragment(), CoroutineScope {
 
 
         startButton.setOnClickListener {
+            isStartBtnClicked = true
             if (crossNum == 500)
                 crossNum = 200
             startRequiredService()
@@ -133,15 +136,19 @@ class MainFragment : Fragment(), CoroutineScope {
             activity!!.finish()
         }
 
-
         return binding.root
     }
 
-    private fun startRequiredService() {
+    fun startRequiredService() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(activity)) {
             permissionDialog()
         } else {
+
+            if (isStartBtnClicked) {
+                isStartBtnClicked = false
+                stopServices()
+            }
 
             if (firstOpen) {
                 Toast.makeText(

@@ -13,6 +13,7 @@ import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.customscopecommunity.crosshairpro.R
@@ -34,6 +35,8 @@ import kotlinx.coroutines.launch
 private const val notificationId = 1
 
 class MainService : BaseService(), View.OnClickListener {
+
+    private var isClickedForController = false
 
     private var mWindowManager: WindowManager? = null
     private lateinit var mFloatingView: View
@@ -77,7 +80,7 @@ class MainService : BaseService(), View.OnClickListener {
             imageView.setBackgroundResource(0)
         }
 
-        when (cNum!!) {
+        when (cNum ?: 1) {
             1 -> addCrosshair(R.drawable.crosshair1)
             2 -> addCrosshair(R.drawable.crosshair2)
             3 -> addCrosshair(R.drawable.crosshair3)
@@ -146,8 +149,8 @@ class MainService : BaseService(), View.OnClickListener {
         }
 
         if (!checkFun) {
-            controller()
             checkFun = true
+            controller()
         }
 
         mWindowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -157,6 +160,7 @@ class MainService : BaseService(), View.OnClickListener {
         mCrosshairView.setOnClickListener {
 
             if (!checkFun) {
+                isClickedForController = true
                 controller()
             }
         }
@@ -204,7 +208,27 @@ class MainService : BaseService(), View.OnClickListener {
         xParams.gravity = Gravity.CENTER_HORIZONTAL or Gravity.END
         xParams.x = 15
 
-        xWindowManager?.addView(xFloatingView, xParams)
+        //xWindowManager?.addView(xFloatingView, xParams)
+
+        try {
+            xWindowManager?.addView(xFloatingView, xParams)
+        } catch (e: Exception) {
+            checkFun = false
+            if (isClickedForController) {
+                isClickedForController = false
+                Toast.makeText(
+                    this,
+                    getString(R.string.controller_not_supported),
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                Toast.makeText(
+                    this,
+                    getString(R.string.initial_window_token_error),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
 
         xCollapsedView = xFloatingView.findViewById(R.id.proController)
 

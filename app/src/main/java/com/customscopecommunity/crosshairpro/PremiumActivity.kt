@@ -21,6 +21,9 @@ class PremiumActivity : AppCompatActivity() {
         }
 
         initialize()
+
+        canShowFanAd = true
+
     }
 
     private fun initialize() {

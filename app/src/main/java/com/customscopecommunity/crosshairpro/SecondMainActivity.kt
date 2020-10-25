@@ -1,6 +1,5 @@
 package com.customscopecommunity.crosshairpro
 
-import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -21,6 +20,7 @@ import com.customscopecommunity.crosshairpro.databinding.ActivitySecondMainBindi
 import com.customscopecommunity.crosshairpro.newdatabase.State
 import com.customscopecommunity.crosshairpro.newdatabase.StateDatabase
 import com.customscopecommunity.crosshairpro.screens.MainFragment
+import com.facebook.ads.*
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -38,13 +38,14 @@ import kotlinx.coroutines.withContext
 var crossNum: Int = 500
 var afterFinishVisibility: Int = 0
 const val systemAlertWindowPermission = 2084
-var firstOpen = true // To show the toast message on first open because of slow creating of service
+var firstOpen = true // To show the toast message on first open because of slow creation of service
+var canShowFanAd = false
+var isSightSelected = false
 
 class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
 
-    // Show dialog before showing the ad after returning to the app
-    private lateinit var dialog: AlertDialog
-    private var isDialogShowed = false
+    private lateinit var fanInterstitialAd: InterstitialAd
+
     private var countShowedAd = 0
 
     // to stop the  handler from the handler
@@ -65,10 +66,8 @@ class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
     private val rewardedPlacement = "crosshairRewarded"
     private val interstitialPlacement = "interstitialAdCrosshairPro"
 
-
-    //    // Listener for Unity banner ad events
-    //    private val bannerListener = UnityBannerListener()
-    //    private lateinit var unityBanner: BannerView
+    //private val fanInterstitialPlacementId = "1761971713959604_1761999090623533"
+    private val fanInterstitialPlacementId = ""
 
     private lateinit var binding: ActivitySecondMainBinding
 
@@ -76,25 +75,6 @@ class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
     private var initialLayoutComplete = false
 
     private lateinit var mFragment: Fragment
-
-    // admob banner
-    private val adSize: AdSize
-        get() {
-            val display = windowManager.defaultDisplay
-            val outMetrics = DisplayMetrics()
-            display.getMetrics(outMetrics)
-
-            val density = outMetrics.density
-
-            var adWidthPixels = banner_ad_container.width.toFloat()
-            if (adWidthPixels == 0f) {
-                adWidthPixels = outMetrics.widthPixels.toFloat()
-            }
-
-            val adWidth = (adWidthPixels / density).toInt()
-            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
-        }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,9 +91,12 @@ class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
 
         createNotificationChannel()
 
+
         /////////////////////////////////////////////////Ads
-        // Interstitial and rewarded ad listener
-        //val adListener = IUnityAdsListener()
+        AudienceNetworkAds.initialize(this)
+        fanInterstitialAd = InterstitialAd(this, fanInterstitialPlacementId)
+        loadFanInterstitialAd()
+
         // Listener for rewarded and interstitial ad events
         UnityAds.addListener(this)
 
@@ -135,23 +118,47 @@ class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
         /////////////////////////////////////////////////Ads
 
 
-        //creating loading dialog
-        val builder = AlertDialog.Builder(this)
-        val dialogView = layoutInflater.inflate(R.layout.loading_dialog, null)
-        builder.setView(dialogView)
-        dialog = builder.create()
-
-        if (!firstOpen) {
-            dialog.show()
-            isDialogShowed = true
-        }
-
-
         binding.adAnimationView.setOnClickListener {
             showRewardedVideoAd()
         }
 
     }
+
+
+    private fun loadFanInterstitialAd() {
+        fanInterstitialAd.loadAd(
+            fanInterstitialAd.buildLoadAdConfig()
+                .withAdListener(fanInterstitialAdListener())
+                .build()
+        )
+    }
+
+    private fun showFanInterstitialAd(): Boolean {
+        return if (fanInterstitialAd.isAdLoaded && !fanInterstitialAd.isAdInvalidated) {
+            fanInterstitialAd.show()
+            true
+        } else
+            false
+
+    }
+
+    // admob banner
+    private val adSize: AdSize
+        get() {
+            val display = windowManager.defaultDisplay
+            val outMetrics = DisplayMetrics()
+            display.getMetrics(outMetrics)
+
+            val density = outMetrics.density
+
+            var adWidthPixels = banner_ad_container.width.toFloat()
+            if (adWidthPixels == 0f) {
+                adWidthPixels = outMetrics.widthPixels.toFloat()
+            }
+
+            val adWidth = (adWidthPixels / density).toInt()
+            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
+        }
 
     private fun createNotificationChannel() {
 
@@ -201,7 +208,6 @@ class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
         startActivity(launch)
     }
 
-
     private fun loadBanner() {
         //adView.adUnitId = getString(R.string.main_banner)
         adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
@@ -212,23 +218,18 @@ class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
         adView.loadAd(adRequest)
     }
 
-
     private fun showUnityInterstitialAd() {
         // show Unity Video Ad
-        if (UnityAds.isReady(interstitialPlacement)) {
+        if (UnityAds.isReady(interstitialPlacement))
             UnityAds.show(this, interstitialPlacement)
-        } else
-            dialog.dismiss()
     }
 
     private fun showRewardedVideoAd() {
         // Rewarded video ad
         if (UnityAds.isReady(rewardedPlacement)) {
-            dialog.dismiss()
             UnityAds.show(this, rewardedPlacement)
 
         } else {
-            // Interstitial Video ad
             showUnityInterstitialAd()
         }
     }
@@ -249,41 +250,12 @@ class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
         }.also { runnable = it }, delay)
     }
 
-    override fun onPause() {
-        if (isDialogShowed) {
-            dialog.dismiss()
-        }
-
-        if (runnable != null) {
-            stopHandler = true
-            handler.removeCallbacks(runnable!!) // stop the repeating timer
-        }
-        adView.pause()
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // showing ad button after returning to the app or returning to the SecondMainActivity from classic and premium
-        if (UnityAds.isReady(rewardedPlacement) || UnityAds.isReady(interstitialPlacement)) {
-            if (countShowedAd <= 1)
-                binding.adAnimationView.visibility = View.VISIBLE
-        }
-
-        adView.resume()
-    }
 
     private fun setStateOnUi(isRunning: Boolean?) {
-
-        // show ad and handle button visibility in fragment if the user is returning from the game
-        if (isRunning == true && crossNum != 500) {
+        // handle button visibility in fragment if the user is returning from the game
+        if (isRunning == true && crossNum != 500)
             (mFragment as MainFragment).setButtonsVisibility()
-            showUnityInterstitialAd()
 
-        } else {
-            dialog.dismiss()
-        }
     }
 
     private suspend fun sendStateToMainThread(state: Boolean?) {
@@ -306,13 +278,25 @@ class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
     }
 
 
-    override fun onDestroy() {
-        if (runnable != null) {
-            handler.removeCallbacks(runnable!!) // stop the repeating timer
+    private fun fanInterstitialAdListener() = object : InterstitialAdListener {
+        override fun onInterstitialDisplayed(ad: Ad) {
         }
-        UnityAds.removeListener(this)
-        adView.destroy()
-        super.onDestroy()
+
+        override fun onInterstitialDismissed(ad: Ad) {
+            (mFragment as MainFragment).startRequiredService()
+        }
+
+        override fun onError(ad: Ad, adError: AdError) {
+        }
+
+        override fun onAdLoaded(ad: Ad) {
+        }
+
+        override fun onAdClicked(ad: Ad) {
+        }
+
+        override fun onLoggingImpression(ad: Ad) {
+        }
     }
 
     /////////////////////////////////////////////////////////////Unity Video Ads Listener
@@ -346,4 +330,42 @@ class SecondMainActivity : AppCompatActivity(), IUnityAdsListener {
     }
     /////////////////////////////////////////////////////////////Unity Video Ads Listener
 
+    override fun onPause() {
+        if (runnable != null) {
+            stopHandler = true
+            handler.removeCallbacks(runnable!!) // stop the repeating timer
+        }
+        adView.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (isSightSelected && canShowFanAd) {
+            isSightSelected = false
+            canShowFanAd = false
+            if (!showFanInterstitialAd()) {
+                (mFragment as MainFragment).startRequiredService()
+            }
+        }
+
+        // showing ad button after returning to the app or returning to the SecondMainActivity from classic and premium
+        if (UnityAds.isReady(rewardedPlacement) || UnityAds.isReady(interstitialPlacement)) {
+            if (countShowedAd <= 1)
+                binding.adAnimationView.visibility = View.VISIBLE
+        }
+
+        adView.resume()
+    }
+
+    override fun onDestroy() {
+        if (runnable != null) {
+            handler.removeCallbacks(runnable!!) // stop the repeating timer
+        }
+        fanInterstitialAd.destroy()
+        UnityAds.removeListener(this)
+        adView.destroy()
+        super.onDestroy()
+    }
 }

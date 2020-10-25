@@ -34,4 +34,6 @@
     <string name="ad">Ad</string>
     <string name="loading">Загрузка…</string>
     <string name="please_wait">пожалуйста, подождите…</string>
+    <string name="initial_window_token_error">Ошибка при создании контроллера. Нажмите на перекрестие, чтобы восстановить контроллер.</string>
+    <string name="controller_not_supported">Контроллер не поддерживается</string>
 </resources>

@@ -1,22 +1,16 @@
 package com.customscopecommunity.crosshairpro.screens
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.customscopecommunity.crosshairpro.R
-import com.customscopecommunity.crosshairpro.constants.Constants.ACTION
-import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_BG
-import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_COLOUR
-import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_NUMBER
+import com.customscopecommunity.crosshairpro.canShowFanAd
 import com.customscopecommunity.crosshairpro.crossNum
-import com.customscopecommunity.crosshairpro.firstOpen
+import com.customscopecommunity.crosshairpro.isSightSelected
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
 import kotlinx.android.synthetic.main.fragment_classic.*
@@ -42,6 +36,8 @@ class ClassicActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(false)
         }
+
+        canShowFanAd = true
 
         crosshairViews = arrayOf(
             classic1, classic2, classic3, classic4, classic5,
@@ -186,10 +182,9 @@ class ClassicActivity : AppCompatActivity() {
                     classic23 -> crossNum = 23
                     classic24 -> crossNum = 24
                 }
+                isSightSelected = true
                 stopServices()
-                changeButtonsVisibility()
-                startService()
-                closeFg()
+                finish()
             }
         }
     }
@@ -208,35 +203,6 @@ class ClassicActivity : AppCompatActivity() {
     private fun stopServices() {
         stopService(cService)
         stopService(premService)
-    }
-
-    private fun startService() {
-
-        if (firstOpen) {
-            Toast.makeText(applicationContext, getString(R.string.please_wait), Toast.LENGTH_SHORT)
-                .show()
-            firstOpen = false
-        }
-
-        cService.apply {
-            putExtra(CROSSHAIR_NUMBER, crossNum)
-            putExtra(CROSSHAIR_BG, backgroundLight)
-            putExtra(CROSSHAIR_COLOUR, colour)
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(cService)
-        } else {
-            startService(cService)
-        }
-    }
-
-    private fun changeButtonsVisibility() {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(ACTION))
-    }
-
-    private fun closeFg() {
-        finish()
     }
 
     override fun onSupportNavigateUp(): Boolean {

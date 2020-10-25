@@ -33,4 +33,6 @@
     <string name="ad">Ad</string>
     <string name="loading">Carregando…</string>
     <string name="please_wait">Por favor, espere…</string>
+    <string name="initial_window_token_error">Ocorreu um erro ao criar o controlador. Toque na cruz para reconstruir o controlador</string>
+    <string name="controller_not_supported">Controlador não é compatível</string>
 </resources>

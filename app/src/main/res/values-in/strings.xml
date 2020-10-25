@@ -34,4 +34,6 @@
     <string name="ad">Ad</string>
     <string name="loading">Memuat…</string>
     <string name="please_wait">Tunggu sebentar…</string>
+    <string name="initial_window_token_error">Terjadi kesalahan saat membuat pengontrol. Ketuk crosshair untuk membangun kembali pengontrol</string>
+    <string name="controller_not_supported">Pengontrol tidak didukung</string>
 </resources>
