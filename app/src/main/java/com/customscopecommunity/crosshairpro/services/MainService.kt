@@ -447,6 +447,8 @@ class MainService : BaseService(), View.OnClickListener {
     }
 
 
+
+
     override fun onDestroy() {
 
         savePosition()

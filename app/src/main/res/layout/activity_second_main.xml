@@ -25,29 +25,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="@android:color/transparent"
-                    ads:titleTextColor="@color/material_white">
-
-                <LinearLayout
-                        android:id="@+id/ad_animation_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="40dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                    <com.airbnb.lottie.LottieAnimationView
-                            android:id="@+id/ad_animation"
-                            android:layout_width="50dp"
-                            android:layout_height="match_parent"
-                            app:lottie_autoPlay="true"
-                            app:lottie_loop="true"
-                            app:lottie_rawRes="@raw/ad_button_anim" />
-
-                </LinearLayout>
-
-
-            </androidx.appcompat.widget.Toolbar>
+                    ads:titleTextColor="@color/material_white"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
