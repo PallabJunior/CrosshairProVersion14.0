@@ -183,7 +183,7 @@ class PremiumService : BaseService(), View.OnClickListener {
 
         saveRunningState()
 
-        return START_STICKY
+        return START_REDELIVER_INTENT
     }
 
     private fun makeCrosshairVisible() {

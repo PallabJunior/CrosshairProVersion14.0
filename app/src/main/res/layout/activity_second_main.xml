@@ -40,15 +40,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
                 tools:layout="@layout/fragment_main" />
 
-        <RelativeLayout
-                android:id="@+id/banner_ad_container"
+
+<!--        production ad = ca-app-pub-8201262723803857/3438100217-->
+<!--        test ad = ca-app-pub-3940256099942544/6300978111-->
+        <com.google.android.gms.ads.AdView
+                android:id="@+id/banner_ad_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:background="@color/black"
-                ads:layout_constraintBottom_toBottomOf="parent"
-                ads:layout_constraintEnd_toEndOf="parent"
-                ads:layout_constraintStart_toStartOf="parent" />
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

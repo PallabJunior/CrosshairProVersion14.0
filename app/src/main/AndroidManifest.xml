@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
+            android:name=".MainApplication"
             android:hardwareAccelerated="true"
             android:networkSecurityConfig="@xml/network_security_config"
             android:allowBackup="false"
@@ -17,6 +18,11 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+
+
+        <meta-data
+                android:name="com.google.android.gms.ads.APPLICATION_ID"
+                android:value="ca-app-pub-8201262723803857~4410500643"/>
 
         <activity
                 android:name=".SecondMainActivity"

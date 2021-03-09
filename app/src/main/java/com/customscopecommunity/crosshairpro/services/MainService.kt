@@ -70,17 +70,17 @@ class MainService : BaseService(), View.OnClickListener {
         imageView = mFloatingView.mainServiceCrosshair
         imageViewBg = mFloatingView.mainBg
 
-        val cNum = intent?.getIntExtra(CROSSHAIR_NUMBER, 1)
-        val bgLight = intent?.getIntExtra(CROSSHAIR_BG, 0)
-        cColour = intent?.getIntExtra(CROSSHAIR_COLOUR, 0)
+        val cNum = intent?.getIntExtra(CROSSHAIR_NUMBER, 1) ?: 1
+        val bgLight = intent?.getBooleanExtra(CROSSHAIR_BG, false) ?: false
+        cColour = intent?.getIntExtra(CROSSHAIR_COLOUR, 0) ?: 0
 
-        if (bgLight == 1) {
+        if (bgLight) {
             imageView.setBackgroundResource(R.drawable.c_background)
         } else {
             imageView.setBackgroundResource(0)
         }
 
-        when (cNum ?: 1) {
+        when (cNum) {
             1 -> addCrosshair(R.drawable.crosshair1)
             2 -> addCrosshair(R.drawable.crosshair2)
             3 -> addCrosshair(R.drawable.crosshair3)
@@ -167,7 +167,7 @@ class MainService : BaseService(), View.OnClickListener {
 
         saveRunningState()
 
-        return START_STICKY
+        return START_REDELIVER_INTENT
     }
 
     private fun makeCrosshairVisible() {
@@ -445,8 +445,6 @@ class MainService : BaseService(), View.OnClickListener {
             }
         }
     }
-
-
 
 
     override fun onDestroy() {

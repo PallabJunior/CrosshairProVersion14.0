@@ -12,13 +12,19 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.customscopecommunity.crosshairpro.constants.AdUnitIds.MED_INTERSTITIAL_UNIT
 import com.customscopecommunity.crosshairpro.constants.Constants.CHANNEL_ID
+import com.customscopecommunity.crosshairpro.constants.Constants.PRIVACY_POLICY_URL
+import com.customscopecommunity.crosshairpro.constants.Constants.RATE_ME_URL
 import com.customscopecommunity.crosshairpro.databinding.ActivitySecondMainBinding
 import com.customscopecommunity.crosshairpro.newdatabase.State
 import com.customscopecommunity.crosshairpro.newdatabase.StateDatabase
 import com.customscopecommunity.crosshairpro.screens.MainFragment
-import com.facebook.ads.*
-import com.facebook.ads.AdSize
+import com.customscopecommunity.crosshairpro.viewmodelfactories.SecondMainViewModelFactory
+import com.customscopecommunity.crosshairpro.viewmodels.SecondMainViewModel
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import kotlinx.android.synthetic.main.activity_second_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -36,27 +42,54 @@ var isSightSelected = false
 
 class SecondMainActivity : AppCompatActivity() {
 
-    private lateinit var fanInterstitialAd: InterstitialAd
-    private lateinit var fanBannerAdView: AdView
-
-    private val fanInterstitialPlacementId = "1761971713959604_1761999090623533"
-    private val fanBannerPlacementId = "1761971713959604_1813897582100350"
+    private var medInterstitialAd: com.google.android.gms.ads.interstitial.InterstitialAd? = null
+    private var countAdsShowed = 0
+    private var isAdInitialized = false
 
     private lateinit var binding: ActivitySecondMainBinding
 
     private lateinit var mFragment: Fragment
 
+    private lateinit var secondMainVm: SecondMainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_second_main)
 
-        // FAN
-        AudienceNetworkAds.initialize(this)
+
+        binding.lifecycleOwner = this
 
         setSupportActionBar(toolbar)
 
+        val vmFactory = SecondMainViewModelFactory(application)
+        secondMainVm = ViewModelProvider(this, vmFactory).get(SecondMainViewModel::class.java)
+
         mFragment = MainFragment()
         addMainFragment(mFragment)
+
+        secondMainVm.readSavedAdImpression.observe(this, {
+            countAdsShowed = it
+
+
+            // making sure that ad initialize only one time(isAdInitialized) &
+            // user can see only the specified number(below in the `if` condition) of ads in 24 hours
+            if (it < 10 && !isAdInitialized) {
+                isAdInitialized = true
+                MobileAds.initialize(this) {
+                    loadAdmobInterstitialMediationAd()
+                    loadAdmobBannerMediationAd()
+                }
+            }
+
+        })
+
+        secondMainVm.readSavedDateTimeMillis.observe(this, {
+            if (isTimeLimitOver(it)) {
+                // resetting number of ad count and time millis once time limit is over
+                secondMainVm.saveNumberOfAdImpression(0)
+                secondMainVm.saveCurrentDateTimeMillis(0)
+            }
+        })
 
         CoroutineScope(IO).launch {
             getStateFromRoomDb()
@@ -64,40 +97,80 @@ class SecondMainActivity : AppCompatActivity() {
 
         createNotificationChannel()
 
-        //AdSettings.addTestDevice("91af5e10-a182-42a4-84f6-d8038263d98f")  /// required for emalutors the id will be different
-
-        loadFanInterstitialAd()
-        loadFanBannerAd()
-
 
     }
 
-    private fun loadFanBannerAd() {
-        fanBannerAdView = AdView(this, fanBannerPlacementId, AdSize.BANNER_HEIGHT_50)
+    private fun countAdImpression() {
+        countAdsShowed++
+        secondMainVm.saveNumberOfAdImpression(countAdsShowed)
 
-        banner_ad_container.addView(fanBannerAdView)
-        fanBannerAdView.loadAd()
+        updateTimeMillis()
+    }
+
+    private fun updateTimeMillis() {
+        if (countAdsShowed == 1) {
+            // upload the time when the first interstitial ad is showed
+            secondMainVm.saveCurrentDateTimeMillis(System.currentTimeMillis())
+        }
     }
 
 
-    private fun loadFanInterstitialAd() {
-        //VID_HD_16_9_46S_APP_INSTALL#YOUR_PLACEMENT_ID
-        fanInterstitialAd = InterstitialAd(this, fanInterstitialPlacementId)
+    private fun isTimeLimitOver(savedMillis: Long): Boolean {
+        if (savedMillis == 0L) {
+            // gets called on first install or on start up when no ads showed in that day
+            return false
+        }
 
-        fanInterstitialAd.loadAd(
-            fanInterstitialAd.buildLoadAdConfig()
-                .withAdListener(fanInterstitialAdListener())
-                .build()
-        )
+        // Check time elapsed
+        return System.currentTimeMillis() >= savedMillis + 24 * 60 * 60 * 1000
     }
 
-    private fun showFanInterstitialAd(): Boolean {
-        return if (fanInterstitialAd.isAdLoaded && !fanInterstitialAd.isAdInvalidated) {
-            fanInterstitialAd.show()
-            true
-        } else
-            false
+    private fun loadAdmobInterstitialMediationAd() {
+        val adRequest = AdRequest.Builder().build()
 
+        com.google.android.gms.ads.interstitial.InterstitialAd.load(
+            this, MED_INTERSTITIAL_UNIT, adRequest, object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    medInterstitialAd = null
+                }
+
+                override fun onAdLoaded(interstitialAd: com.google.android.gms.ads.interstitial.InterstitialAd) {
+                    medInterstitialAd = interstitialAd
+                    medInterstitialAdListener()
+                }
+
+            })
+    }
+
+    private fun loadAdmobBannerMediationAd() {
+        val adRequest = AdRequest.Builder().build()
+        val adView: AdView = binding.bannerAdView
+        adView.loadAd(adRequest)
+        bannerAdListener(adView)
+    }
+
+    private fun bannerAdListener(bannerView: AdView) {
+        bannerView.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+                countAdImpression()
+            }
+
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+            }
+
+            override fun onAdOpened() {
+            }
+
+            override fun onAdClicked() {
+            }
+
+            override fun onAdLeftApplication() {
+            }
+
+            override fun onAdClosed() {
+            }
+        }
     }
 
     private fun createNotificationChannel() {
@@ -129,8 +202,8 @@ class SecondMainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.policy -> getString(R.string.policy_url).openUrl()
-            R.id.rateMe -> getString(R.string.rate_me_url).openRateMeUrl()
+            R.id.policy -> PRIVACY_POLICY_URL.openUrl()
+            R.id.rateMe -> RATE_ME_URL.openRateMeUrl()
         }
 
         return super.onOptionsItemSelected(item)
@@ -163,6 +236,7 @@ class SecondMainActivity : AppCompatActivity() {
     }
 
     private suspend fun getStateFromRoomDb() {
+        // State will be null at first launch
         val refState: State? = StateDatabase(applicationContext).getStateDao().getAllStates()
         val serviceState: Boolean? = refState?.isRunning
 
@@ -175,45 +249,47 @@ class SecondMainActivity : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
-    private fun fanInterstitialAdListener() = object : InterstitialAdListener {
-        override fun onInterstitialDisplayed(ad: Ad) {
-        }
+    private fun medInterstitialAdListener() {
+        medInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() {
+                (mFragment as MainFragment).startRequiredService()
+                medInterstitialAd = null
+            }
 
-        override fun onInterstitialDismissed(ad: Ad) {
-            (mFragment as MainFragment).startRequiredService()
+            override fun onAdFailedToShowFullScreenContent(adError: com.google.android.gms.ads.AdError?) {
+            }
 
-            fanInterstitialAd.destroy()
-        }
-
-        override fun onError(ad: Ad, adError: AdError) {
-        }
-
-        override fun onAdLoaded(ad: Ad) {
-        }
-
-        override fun onAdClicked(ad: Ad) {
-        }
-
-        override fun onLoggingImpression(ad: Ad) {
+            override fun onAdShowedFullScreenContent() {
+                medInterstitialAd = null
+            }
         }
     }
 
+
     override fun onResume() {
         super.onResume()
+        binding.bannerAdView.resume()
 
         if (isSightSelected && canShowFanAd) {
             isSightSelected = false
             canShowFanAd = false
-            if (!showFanInterstitialAd()) {
-                (mFragment as MainFragment).startRequiredService()
-            }
-        }
 
+            showMedInterstitialAd()
+        }
+    }
+
+    private fun showMedInterstitialAd() {
+        if (medInterstitialAd != null) {
+            medInterstitialAd?.show(this)
+            countAdImpression()
+        } else {
+            (mFragment as MainFragment).startRequiredService()
+        }
     }
 
     override fun onDestroy() {
-        fanInterstitialAd.destroy()
-        fanBannerAdView.destroy()
+        binding.bannerAdView.destroy()
+        medInterstitialAd = null
         super.onDestroy()
     }
 }

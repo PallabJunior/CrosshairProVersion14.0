@@ -20,6 +20,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.airbnb.lottie.LottieAnimationView
 import com.customscopecommunity.crosshairpro.*
@@ -32,6 +33,8 @@ import com.customscopecommunity.crosshairpro.newdatabase.State
 import com.customscopecommunity.crosshairpro.newdatabase.StateDatabase
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
+import com.customscopecommunity.crosshairpro.viewmodelfactories.MainViewModelFactory
+import com.customscopecommunity.crosshairpro.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.permission_dialog.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
@@ -43,6 +46,9 @@ import kotlin.coroutines.CoroutineContext
 class MainFragment : Fragment(), CoroutineScope {
 
     private var isStartBtnClicked = false
+
+    private var savedColor = 0
+    private var savedBgLightState = false
 
     private lateinit var broadcastReceiver: BroadcastReceiver
 
@@ -58,6 +64,8 @@ class MainFragment : Fragment(), CoroutineScope {
     private lateinit var stopButton: ImageView
     private lateinit var minimizeButton: ImageView
 
+    private lateinit var mainViewModel: MainViewModel
+
     private lateinit var job: Job
     override val coroutineContext: CoroutineContext
         get() = job + Main
@@ -71,6 +79,14 @@ class MainFragment : Fragment(), CoroutineScope {
         )
 
         job = Job()
+
+        val vmFactory = MainViewModelFactory(requireActivity().application)
+        mainViewModel = ViewModelProvider(this, vmFactory).get(MainViewModel::class.java)
+
+        binding.lifecycleOwner = this
+
+        observeSavedDataFromVM()
+
 
         serviceIntent = Intent(activity, MainService::class.java)
         premiumServiceIntent = Intent(activity, PremiumService::class.java)
@@ -87,7 +103,7 @@ class MainFragment : Fragment(), CoroutineScope {
                 binding.btnMinimize.visibility = View.VISIBLE
             }
         }
-        LocalBroadcastManager.getInstance(activity!!)
+        LocalBroadcastManager.getInstance(requireActivity())
             .registerReceiver(broadcastReceiver, IntentFilter(Constants.ACTION))
 
 
@@ -100,6 +116,10 @@ class MainFragment : Fragment(), CoroutineScope {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
                 permissionDialog()
             } else {
+                classicIntent.apply {
+                    putExtra(CROSSHAIR_COLOUR, savedColor)
+                    putExtra(CROSSHAIR_BG, savedBgLightState)
+                }
                 startActivity(classicIntent)
             }
         }
@@ -118,6 +138,7 @@ class MainFragment : Fragment(), CoroutineScope {
             isStartBtnClicked = true
             if (crossNum == 500)
                 crossNum = 200
+
             startRequiredService()
         }
 
@@ -133,10 +154,28 @@ class MainFragment : Fragment(), CoroutineScope {
 
 
         minimizeButton.setOnClickListener {
-            activity!!.finish()
+            requireActivity().finish()
         }
 
         return binding.root
+    }
+
+    private fun observeSavedDataFromVM() {
+        var isDataObservedOnce = false
+        mainViewModel.readSavedCrosshair.observe(viewLifecycleOwner, {
+            // to receive the data only once
+            if (!isDataObservedOnce) {
+                crossNum = it
+                isDataObservedOnce = true
+            }
+        })
+
+        mainViewModel.readSavedColour.observe(viewLifecycleOwner, {
+            savedColor = it
+        })
+        mainViewModel.readSavedBgState.observe(viewLifecycleOwner, {
+            savedBgLightState = it
+        })
     }
 
     fun startRequiredService() {
@@ -153,34 +192,36 @@ class MainFragment : Fragment(), CoroutineScope {
             if (firstOpen) {
                 Toast.makeText(
                     activity,
-                    activity!!.getString(R.string.please_wait),
+                    requireActivity().getString(R.string.please_wait),
                     Toast.LENGTH_SHORT
                 ).show()
                 firstOpen = false
             }
 
+            // saving the current crosshair
+            mainViewModel.saveCurrentCrosshair(crossNum)
 
             if (crossNum in 0..50) {
 
                 serviceIntent.apply {
                     putExtra(CROSSHAIR_NUMBER, crossNum)
-                    putExtra(CROSSHAIR_BG, backgroundLight)
-                    putExtra(CROSSHAIR_COLOUR, colour)
+                    putExtra(CROSSHAIR_BG, savedBgLightState)
+                    putExtra(CROSSHAIR_COLOUR, savedColor)
                 }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    activity!!.startForegroundService(serviceIntent)
+                    requireActivity().startForegroundService(serviceIntent)
                 } else {
-                    activity!!.startService(serviceIntent)
+                    requireActivity().startService(serviceIntent)
                 }
             } else {
 
                 premiumServiceIntent.putExtra(CROSSHAIR_NUMBER, crossNum)
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    activity!!.startForegroundService(premiumServiceIntent)
+                    requireActivity().startForegroundService(premiumServiceIntent)
                 } else {
-                    activity!!.startService(premiumServiceIntent)
+                    requireActivity().startService(premiumServiceIntent)
                 }
             }
 
@@ -192,8 +233,8 @@ class MainFragment : Fragment(), CoroutineScope {
     }
 
     private fun stopServices() {
-        activity!!.stopService(serviceIntent)
-        activity!!.stopService(premiumServiceIntent)
+        requireActivity().stopService(serviceIntent)
+        requireActivity().stopService(premiumServiceIntent)
     }
 
 
@@ -222,16 +263,17 @@ class MainFragment : Fragment(), CoroutineScope {
         startActivityForResult(intent, systemAlertWindowPermission)
     }
 
+
     private fun saveRunningState() {
         CoroutineScope(Main).launch {
-            val refState: State? = StateDatabase(activity!!).getStateDao().getAllStates()
+            val refState: State? = StateDatabase(requireActivity()).getStateDao().getAllStates()
             val mState = State(false)
 
             if (refState == null) {
-                StateDatabase(activity!!).getStateDao().addState(mState)
+                StateDatabase(requireActivity()).getStateDao().addState(mState)
             } else {
                 mState.id = refState.id
-                StateDatabase(activity!!).getStateDao().updateState(mState)
+                StateDatabase(requireActivity()).getStateDao().updateState(mState)
             }
         }
     }
@@ -245,7 +287,7 @@ class MainFragment : Fragment(), CoroutineScope {
 
     override fun onDestroy() {
         super.onDestroy()
-        LocalBroadcastManager.getInstance(activity!!).unregisterReceiver(broadcastReceiver)
+        LocalBroadcastManager.getInstance(requireActivity()).unregisterReceiver(broadcastReceiver)
     }
 
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Crosshair Pro</string>
+    <string name="app_name">Перекрестие прицел</string>
     <string name="channel_description">Crosshair Pro</string>
-    <string name="crosshair">crosshair</string>
+    <string name="crosshair">перекрестье </string>
     <string name="stop">СТОП</string>
     <string name="x">X</string>
     <string name="start">НАЧАЛО</string>
@@ -20,15 +20,10 @@
     <string name="message">Сообщение!!!</string>
     <string name="running_notification">Crosshair Pro работает</string>
     <string name="tap_to_open">Нажмите, чтобы открыть приложение</string>
-    <string name="policy_url">https://appranger.blogspot.com/2020/09/crosshair-pro-privacy-policy.html</string>
-    <string name="rate_me_url">https://play.google.com/store/apps/details?id=com.customscopecommunity.crosshairpro
-    </string>
     <string name="alert_dialog_hint">Приложение требует разрешения плавающего окна, чтобы показать его перекрестие
     </string>
     <string name="give_permission">Дайте разрешение</string>
-    <string name="app_unit_id">ca-app-pub-8201262723803857~4410500643</string>
     <string name="exit">Выход</string>
-    <string name="main_banner">ca-app-pub-8201262723803857/4099791911</string>
     <string name="selected_ntap_start">~выбранный~</string>
     <string name="tap_on_crosshair">Нажмите на перекрестие, чтобы получить контроллер</string>
     <string name="ad">Ad</string>

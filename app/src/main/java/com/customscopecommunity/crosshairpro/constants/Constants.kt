@@ -9,4 +9,7 @@ object Constants {
     const val ACTION: String = "activity-2-initialized"
 
     const val CHANNEL_ID = "crosshair"
+
+    const val PRIVACY_POLICY_URL = "https://appranger.blogspot.com/2020/09/crosshair-pro-privacy-policy.html"
+    const val RATE_ME_URL = "https://play.google.com/store/apps/details?id=com.customscopecommunity.crosshairpro"
 }
