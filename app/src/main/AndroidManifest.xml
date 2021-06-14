@@ -9,20 +9,19 @@
 
     <application
             android:name=".MainApplication"
-            android:hardwareAccelerated="true"
-            android:networkSecurityConfig="@xml/network_security_config"
             android:allowBackup="false"
+            android:hardwareAccelerated="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
+            android:networkSecurityConfig="@xml/network_security_config"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
 
-
         <meta-data
                 android:name="com.google.android.gms.ads.APPLICATION_ID"
-                android:value="ca-app-pub-8201262723803857~4410500643"/>
+                android:value="ca-app-pub-8201262723803857~4410500643" />
 
         <activity
                 android:name=".SecondMainActivity"
@@ -36,7 +35,6 @@
             </intent-filter>
 
         </activity>
-
         <activity
                 android:name=".screens.ClassicActivity"
                 android:screenOrientation="portrait" />
@@ -48,12 +46,12 @@
                 android:name=".services.MainService"
                 android:enabled="true"
                 android:exported="false"
-                android:process=":backgroundProcess"/>
+                android:process=":backgroundProcess" />
         <service
                 android:name=".services.PremiumService"
                 android:enabled="true"
                 android:exported="false"
-                android:process=":backgroundProcess"/>
+                android:process=":backgroundProcess" />
     </application>
 
 </manifest>

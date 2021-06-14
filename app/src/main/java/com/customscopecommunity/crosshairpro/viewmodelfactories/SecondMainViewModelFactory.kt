@@ -3,7 +3,6 @@ package com.customscopecommunity.crosshairpro.viewmodelfactories
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.customscopecommunity.crosshairpro.viewmodels.MainViewModel
 import com.customscopecommunity.crosshairpro.viewmodels.SecondMainViewModel
 
 @Suppress("UNCHECKED_CAST")

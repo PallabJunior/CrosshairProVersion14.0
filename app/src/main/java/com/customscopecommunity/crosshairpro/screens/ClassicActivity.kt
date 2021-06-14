@@ -4,23 +4,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.ViewModelProvider
-import com.customscopecommunity.crosshairpro.R
-import com.customscopecommunity.crosshairpro.canShowFanAd
+import com.customscopecommunity.crosshairpro.*
+import com.customscopecommunity.crosshairpro.communicate.Variables
+import com.customscopecommunity.crosshairpro.constants.AdUnitIds.CLASSIC_NATIVE_UNIT
 import com.customscopecommunity.crosshairpro.constants.Constants
-import com.customscopecommunity.crosshairpro.crossNum
-import com.customscopecommunity.crosshairpro.isSightSelected
+import com.customscopecommunity.crosshairpro.constants.CurrentScreen
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
 import com.customscopecommunity.crosshairpro.viewmodelfactories.ClassicViewModelFactory
 import com.customscopecommunity.crosshairpro.viewmodels.ClassicViewModel
-import kotlinx.android.synthetic.main.fragment_classic.*
+import kotlinx.android.synthetic.main.activity_classic.*
 
 
-class ClassicActivity : AppCompatActivity() {
+class ClassicActivity : BaseActivity() {
 
     private lateinit var cService: Intent
     private lateinit var premService: Intent
@@ -33,8 +32,7 @@ class ClassicActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_classic)
-
+        setContentView(R.layout.activity_classic)
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
@@ -45,98 +43,25 @@ class ClassicActivity : AppCompatActivity() {
         classicViewModel = ViewModelProvider(this, vmFactory).get(ClassicViewModel::class.java)
 
         // get data from intent
-        var colour = intent.getIntExtra(Constants.CROSSHAIR_COLOUR, 0)
+        val colour = intent.getIntExtra(Constants.CROSSHAIR_COLOUR, 0)
         val backgroundLight = intent.getBooleanExtra(Constants.CROSSHAIR_BG, false)
-
 
         canShowFanAd = true
 
-        crosshairViews = arrayOf(
-            classic1, classic2, classic3, classic4, classic5,
-            classic6, classic7, classic8, classic9, classic10,
-            classic11, classic12, classic13, classic14, classic15,
-            classic16, classic17, classic18, classic19, classic20,
-            classic21, classic22, classic23, classic24
-        )
+        initializeUi(backgroundLight, colour)
+        addClickListeners()
 
-        colorControlBtns = arrayOf(
-            changeRed, changeWhite, changeGreen,
-            changeYellow, changePurple, changeBlue
-        )
-
-        if (backgroundLight) {
-            lightSwitch.isChecked = true
-
-            for (views in crosshairViews) {
-                views.setBackgroundResource(R.drawable.c_background)
+        if (!Variables.isMaxAdReached) {
+            loadNativeAd(CLASSIC_NATIVE_UNIT, CurrentScreen.CLASSIC) {
+                if (it) {
+                    native_ad_frame_classic.slideView()
+                }
             }
         }
 
-        cService = Intent(this, MainService::class.java)
-        premService = Intent(this, PremiumService::class.java)
+    }
 
-        // setting colours of the crosshairs when coming back to this activity
-        setSavedColourOnUi(colour)
-
-
-        lightSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-
-                for (views in crosshairViews) {
-                    views.setBackgroundResource(R.drawable.c_background)
-                }
-
-                classicViewModel.saveBgLightState(true)
-
-            } else {
-
-                for (views in crosshairViews) {
-                    views.setBackgroundResource(0)
-                }
-
-                classicViewModel.saveBgLightState(false)
-            }
-        }
-
-        for (colorBtn in colorControlBtns) {
-            colorBtn.setOnClickListener {
-                when (colorBtn) {
-                    changeRed -> {
-                        for (views in crosshairViews)
-                            setColour(views, R.color.primary)
-                        colour = 1
-                    }
-                    changeWhite -> {
-                        for (views in crosshairViews)
-                            setColour(views, R.color.white)
-                        colour = 2
-                    }
-                    changeGreen -> {
-                        for (views in crosshairViews)
-                            setColour(views, R.color.green)
-                        colour = 3
-                    }
-                    changeYellow -> {
-                        for (views in crosshairViews)
-                            setColour(views, R.color.yellow)
-                        colour = 4
-                    }
-                    changePurple -> {
-                        for (views in crosshairViews)
-                            setColour(views, R.color.purple)
-                        colour = 5
-                    }
-                    changeBlue -> {
-                        for (views in crosshairViews)
-                            setColour(views, R.color.blue)
-                        colour = 6
-                    }
-                }
-
-                classicViewModel.saveCrosshairColour(colour)
-            }
-        }
-
+    private fun addClickListeners() {
         for (v in crosshairViews) {
 
             v.setOnClickListener {
@@ -169,6 +94,95 @@ class ClassicActivity : AppCompatActivity() {
                 isSightSelected = true
                 stopServices()
                 finish()
+            }
+        }
+    }
+
+    private fun initializeUi(backgroundLight: Boolean, colour: Int) {
+        var colour1 = colour
+        crosshairViews = arrayOf(
+            classic1, classic2, classic3, classic4, classic5,
+            classic6, classic7, classic8, classic9, classic10,
+            classic11, classic12, classic13, classic14, classic15,
+            classic16, classic17, classic18, classic19, classic20,
+            classic21, classic22, classic23, classic24
+        )
+
+        colorControlBtns = arrayOf(
+            changeRed, changeWhite, changeGreen,
+            changeYellow, changePurple, changeBlue
+        )
+
+        if (backgroundLight) {
+            lightSwitch.isChecked = true
+
+            for (views in crosshairViews) {
+                views.setBackgroundResource(R.drawable.c_background)
+            }
+        }
+
+        cService = Intent(this, MainService::class.java)
+        premService = Intent(this, PremiumService::class.java)
+
+        // setting colours of the crosshairs when coming back to this activity
+        setSavedColourOnUi(colour1)
+
+
+        lightSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+
+                for (views in crosshairViews) {
+                    views.setBackgroundResource(R.drawable.c_background)
+                }
+
+                classicViewModel.saveBgLightState(true)
+
+            } else {
+
+                for (views in crosshairViews) {
+                    views.setBackgroundResource(0)
+                }
+
+                classicViewModel.saveBgLightState(false)
+            }
+        }
+
+        for (colorBtn in colorControlBtns) {
+            colorBtn.setOnClickListener {
+                when (colorBtn) {
+                    changeRed -> {
+                        for (views in crosshairViews)
+                            setColour(views, R.color.primary)
+                        colour1 = 1
+                    }
+                    changeWhite -> {
+                        for (views in crosshairViews)
+                            setColour(views, R.color.white)
+                        colour1 = 2
+                    }
+                    changeGreen -> {
+                        for (views in crosshairViews)
+                            setColour(views, R.color.green)
+                        colour1 = 3
+                    }
+                    changeYellow -> {
+                        for (views in crosshairViews)
+                            setColour(views, R.color.yellow)
+                        colour1 = 4
+                    }
+                    changePurple -> {
+                        for (views in crosshairViews)
+                            setColour(views, R.color.purple)
+                        colour1 = 5
+                    }
+                    changeBlue -> {
+                        for (views in crosshairViews)
+                            setColour(views, R.color.blue)
+                        colour1 = 6
+                    }
+                }
+
+                classicViewModel.saveCrosshairColour(colour1)
             }
         }
     }

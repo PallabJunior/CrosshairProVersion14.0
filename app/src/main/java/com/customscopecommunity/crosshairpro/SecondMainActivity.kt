@@ -9,14 +9,18 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.customscopecommunity.crosshairpro.communicate.Variables
+import com.customscopecommunity.crosshairpro.communicate.Variables.isMaxAdReached
+import com.customscopecommunity.crosshairpro.constants.AdUnitIds.HOME_NATIVE_UNIT
 import com.customscopecommunity.crosshairpro.constants.AdUnitIds.MED_INTERSTITIAL_UNIT
 import com.customscopecommunity.crosshairpro.constants.Constants.CHANNEL_ID
+import com.customscopecommunity.crosshairpro.constants.Constants.MORE_APPS_URL
 import com.customscopecommunity.crosshairpro.constants.Constants.PRIVACY_POLICY_URL
 import com.customscopecommunity.crosshairpro.constants.Constants.RATE_ME_URL
+import com.customscopecommunity.crosshairpro.constants.CurrentScreen
 import com.customscopecommunity.crosshairpro.databinding.ActivitySecondMainBinding
 import com.customscopecommunity.crosshairpro.newdatabase.State
 import com.customscopecommunity.crosshairpro.newdatabase.StateDatabase
@@ -40,10 +44,13 @@ var firstOpen = true // To show the toast message on first open because of slow 
 var canShowFanAd = false
 var isSightSelected = false
 
-class SecondMainActivity : AppCompatActivity() {
+//private const val TAG = "SECOND_MAIN_ACTIVITY"
+
+class SecondMainActivity : BaseActivity() {
 
     private var medInterstitialAd: com.google.android.gms.ads.interstitial.InterstitialAd? = null
     private var countAdsShowed = 0
+    private val maxAdNumber = 24
     private var isAdInitialized = false
 
     private lateinit var binding: ActivitySecondMainBinding
@@ -52,10 +59,10 @@ class SecondMainActivity : AppCompatActivity() {
 
     private lateinit var secondMainVm: SecondMainViewModel
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_second_main)
-
 
         binding.lifecycleOwner = this
 
@@ -67,17 +74,25 @@ class SecondMainActivity : AppCompatActivity() {
         mFragment = MainFragment()
         addMainFragment(mFragment)
 
+
         secondMainVm.readSavedAdImpression.observe(this, {
             countAdsShowed = it
-
-
             // making sure that ad initialize only one time(isAdInitialized) &
             // user can see only the specified number(below in the `if` condition) of ads in 24 hours
-            if (it < 10 && !isAdInitialized) {
+            if (it < maxAdNumber && !isAdInitialized) {
                 isAdInitialized = true
                 MobileAds.initialize(this) {
                     loadAdmobInterstitialMediationAd()
-                    loadAdmobBannerMediationAd()
+                    loadNativeAd(HOME_NATIVE_UNIT, CurrentScreen.HOME) { state ->
+                        if (state) {
+                            native_ad_frame_home.slideView()
+                            countAdImpression()
+                        }
+                    }
+                }
+            } else {
+                if (it >= maxAdNumber) {
+                    isMaxAdReached = true
                 }
             }
 
@@ -96,9 +111,8 @@ class SecondMainActivity : AppCompatActivity() {
         }
 
         createNotificationChannel()
-
-
     }
+
 
     private fun countAdImpression() {
         countAdsShowed++
@@ -138,39 +152,7 @@ class SecondMainActivity : AppCompatActivity() {
                     medInterstitialAd = interstitialAd
                     medInterstitialAdListener()
                 }
-
             })
-    }
-
-    private fun loadAdmobBannerMediationAd() {
-        val adRequest = AdRequest.Builder().build()
-        val adView: AdView = binding.bannerAdView
-        adView.loadAd(adRequest)
-        bannerAdListener(adView)
-    }
-
-    private fun bannerAdListener(bannerView: AdView) {
-        bannerView.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-                countAdImpression()
-            }
-
-            override fun onAdFailedToLoad(adError: LoadAdError) {
-            }
-
-            override fun onAdOpened() {
-            }
-
-            override fun onAdClicked() {
-            }
-
-            override fun onAdLeftApplication() {
-            }
-
-            override fun onAdClosed() {
-            }
-        }
     }
 
     private fun createNotificationChannel() {
@@ -203,19 +185,14 @@ class SecondMainActivity : AppCompatActivity() {
 
         when (item.itemId) {
             R.id.policy -> PRIVACY_POLICY_URL.openUrl()
-            R.id.rateMe -> RATE_ME_URL.openRateMeUrl()
+            R.id.rateMe -> RATE_ME_URL.openUrl()
+            R.id.menu_more_apps -> MORE_APPS_URL.openUrl()
         }
 
         return super.onOptionsItemSelected(item)
     }
 
     private fun String.openUrl() {
-        val uri = Uri.parse(this)
-        val launch = Intent(Intent.ACTION_VIEW, uri)
-        startActivity(launch)
-    }
-
-    private fun String.openRateMeUrl() {
         val uri = Uri.parse(this)
         val launch = Intent(Intent.ACTION_VIEW, uri)
         startActivity(launch)
@@ -254,27 +231,17 @@ class SecondMainActivity : AppCompatActivity() {
             override fun onAdDismissedFullScreenContent() {
                 (mFragment as MainFragment).startRequiredService()
                 medInterstitialAd = null
+                // reloading ad
+                if (countAdsShowed <= maxAdNumber)
+                    loadAdmobInterstitialMediationAd()
             }
 
-            override fun onAdFailedToShowFullScreenContent(adError: com.google.android.gms.ads.AdError?) {
+            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
             }
 
             override fun onAdShowedFullScreenContent() {
                 medInterstitialAd = null
             }
-        }
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        binding.bannerAdView.resume()
-
-        if (isSightSelected && canShowFanAd) {
-            isSightSelected = false
-            canShowFanAd = false
-
-            showMedInterstitialAd()
         }
     }
 
@@ -287,8 +254,22 @@ class SecondMainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (Variables.isAdShowed) {
+            Variables.isAdShowed = false
+            countAdImpression()
+        }
+
+        if (isSightSelected && canShowFanAd) {
+            isSightSelected = false
+            canShowFanAd = false
+
+            showMedInterstitialAd()
+        }
+    }
+
     override fun onDestroy() {
-        binding.bannerAdView.destroy()
         medInterstitialAd = null
         super.onDestroy()
     }

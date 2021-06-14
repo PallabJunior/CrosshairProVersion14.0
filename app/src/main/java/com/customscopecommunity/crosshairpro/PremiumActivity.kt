@@ -1,13 +1,16 @@
 package com.customscopecommunity.crosshairpro
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.customscopecommunity.crosshairpro.adapter.PremiumAdapter
+import com.customscopecommunity.crosshairpro.communicate.Variables.isMaxAdReached
+import com.customscopecommunity.crosshairpro.constants.AdUnitIds.PRO_NATIVE_UNIT
+import com.customscopecommunity.crosshairpro.constants.CurrentScreen
 import kotlinx.android.synthetic.main.activity_premium.*
 import java.util.*
 
-class PremiumActivity : AppCompatActivity() {
+
+class PremiumActivity : BaseActivity() {
 
     private var imageList = ArrayList<Int>()
 
@@ -19,10 +22,18 @@ class PremiumActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowTitleEnabled(false)
         }
+        canShowFanAd = true
 
         initialize()
 
-        canShowFanAd = true
+        if (!isMaxAdReached) {
+            loadNativeAd(PRO_NATIVE_UNIT, CurrentScreen.PRO) {
+                if (it) {
+                    native_ad_frame_prem.slideView()
+                }
+            }
+        }
+
 
     }
 

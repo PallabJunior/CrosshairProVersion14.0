@@ -33,4 +33,6 @@
     <color name="dark_theme_outer_blue_bg">#201750</color>
     <color name="dark_theme_center_blue_bg">#202674</color>
     <color name="dark_theme_start_blue_bg">#233891</color>
+
+    <color name="gnt_ad_green">#3A6728</color>
 </resources>
