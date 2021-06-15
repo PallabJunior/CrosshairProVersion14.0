@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -190,11 +191,15 @@ class MainFragment : Fragment(), CoroutineScope {
             }
 
             if (firstOpen) {
-                Toast.makeText(
-                    activity,
-                    requireActivity().getString(R.string.please_wait),
-                    Toast.LENGTH_SHORT
-                ).show()
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                    val toast = Toast.makeText(
+                        activity,
+                        requireActivity().getString(R.string.please_wait),
+                        Toast.LENGTH_SHORT
+                    )
+                    toast.setGravity(Gravity.CENTER, 0, 0)
+                    toast.show()
+                }
                 firstOpen = false
             }
 
@@ -253,6 +258,7 @@ class MainFragment : Fragment(), CoroutineScope {
             askPermission()
         }
     }
+
 
     @SuppressLint("InlinedApi")
     private fun askPermission() {

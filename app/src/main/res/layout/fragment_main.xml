@@ -16,7 +16,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.20" />
+                app:layout_constraintGuide_percent="0.25" />
 
         <LinearLayout
                 android:id="@+id/linearLayout"
@@ -82,17 +82,17 @@
 
         <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animation_view"
-                android:layout_width="@dimen/x155dp"
-                android:layout_height="@dimen/x155dp"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                tools:visibility="invisible"
-                app:lottie_rawRes="@raw/btn_background"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_marginStart="@dimen/x8dp"
                 android:layout_marginEnd="@dimen/x8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/btn_background"
+                tools:visibility="invisible" />
 
         <FrameLayout
                 android:id="@+id/frameLayout"
@@ -118,8 +118,8 @@
                     android:layout_width="@dimen/x80dp"
                     android:layout_height="@dimen/x80dp"
                     android:layout_gravity="center"
-                    tools:visibility="gone"
-                    android:src="@drawable/ic_start_btn_bg" />
+                    android:src="@drawable/ic_start_btn_bg"
+                    tools:visibility="gone" />
 
         </FrameLayout>
 
@@ -130,10 +130,10 @@
                 android:layout_marginBottom="8dp"
                 android:src="@drawable/ic_shut_down"
                 android:visibility="gone"
-                tools:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/frameLayout"
                 app:layout_constraintEnd_toEndOf="@+id/frameLayout"
-                app:layout_constraintStart_toStartOf="@+id/frameLayout" />
+                app:layout_constraintStart_toStartOf="@+id/frameLayout"
+                tools:visibility="visible" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

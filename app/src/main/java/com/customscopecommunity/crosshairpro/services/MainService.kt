@@ -130,7 +130,14 @@ class MainService : BaseService(), View.OnClickListener {
             position = PositionDatabase(applicationContext).getPositionDao().getAllPositions()
 
             if (position == null) {
-                params.gravity = Gravity.CENTER
+                // to prevent showing the crosshair over the exit button
+                val valueInPx = dpToPx(80)
+                params.y = -valueInPx
+                params.x = 0
+
+                // to save the values
+                vValue = -valueInPx
+                hValue = 0
                 updateLayout()
                 makeCrosshairVisible()
             } else {

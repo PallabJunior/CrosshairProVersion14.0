@@ -4,7 +4,9 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.res.Resources
+import android.os.Build
 import android.os.IBinder
+import android.view.Gravity
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.customscopecommunity.crosshairpro.R
@@ -24,7 +26,12 @@ open class BaseService : Service() {
     }
 
     fun showToast() {
-        Toast.makeText(this, getString(R.string.tap_on_crosshair), Toast.LENGTH_SHORT).show()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            val toast =
+                Toast.makeText(this, getString(R.string.tap_on_crosshair), Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.CENTER, 0, 0)
+            toast.show()
+        }
     }
 
     fun createNotificationChannel(notificationId: Int) {

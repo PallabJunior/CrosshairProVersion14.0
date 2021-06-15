@@ -248,7 +248,6 @@ class SecondMainActivity : BaseActivity() {
     private fun showMedInterstitialAd() {
         if (medInterstitialAd != null) {
             medInterstitialAd?.show(this)
-            countAdImpression()
         } else {
             (mFragment as MainFragment).startRequiredService()
         }

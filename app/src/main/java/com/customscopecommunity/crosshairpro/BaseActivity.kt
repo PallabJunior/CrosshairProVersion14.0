@@ -2,6 +2,7 @@ package com.customscopecommunity.crosshairpro
 
 import android.animation.*
 import android.content.res.Resources
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -42,29 +43,23 @@ open class BaseActivity : AppCompatActivity() {
                 return@forNativeAd
             }
 
-            val adView = if (screen == CurrentScreen.HOME) {
-                layoutInflater.inflate(R.layout.native_ad_home, null) as NativeAdView
-            } else {
-                layoutInflater
-                    .inflate(R.layout.native_ad_big, null) as NativeAdView
-            }
+            val adView = layoutInflater.inflate(R.layout.native_ad_big, null) as NativeAdView
 
 
-            populateNativeAdView(nativeAd, adView, screen)
+            populateNativeAdView(nativeAd, adView)
             adFrame.removeAllViews()
             adFrame.addView(adView)
         }
 
-        if (screen != CurrentScreen.HOME) {
-            val videoOptions = VideoOptions.Builder()
-                .setStartMuted(true)
-                .build()
-            val adOptions = NativeAdOptions.Builder()
-                .setVideoOptions(videoOptions)
-                .build()
+        val videoOptions = VideoOptions.Builder()
+            .setStartMuted(true)
+            .build()
+        val adOptions = NativeAdOptions.Builder()
+            .setVideoOptions(videoOptions)
+            .build()
 
-            builder.withNativeAdOptions(adOptions)
-        }
+        builder.withNativeAdOptions(adOptions)
+
 
         val adLoader = builder.withAdListener(object : AdListener() {
             override fun onAdLoaded() {
@@ -74,6 +69,7 @@ open class BaseActivity : AppCompatActivity() {
                 Variables.isAdShowed = true
             }
 
+
         }).build()
 
         adLoader.loadAd(AdRequest.Builder().build())
@@ -81,29 +77,18 @@ open class BaseActivity : AppCompatActivity() {
 
     private fun populateNativeAdView(
         nativeAd: NativeAd,
-        adView: NativeAdView,
-        screen: CurrentScreen
+        adView: NativeAdView
     ) {
 
-        if (screen == CurrentScreen.HOME) {
-            adView.headlineView = adView.findViewById(R.id.ad_headline_home)
-            adView.bodyView = adView.findViewById(R.id.ad_body_home)
-            adView.callToActionView = adView.findViewById(R.id.ad_call_to_action_home)
-            adView.iconView = adView.findViewById(R.id.ad_app_icon_home)
+        adView.mediaView = adView.findViewById(R.id.ad_media)
+        adView.headlineView = adView.findViewById(R.id.ad_headline)
+        adView.bodyView = adView.findViewById(R.id.ad_body)
+        adView.callToActionView = adView.findViewById(R.id.ad_call_to_action)
+        adView.iconView = adView.findViewById(R.id.ad_app_icon)
 
-            (adView.headlineView as TextView).text = nativeAd.headline
-
-        } else {
-            adView.mediaView = adView.findViewById(R.id.ad_media)
-            adView.headlineView = adView.findViewById(R.id.ad_headline)
-            adView.bodyView = adView.findViewById(R.id.ad_body)
-            adView.callToActionView = adView.findViewById(R.id.ad_call_to_action)
-            adView.iconView = adView.findViewById(R.id.ad_app_icon)
-
-            // The headline and media content are guaranteed to be in every UnifiedNativeAd.
-            (adView.headlineView as TextView).text = nativeAd.headline
-            (adView.mediaView as MediaView).setMediaContent(nativeAd.mediaContent!!)
-        }
+        // The headline and media content are guaranteed to be in every UnifiedNativeAd.
+        (adView.headlineView as TextView).text = nativeAd.headline
+        (adView.mediaView as MediaView).setMediaContent(nativeAd.mediaContent!!)
 
         // These assets aren't guaranteed to be in every UnifiedNativeAd, so it's important to
         // check before trying to display them.
