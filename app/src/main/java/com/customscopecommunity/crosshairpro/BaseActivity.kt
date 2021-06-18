@@ -73,6 +73,16 @@ open class BaseActivity : AppCompatActivity() {
 //                super.onAdFailedToLoad(p0)
 //                Log.d(TAG, "native.onAdFailedToLoad: $p0")
 //            }
+//
+//            override fun onAdImpression() {
+//                super.onAdImpression()
+//                Log.d(TAG, "onAdImpression: called")
+//            }
+//
+//            override fun onAdClicked() {
+//                super.onAdClicked()
+//                Log.d(TAG, "onAdClicked: callled")
+//            }
 
         }).build()
 

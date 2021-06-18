@@ -13,7 +13,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +25,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.airbnb.lottie.LottieAnimationView
 import com.customscopecommunity.crosshairpro.*
+import com.customscopecommunity.crosshairpro.communicate.Variables.isCrosshairSelected
+import com.customscopecommunity.crosshairpro.communicate.Variables.isServiceRunningOnStart
 import com.customscopecommunity.crosshairpro.constants.Constants
 import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_BG
 import com.customscopecommunity.crosshairpro.constants.Constants.CROSSHAIR_COLOUR
@@ -138,6 +139,7 @@ class MainFragment : Fragment(), CoroutineScope {
 
         startButton.setOnClickListener {
             isStartBtnClicked = true
+            isCrosshairSelected = true
             if (crossNum == 500)
                 crossNum = 200
 
@@ -188,9 +190,18 @@ class MainFragment : Fragment(), CoroutineScope {
 
             if (isStartBtnClicked) {
                 isStartBtnClicked = false
+                isServiceRunningOnStart = false
                 stopServices()
             }
 
+            if (isServiceRunningOnStart == null || isServiceRunningOnStart == true || !isCrosshairSelected) {
+                // to prevent showing multiple crosshair
+                // and to prevent starting service without choosing crosshair
+                return
+            }
+
+            // beginning of starting service
+            isCrosshairSelected = false
             if (firstOpen) {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
                     val toast = Toast.makeText(

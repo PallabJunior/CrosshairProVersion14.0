@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.customscopecommunity.crosshairpro.R
+import com.customscopecommunity.crosshairpro.communicate.Variables.isCrosshairSelected
+import com.customscopecommunity.crosshairpro.communicate.Variables.isServiceRunningOnStart
 import com.customscopecommunity.crosshairpro.crossNum
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
@@ -37,6 +39,8 @@ class PremiumAdapter(
 
         holder.itemView.setOnClickListener {
             crossNum = 80 + position
+            isServiceRunningOnStart = false
+            isCrosshairSelected = true
             stopServices()
             (context as Activity).finish()
         }

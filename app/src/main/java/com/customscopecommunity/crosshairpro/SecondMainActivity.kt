@@ -9,11 +9,14 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.customscopecommunity.crosshairpro.communicate.Variables
 import com.customscopecommunity.crosshairpro.communicate.Variables.isMaxAdReached
+import com.customscopecommunity.crosshairpro.communicate.Variables.isServiceRunningOnStart
 import com.customscopecommunity.crosshairpro.constants.AdUnitIds.HOME_NATIVE_UNIT
 import com.customscopecommunity.crosshairpro.constants.AdUnitIds.MED_INTERSTITIAL_UNIT
 import com.customscopecommunity.crosshairpro.constants.Constants.CHANNEL_ID
@@ -29,7 +32,9 @@ import com.customscopecommunity.crosshairpro.viewmodelfactories.SecondMainViewMo
 import com.customscopecommunity.crosshairpro.viewmodels.SecondMainViewModel
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.activity_second_main.*
+import kotlinx.android.synthetic.main.bottom_sheet_native_ad.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -47,8 +52,10 @@ var canShowFanAd = false
 
 class SecondMainActivity : BaseActivity() {
 
+    private var rotationAngle = 0f
     private var medInterstitialAd: com.google.android.gms.ads.interstitial.InterstitialAd? = null
     private var countAdsShowed = 0
+
     private val maxAdNumber = 6
     private var isAdInitialized = false
 
@@ -57,6 +64,8 @@ class SecondMainActivity : BaseActivity() {
     private lateinit var mFragment: Fragment
 
     private lateinit var secondMainVm: SecondMainViewModel
+
+    private lateinit var bottomSheet: BottomSheetBehavior<LinearLayout>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +82,8 @@ class SecondMainActivity : BaseActivity() {
         mFragment = MainFragment()
         addMainFragment(mFragment)
 
+
+        handleBottomSheet()
 
         initializeAds()
 
@@ -91,6 +102,49 @@ class SecondMainActivity : BaseActivity() {
         createNotificationChannel()
     }
 
+    private fun handleBottomSheet() {
+        bottomSheet = BottomSheetBehavior.from(bottom_sheet_parent)
+
+        collapse_ad.setOnClickListener {
+            if (bottomSheet.state == BottomSheetBehavior.STATE_EXPANDED) {
+                rotationAngle = 0f
+                collapse_ad.animate().rotation(rotationAngle).setDuration(200).start()
+                bottomSheet.state = BottomSheetBehavior.STATE_COLLAPSED
+            } else {
+                rotationAngle = 180f
+                collapse_ad.animate().rotation(rotationAngle).setDuration(200).start()
+                bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
+
+        bottomSheet.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        rotationAngle = 0f
+                        collapse_ad.animate().rotation(rotationAngle).setDuration(200).start()
+                    }
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        rotationAngle = 180f
+                        collapse_ad.animate().rotation(rotationAngle).setDuration(200).start()
+                    }
+                    BottomSheetBehavior.STATE_DRAGGING -> {
+                    }
+                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {
+                    }
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                    }
+                    BottomSheetBehavior.STATE_SETTLING -> {
+                    }
+                }
+            }
+        })
+    }
+
     private fun initializeAds() {
         secondMainVm.readSavedAdImpression.observe(this, {
             countAdsShowed = it
@@ -106,7 +160,8 @@ class SecondMainActivity : BaseActivity() {
                     loadAdmobInterstitialMediationAd()
                     loadNativeAd(HOME_NATIVE_UNIT, CurrentScreen.HOME) { state ->
                         if (state) {
-                            native_ad_frame_home.slideView()
+                            //native_ad_frame_home.slideView()
+                            collapse_ad.visibility = View.VISIBLE
                             countAdImpression()
                         }
                     }
@@ -167,6 +222,25 @@ class SecondMainActivity : BaseActivity() {
             })
     }
 
+    private fun medInterstitialAdListener() {
+        medInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() {
+                (mFragment as MainFragment).startRequiredService()
+                medInterstitialAd = null
+                // reloading ad
+                loadAdmobInterstitialMediationAd()
+            }
+
+            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+                medInterstitialAd = null
+            }
+
+            override fun onAdShowedFullScreenContent() {
+                medInterstitialAd = null
+            }
+        }
+    }
+
     private fun createNotificationChannel() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -213,8 +287,10 @@ class SecondMainActivity : BaseActivity() {
 
     private fun setStateOnUi(isRunning: Boolean?) {
         // handle button visibility in fragment if the user is returning from the game
-        if (isRunning == true && crossNum != 500)
+        if (isRunning == true && crossNum != 500) {
+            isServiceRunningOnStart = true
             (mFragment as MainFragment).setButtonsVisibility()
+        }
 
     }
 
@@ -238,24 +314,7 @@ class SecondMainActivity : BaseActivity() {
         fragmentTransaction.commit()
     }
 
-    private fun medInterstitialAdListener() {
-        medInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-            override fun onAdDismissedFullScreenContent() {
-                (mFragment as MainFragment).startRequiredService()
-                medInterstitialAd = null
-                // reloading ad
-                loadAdmobInterstitialMediationAd()
-            }
 
-            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
-                medInterstitialAd = null
-            }
-
-            override fun onAdShowedFullScreenContent() {
-                medInterstitialAd = null
-            }
-        }
-    }
 
     private fun showMedInterstitialAd() {
         if (medInterstitialAd != null) {

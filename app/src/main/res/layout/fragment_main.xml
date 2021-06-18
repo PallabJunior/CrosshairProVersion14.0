@@ -16,13 +16,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.25" />
+                app:layout_constraintGuide_percent="0.15" />
 
         <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="@dimen/x10dp"
                 android:clipToPadding="false"
                 android:padding="@dimen/x10dp"
                 app:layout_constraintBottom_toTopOf="@+id/guideline1"
@@ -43,7 +42,7 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="@dimen/x20dp"
+                        android:layout_margin="@dimen/x12dp"
                         android:gravity="center"
                         android:text="@string/classic"
                         android:textColor="@color/white"
@@ -69,7 +68,7 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="@dimen/x20dp"
+                        android:layout_margin="@dimen/x12dp"
                         android:gravity="center"
                         android:text="@string/pro"
                         android:textColor="@color/white"

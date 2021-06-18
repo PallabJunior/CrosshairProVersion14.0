@@ -11,6 +11,8 @@ import com.customscopecommunity.crosshairpro.BaseActivity
 import com.customscopecommunity.crosshairpro.R
 import com.customscopecommunity.crosshairpro.canShowFanAd
 import com.customscopecommunity.crosshairpro.communicate.Variables
+import com.customscopecommunity.crosshairpro.communicate.Variables.isCrosshairSelected
+import com.customscopecommunity.crosshairpro.communicate.Variables.isServiceRunningOnStart
 import com.customscopecommunity.crosshairpro.constants.AdUnitIds.CLASSIC_NATIVE_UNIT
 import com.customscopecommunity.crosshairpro.constants.Constants
 import com.customscopecommunity.crosshairpro.constants.CurrentScreen
@@ -95,6 +97,8 @@ class ClassicActivity : BaseActivity() {
                     classic23 -> crossNum = 23
                     classic24 -> crossNum = 24
                 }
+                isServiceRunningOnStart = false
+                isCrosshairSelected = true
                 stopServices()
                 finish()
             }

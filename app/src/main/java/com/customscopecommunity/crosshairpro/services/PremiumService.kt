@@ -151,7 +151,7 @@ class PremiumService : BaseService(), View.OnClickListener {
 
             if (position == null) {
                 // to prevent showing the crosshair over the exit button
-                val valueInPx = dpToPx(80)
+                val valueInPx = dpToPx(20)
                 params.y = -valueInPx
                 params.x = 0
                 // to save the value
@@ -440,13 +440,7 @@ class PremiumService : BaseService(), View.OnClickListener {
                         controller()
                     }
                 }
-                else -> {
-                    Toast.makeText(
-                        this@PremiumService,
-                        "Unknown error. Tap on the crosshair to get the controller",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+                else -> {}
             }
         }
     }
