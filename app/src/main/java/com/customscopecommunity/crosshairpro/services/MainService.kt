@@ -1,8 +1,10 @@
 package com.customscopecommunity.crosshairpro.services
 
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.PixelFormat
 import android.os.Build
 import android.view.Gravity
@@ -62,6 +64,9 @@ class MainService : BaseService(), View.OnClickListener {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         createNotificationChannel(notificationId)
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(ACTION_CONTROLLER)
+        registerReceiver(broadCastReceiver, intentFilter)
 
         afterFinishVisibility = 1
 
@@ -199,7 +204,7 @@ class MainService : BaseService(), View.OnClickListener {
         xFloatingView = inflate(this, R.layout.layout_pro_controller, null)
         xWindowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
-        val xlayoutType: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val xLayoutType: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         } else {
             WindowManager.LayoutParams.TYPE_PHONE
@@ -208,7 +213,7 @@ class MainService : BaseService(), View.OnClickListener {
         val xParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
-            xlayoutType,
+            xLayoutType,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         )
@@ -453,6 +458,23 @@ class MainService : BaseService(), View.OnClickListener {
         }
     }
 
+    private val broadCastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(contxt: Context?, intent: Intent?) {
+            when (intent?.action) {
+                ACTION_CONTROLLER -> {
+                    // show controller
+                    if (!checkFun) {
+                        isClickedForController = true
+                        controller()
+                    }
+                }
+                else -> {
+                    Toast.makeText(this@MainService, "Unknown error. Tap on the crosshair to get the controller", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
 
     override fun onDestroy() {
 
@@ -465,6 +487,8 @@ class MainService : BaseService(), View.OnClickListener {
         if (checkFun) {
             xWindowManager?.removeView(xFloatingView)
         }
+
+        unregisterReceiver(broadCastReceiver)
 
         super.onDestroy()
     }

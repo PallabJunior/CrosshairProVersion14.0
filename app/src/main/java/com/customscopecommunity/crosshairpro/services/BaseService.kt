@@ -14,6 +14,8 @@ import com.customscopecommunity.crosshairpro.SecondMainActivity
 import com.customscopecommunity.crosshairpro.constants.Constants.CHANNEL_ID
 import com.customscopecommunity.crosshairpro.database.Position
 
+const val ACTION_CONTROLLER = "ACTION_CONTROLLER"
+
 open class BaseService : Service() {
 
     open var vValue = 0
@@ -35,6 +37,13 @@ open class BaseService : Service() {
     }
 
     fun createNotificationChannel(notificationId: Int) {
+        //broadCast receiver
+        val broadCastReceive = Intent()
+        broadCastReceive.action = ACTION_CONTROLLER
+        val pendingIntentYes =
+            PendingIntent.getBroadcast(this, 0, broadCastReceive, PendingIntent.FLAG_UPDATE_CURRENT)
+        //broadCast receiver
+
         val intent = Intent(this, SecondMainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
@@ -47,6 +56,11 @@ open class BaseService : Service() {
             .setContentText(getString(R.string.tap_to_open))
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setContentIntent(pendingIntent)
+            .addAction(
+                R.drawable.ic_notification_logo,
+                getString(R.string.controller),
+                pendingIntentYes
+            )
             .setAutoCancel(false)
 
         startForeground(notificationId, builder.build())
@@ -54,5 +68,6 @@ open class BaseService : Service() {
     }
 
     fun dpToPx(dp: Int) = (dp * Resources.getSystem().displayMetrics.density).toInt()
+
 
 }

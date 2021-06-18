@@ -1,8 +1,10 @@
 package com.customscopecommunity.crosshairpro.services
 
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.PixelFormat
 import android.os.Build
 import android.view.Gravity
@@ -54,6 +56,9 @@ class PremiumService : BaseService(), View.OnClickListener {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         createNotificationChannel(notificationId)
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(ACTION_CONTROLLER)
+        registerReceiver(broadCastReceiver, intentFilter)
 
         afterFinishVisibility = 3
 
@@ -425,6 +430,27 @@ class PremiumService : BaseService(), View.OnClickListener {
         }
     }
 
+    private val broadCastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(contxt: Context?, intent: Intent?) {
+            when (intent?.action) {
+                ACTION_CONTROLLER -> {
+                    // show controller
+                    if (!checkFun) {
+                        isClickedForController = true
+                        controller()
+                    }
+                }
+                else -> {
+                    Toast.makeText(
+                        this@PremiumService,
+                        "Unknown error. Tap on the crosshair to get the controller",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
+
     override fun onDestroy() {
         savePosition()
 
@@ -434,6 +460,7 @@ class PremiumService : BaseService(), View.OnClickListener {
         if (checkFun) {
             xWindowManager?.removeView(xFloatingView)
         }
+        unregisterReceiver(broadCastReceiver)
         super.onDestroy()
     }
 

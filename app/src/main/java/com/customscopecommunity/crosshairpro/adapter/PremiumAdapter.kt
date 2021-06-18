@@ -10,7 +10,6 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.customscopecommunity.crosshairpro.R
 import com.customscopecommunity.crosshairpro.crossNum
-import com.customscopecommunity.crosshairpro.isSightSelected
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
 import kotlinx.android.synthetic.main.premium_row_layout.view.*
@@ -38,7 +37,6 @@ class PremiumAdapter(
 
         holder.itemView.setOnClickListener {
             crossNum = 80 + position
-            isSightSelected = true
             stopServices()
             (context as Activity).finish()
         }

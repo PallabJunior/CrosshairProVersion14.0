@@ -2,7 +2,6 @@ package com.customscopecommunity.crosshairpro
 
 import android.animation.*
 import android.content.res.Resources
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -64,11 +63,16 @@ open class BaseActivity : AppCompatActivity() {
         val adLoader = builder.withAdListener(object : AdListener() {
             override fun onAdLoaded() {
                 super.onAdLoaded()
+                //Log.d(TAG, "native.onAdLoaded: called")
                 isAdLoaded(true)
                 // to update the adCount when returning to Home screen
-                Variables.isAdShowed = true
+                Variables.isNativeAdShowed = true
             }
 
+//            override fun onAdFailedToLoad(p0: LoadAdError) {
+//                super.onAdFailedToLoad(p0)
+//                Log.d(TAG, "native.onAdFailedToLoad: $p0")
+//            }
 
         }).build()
 

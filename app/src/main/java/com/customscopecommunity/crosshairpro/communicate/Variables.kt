@@ -1,6 +1,6 @@
 package com.customscopecommunity.crosshairpro.communicate
 
 object Variables {
-    var isAdShowed = false
+    var isNativeAdShowed = false
     var isMaxAdReached = false
 }

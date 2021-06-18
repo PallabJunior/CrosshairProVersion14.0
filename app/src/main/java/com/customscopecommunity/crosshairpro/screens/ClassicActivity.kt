@@ -7,11 +7,14 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.ViewModelProvider
-import com.customscopecommunity.crosshairpro.*
+import com.customscopecommunity.crosshairpro.BaseActivity
+import com.customscopecommunity.crosshairpro.R
+import com.customscopecommunity.crosshairpro.canShowFanAd
 import com.customscopecommunity.crosshairpro.communicate.Variables
 import com.customscopecommunity.crosshairpro.constants.AdUnitIds.CLASSIC_NATIVE_UNIT
 import com.customscopecommunity.crosshairpro.constants.Constants
 import com.customscopecommunity.crosshairpro.constants.CurrentScreen
+import com.customscopecommunity.crosshairpro.crossNum
 import com.customscopecommunity.crosshairpro.services.MainService
 import com.customscopecommunity.crosshairpro.services.PremiumService
 import com.customscopecommunity.crosshairpro.viewmodelfactories.ClassicViewModelFactory
@@ -19,6 +22,7 @@ import com.customscopecommunity.crosshairpro.viewmodels.ClassicViewModel
 import kotlinx.android.synthetic.main.activity_classic.*
 
 
+//private const val TAG = "CLASSIC_ACTIVITY"
 class ClassicActivity : BaseActivity() {
 
     private lateinit var cService: Intent
@@ -91,7 +95,6 @@ class ClassicActivity : BaseActivity() {
                     classic23 -> crossNum = 23
                     classic24 -> crossNum = 24
                 }
-                isSightSelected = true
                 stopServices()
                 finish()
             }

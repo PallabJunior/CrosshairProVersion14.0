@@ -42,7 +42,6 @@ var afterFinishVisibility: Int = 0
 const val systemAlertWindowPermission = 2084
 var firstOpen = true // To show the toast message on first open because of slow creation of service
 var canShowFanAd = false
-var isSightSelected = false
 
 //private const val TAG = "SECOND_MAIN_ACTIVITY"
 
@@ -50,7 +49,7 @@ class SecondMainActivity : BaseActivity() {
 
     private var medInterstitialAd: com.google.android.gms.ads.interstitial.InterstitialAd? = null
     private var countAdsShowed = 0
-    private val maxAdNumber = 24
+    private val maxAdNumber = 6
     private var isAdInitialized = false
 
     private lateinit var binding: ActivitySecondMainBinding
@@ -75,28 +74,7 @@ class SecondMainActivity : BaseActivity() {
         addMainFragment(mFragment)
 
 
-        secondMainVm.readSavedAdImpression.observe(this, {
-            countAdsShowed = it
-            // making sure that ad initialize only one time(isAdInitialized) &
-            // user can see only the specified number(below in the `if` condition) of ads in 24 hours
-            if (it < maxAdNumber && !isAdInitialized) {
-                isAdInitialized = true
-                MobileAds.initialize(this) {
-                    loadAdmobInterstitialMediationAd()
-                    loadNativeAd(HOME_NATIVE_UNIT, CurrentScreen.HOME) { state ->
-                        if (state) {
-                            native_ad_frame_home.slideView()
-                            countAdImpression()
-                        }
-                    }
-                }
-            } else {
-                if (it >= maxAdNumber) {
-                    isMaxAdReached = true
-                }
-            }
-
-        })
+        initializeAds()
 
         secondMainVm.readSavedDateTimeMillis.observe(this, {
             if (isTimeLimitOver(it)) {
@@ -111,6 +89,36 @@ class SecondMainActivity : BaseActivity() {
         }
 
         createNotificationChannel()
+    }
+
+    private fun initializeAds() {
+        secondMainVm.readSavedAdImpression.observe(this, {
+            countAdsShowed = it
+            // making sure that ad initialize only one time(isAdInitialized) &
+            // user can see only the specified number(below in the `if` condition) of ads in 24 hours
+            if (it < maxAdNumber && !isAdInitialized) {
+                //Log.d(TAG, "initializeAds: called")
+                isAdInitialized = true
+                MobileAds.initialize(this) {
+                    // to load the first native ad in the setting activity
+                    // on the first open after timer period is over
+                    isMaxAdReached = false
+                    loadAdmobInterstitialMediationAd()
+                    loadNativeAd(HOME_NATIVE_UNIT, CurrentScreen.HOME) { state ->
+                        if (state) {
+                            native_ad_frame_home.slideView()
+                            countAdImpression()
+                        }
+                    }
+                }
+            } else {
+                if (it >= maxAdNumber) {
+                    //Log.d(TAG, "initializeAds: max ad number reached")
+                    isMaxAdReached = true
+                }
+            }
+
+        })
     }
 
 
@@ -135,8 +143,10 @@ class SecondMainActivity : BaseActivity() {
             return false
         }
 
+        val minutes = 30
+        val timePeriod = (minutes * 60 * 1000) // time in millis
         // Check time elapsed
-        return System.currentTimeMillis() >= savedMillis + 24 * 60 * 60 * 1000
+        return System.currentTimeMillis() >= savedMillis + timePeriod
     }
 
     private fun loadAdmobInterstitialMediationAd() {
@@ -145,10 +155,12 @@ class SecondMainActivity : BaseActivity() {
         com.google.android.gms.ads.interstitial.InterstitialAd.load(
             this, MED_INTERSTITIAL_UNIT, adRequest, object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
+                    //Log.d(TAG, "int.onAdFailedToLoad: $adError")
                     medInterstitialAd = null
                 }
 
                 override fun onAdLoaded(interstitialAd: com.google.android.gms.ads.interstitial.InterstitialAd) {
+                    //Log.d(TAG, "int.onAdLoaded: called")
                     medInterstitialAd = interstitialAd
                     medInterstitialAdListener()
                 }
@@ -232,11 +244,11 @@ class SecondMainActivity : BaseActivity() {
                 (mFragment as MainFragment).startRequiredService()
                 medInterstitialAd = null
                 // reloading ad
-                if (countAdsShowed <= maxAdNumber)
-                    loadAdmobInterstitialMediationAd()
+                loadAdmobInterstitialMediationAd()
             }
 
             override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+                medInterstitialAd = null
             }
 
             override fun onAdShowedFullScreenContent() {
@@ -255,15 +267,13 @@ class SecondMainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (Variables.isAdShowed) {
-            Variables.isAdShowed = false
+        if (Variables.isNativeAdShowed) {
+            Variables.isNativeAdShowed = false
             countAdImpression()
         }
 
-        if (isSightSelected && canShowFanAd) {
-            isSightSelected = false
+        if (canShowFanAd) {
             canShowFanAd = false
-
             showMedInterstitialAd()
         }
     }
