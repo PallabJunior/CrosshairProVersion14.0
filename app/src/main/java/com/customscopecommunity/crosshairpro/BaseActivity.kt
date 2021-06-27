@@ -25,10 +25,10 @@ open class BaseActivity : AppCompatActivity() {
         isAdLoaded: (state: Boolean) -> Unit
     ) {
         val adFrame =
-            when (screen) {
-                CurrentScreen.HOME -> findViewById<FrameLayout>(R.id.native_ad_frame_home)
-                CurrentScreen.CLASSIC -> findViewById(R.id.native_ad_frame_classic)
-                CurrentScreen.PRO -> findViewById(R.id.native_ad_frame_prem)
+            if (screen == CurrentScreen.CLASSIC) {
+                findViewById<FrameLayout>(R.id.native_ad_frame_classic)
+            } else {
+                findViewById(R.id.native_ad_frame_prem)
             }
 
         val builder = AdLoader.Builder(this, adUnitId)

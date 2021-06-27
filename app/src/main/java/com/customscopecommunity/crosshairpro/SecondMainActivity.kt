@@ -17,13 +17,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.customscopecommunity.crosshairpro.communicate.Variables
 import com.customscopecommunity.crosshairpro.communicate.Variables.isMaxAdReached
 import com.customscopecommunity.crosshairpro.communicate.Variables.isServiceRunningOnStart
-import com.customscopecommunity.crosshairpro.constants.AdUnitIds.HOME_NATIVE_UNIT
 import com.customscopecommunity.crosshairpro.constants.AdUnitIds.MED_INTERSTITIAL_UNIT
+import com.customscopecommunity.crosshairpro.constants.AdUnitIds.SPN_AD_LINK
 import com.customscopecommunity.crosshairpro.constants.Constants.CHANNEL_ID
 import com.customscopecommunity.crosshairpro.constants.Constants.MORE_APPS_URL
 import com.customscopecommunity.crosshairpro.constants.Constants.PRIVACY_POLICY_URL
 import com.customscopecommunity.crosshairpro.constants.Constants.RATE_ME_URL
-import com.customscopecommunity.crosshairpro.constants.CurrentScreen
 import com.customscopecommunity.crosshairpro.databinding.ActivitySecondMainBinding
 import com.customscopecommunity.crosshairpro.newdatabase.State
 import com.customscopecommunity.crosshairpro.newdatabase.StateDatabase
@@ -34,7 +33,8 @@ import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.activity_second_main.*
-import kotlinx.android.synthetic.main.bottom_sheet_native_ad.*
+import kotlinx.android.synthetic.main.bottom_sheet_spn_ad.*
+import kotlinx.android.synthetic.main.sponsored_ad_layout.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
@@ -55,16 +55,11 @@ class SecondMainActivity : BaseActivity() {
     private var rotationAngle = 0f
     private var medInterstitialAd: com.google.android.gms.ads.interstitial.InterstitialAd? = null
     private var countAdsShowed = 0
-
-    private val maxAdNumber = 6
+    private val maxAdNumber = 10
     private var isAdInitialized = false
-
     private lateinit var binding: ActivitySecondMainBinding
-
     private lateinit var mFragment: Fragment
-
     private lateinit var secondMainVm: SecondMainViewModel
-
     private lateinit var bottomSheet: BottomSheetBehavior<LinearLayout>
 
 
@@ -85,6 +80,7 @@ class SecondMainActivity : BaseActivity() {
 
         handleBottomSheet()
 
+        initializeSponsoredAd()
         initializeAds()
 
         secondMainVm.readSavedDateTimeMillis.observe(this, {
@@ -102,8 +98,17 @@ class SecondMainActivity : BaseActivity() {
         createNotificationChannel()
     }
 
+    private fun disableButtons() {
+        (mFragment as MainFragment).disableMainButtons()
+    }
+
+    private fun enableButtons() {
+        (mFragment as MainFragment).enableMainButtons()
+    }
+
     private fun handleBottomSheet() {
         bottomSheet = BottomSheetBehavior.from(bottom_sheet_parent)
+        bottomSheet.isDraggable = false
 
         collapse_ad.setOnClickListener {
             if (bottomSheet.state == BottomSheetBehavior.STATE_EXPANDED) {
@@ -158,13 +163,6 @@ class SecondMainActivity : BaseActivity() {
                     // on the first open after timer period is over
                     isMaxAdReached = false
                     loadAdmobInterstitialMediationAd()
-                    loadNativeAd(HOME_NATIVE_UNIT, CurrentScreen.HOME) { state ->
-                        if (state) {
-                            //native_ad_frame_home.slideView()
-                            collapse_ad.visibility = View.VISIBLE
-                            countAdImpression()
-                        }
-                    }
                 }
             } else {
                 if (it >= maxAdNumber) {
@@ -314,6 +312,16 @@ class SecondMainActivity : BaseActivity() {
         fragmentTransaction.commit()
     }
 
+    private fun initializeSponsoredAd() {
+        spn_banner_container.setOnClickListener {
+            SPN_AD_LINK.openUrl()
+        }
+
+        btn_install_spn_ad.setOnClickListener {
+            SPN_AD_LINK.openUrl()
+        }
+
+    }
 
 
     private fun showMedInterstitialAd() {

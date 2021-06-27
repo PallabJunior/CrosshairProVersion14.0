@@ -31,4 +31,7 @@
     <string name="controller_not_supported">Controller is not supported</string>
     <string name="more_apps">More apps</string>
     <string name="controller">Controller</string>
+    <string name="spn_app_headline">BLINK: Eye Blinking Reminder</string>
+    <string name="spn_ad_body">Are you blinking enough?</string>
+    <string name="download">DOWNLOAD</string>
 </resources>

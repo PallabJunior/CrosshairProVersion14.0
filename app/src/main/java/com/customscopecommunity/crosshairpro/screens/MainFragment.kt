@@ -164,6 +164,19 @@ class MainFragment : Fragment(), CoroutineScope {
         return binding.root
     }
 
+    fun disableMainButtons() {
+        startButton.isClickable = false
+        stopButton.isClickable = false
+        minimizeButton.isClickable = false
+
+    }
+
+    fun enableMainButtons() {
+        startButton.isClickable = true
+        stopButton.isClickable = true
+        minimizeButton.isClickable = true
+    }
+
     private fun observeSavedDataFromVM() {
         var isDataObservedOnce = false
         mainViewModel.readSavedCrosshair.observe(viewLifecycleOwner, {

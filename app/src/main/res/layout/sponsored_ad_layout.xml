@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ad_outline_bg">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/spn_banner_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/spn_ad_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/RoundedSquare"
+                app:srcCompat="@drawable/blink_app_logo" />
+
+        <TextView
+                android:id="@+id/spn_ad_headline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/x8dp"
+                android:layout_marginEnd="8dp"
+                android:lines="1"
+                android:text="@string/spn_app_headline"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/spn_ad_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/spn_ad_icon"
+                app:layout_constraintTop_toTopOf="@+id/spn_ad_icon" />
+
+        <TextView
+                android:id="@+id/textView"
+                android:layout_width="25dp"
+                android:layout_height="20dp"
+                android:background="@drawable/gnt_rounded_corners_shape"
+                android:gravity="center"
+                android:text="Ad"
+                android:textColor="@color/gnt_ad_green"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/spn_ad_headline"
+                app:layout_constraintTop_toBottomOf="@+id/spn_ad_icon" />
+
+        <TextView
+                android:id="@+id/spn_ad_body"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:lines="1"
+                android:text="@string/spn_ad_body"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/spn_ad_icon" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <FrameLayout
+            android:id="@+id/vv_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:visibility="gone"
+            app:layout_constraintDimensionRatio="16:9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spn_banner_container">
+
+        <VideoView
+                android:id="@+id/spn_video_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+    </FrameLayout>
+
+    <Button
+            android:id="@+id/btn_install_spn_ad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="@color/green"
+            android:text="@string/download"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vv_container" />
+</androidx.constraintlayout.widget.ConstraintLayout>

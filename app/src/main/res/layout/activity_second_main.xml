@@ -48,7 +48,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <include layout="@layout/bottom_sheet_native_ad" />
+        <include layout="@layout/bottom_sheet_spn_ad" />
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

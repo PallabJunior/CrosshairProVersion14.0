@@ -32,4 +32,8 @@
     <string name="controller_not_supported">Controlador não é compatível</string>
     <string name="more_apps">Mais aplicativoss</string>
     <string name="controller">Controlador</string>
+
+    <string name="spn_app_headline">BLINK: Lembrete de piscar de olhos</string>
+    <string name="spn_ad_body">Você está piscando o suficiente?</string>
+    <string name="download">DOWNLOAD</string>
 </resources>
